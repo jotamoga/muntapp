@@ -53,7 +53,7 @@ La notificació arriba directament al professional, amb la prioritat calculada. 
 
 1. Pugeu `index.html`, `README.md` i la carpeta `docs/` a l’arrel del repositori.
 2. A **Settings → Pages**, a «Build and deployment», trieu **Deploy from a branch**, la branca `main` i la carpeta `/ (root)`.
-3. Al cap d’un minut, la web és a `https://USUARI.github.io/NOM-DEL-REPOSITORI/`.
+3. Al cap d’un minut, la web és a `https://jotamoga.github.io/NOM-DEL-REPOSITORI/`.
 
 Accessos directes:
 
