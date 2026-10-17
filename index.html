@@ -1,0 +1,1055 @@
+<!doctype html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MuntApp · EAP La Muntanyeta</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+:root{
+  --bg:#E6ECEA; --surface:#FBFCFC; --card:#FFFFFF; --sunk:#EBF0EF; --ink:#0E2A30; --muted:#4F6166; --line:#D3DCDA;
+  --accent:#2F6FB0; --accent-soft:#E1ECF7; --on-accent:#FFFFFF; --warm:#C4621F; --warm-soft:#FBEADD; --short:#8FB3D9; --support:#E8833A;
+  --ok:#1F7A52; --ok-bg:#DCF0E5; --warn:#8F5E00; --warn-bg:#FBEFD2; --bad:#B8352B; --bad-bg:#F9DEDB; --sil:#5B4FA0; --sil-bg:#E9E5F6;
+  --icc:#B8352B; --pcc:#2F6FB0; --maca:#6B4FA0; --atdom:#1F7A52; --dm2:#A2560E;
+  --sans:'IBM Plex Sans',Arial,sans-serif; --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#071417; --surface:#0E2328; --card:#132C32; --sunk:#183339; --ink:#E7EFEE; --muted:#9FB4B7; --line:#25444B;
+  --accent:#73A9E2; --accent-soft:#1A3450; --on-accent:#0B1E22; --warm:#F0A36A; --warm-soft:#3A2617; --short:#3D6E9E; --support:#F0A36A;
+  --ok:#62CB9B; --ok-bg:#143A2A; --warn:#F2C14E; --warn-bg:#3A2F12; --bad:#F27D71; --bad-bg:#3F1E1B; --sil:#B9AEF0; --sil-bg:#2A2547;
+  --icc:#F27D71; --pcc:#73A9E2; --maca:#B79BEA; --atdom:#62CB9B; --dm2:#F0B070; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#071417; --surface:#0E2328; --card:#132C32; --sunk:#183339; --ink:#E7EFEE; --muted:#9FB4B7; --line:#25444B;
+  --accent:#73A9E2; --accent-soft:#1A3450; --on-accent:#0B1E22; --warm:#F0A36A; --warm-soft:#3A2617; --short:#3D6E9E; --support:#F0A36A;
+  --ok:#62CB9B; --ok-bg:#143A2A; --warn:#F2C14E; --warn-bg:#3A2F12; --bad:#F27D71; --bad-bg:#3F1E1B; --sil:#B9AEF0; --sil-bg:#2A2547;
+  --icc:#F27D71; --pcc:#73A9E2; --maca:#B79BEA; --atdom:#62CB9B; --dm2:#F0B070; color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.45;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-top:12px;padding-bottom:calc(40px + env(safe-area-inset-bottom,0px));-webkit-text-size-adjust:100%}
+button,select,input,textarea{font-family:inherit;color:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible,label:focus-within{outline:2px solid var(--warm);outline-offset:2px}
+h1,h2,h3{margin:0;text-wrap:balance}
+p{margin:0}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.note{font-size:12.5px;color:var(--muted)}
+.lbl{display:flex;gap:6px;align-items:center;font-size:11.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.wrap{max-width:1320px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+body[data-screen="inn"] .wrap,body[data-screen="home"] .wrap{max-width:900px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.brand{display:flex;align-items:center;gap:10px;background:none;border:0;padding:0;text-align:left}
+.lights{display:flex;flex-direction:column;gap:3px}.lights i{width:9px;height:9px;border-radius:50%;display:block}
+.brand b{font-size:19px;letter-spacing:-.01em;display:block;line-height:1.1}.brand small{color:var(--muted);font-size:12px}
+.tag{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:4px 10px;white-space:nowrap;color:var(--warm);background:var(--warm-soft)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;min-width:0}
+.link{border:0;background:none;color:var(--accent);font-weight:700;font-size:13.5px;padding:6px 0;display:inline-flex;gap:4px;align-items:center;text-align:left}
+.chip{font-size:11px;font-weight:700;border-radius:6px;padding:2px 7px;color:var(--on-accent);white-space:nowrap}
+.pill{font-size:11.5px;font-weight:700;border-radius:999px;padding:2px 9px;white-space:nowrap}
+.pill.bad,.pill.alta{background:var(--bad-bg);color:var(--bad)}.pill.warn{background:var(--warn-bg);color:var(--warn)}.pill.ok{background:var(--ok-bg);color:var(--ok)}.pill.silence{background:var(--sil-bg);color:var(--sil)}.pill.normal{background:var(--accent-soft);color:var(--accent)}.pill.off{background:var(--sunk);color:var(--muted)}
+.signs{display:flex;gap:6px;flex-wrap:wrap}
+.signs span{font-size:12px;font-weight:600;background:var(--bad-bg);color:var(--bad);border-radius:999px;padding:3px 9px}
+.vals{display:flex;gap:6px;flex-wrap:wrap}
+.vals span{font-family:var(--mono);font-size:12.5px;background:var(--sunk);border-radius:8px;padding:3px 8px}
+.acts{display:flex;gap:6px;flex-wrap:wrap}
+.acts button{border:0;background:var(--accent);color:var(--on-accent);font-weight:600;font-size:13px;padding:9px 12px;border-radius:10px;display:inline-flex;gap:6px;align-items:center}
+.acts button.sec{background:var(--sunk);color:var(--ink)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);font-weight:600;font-size:14px;padding:11px 16px;border-radius:12px;z-index:20;max-width:calc(100% - 32px)}
+select,input[type=text],textarea{font-size:16px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;width:100%}
+textarea{min-height:76px;resize:vertical}
+.legend{display:flex;gap:4px 10px;flex-wrap:wrap;align-items:center;font-size:11.5px;color:var(--muted)}
+.legend i{width:9px;height:9px;border-radius:3px;display:inline-block;margin-right:-6px}
+.sech{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.sech h3{font-size:15.5px}
+.pic{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;color:#fff;flex:none}
+.pic.sm{width:28px;height:28px;border-radius:9px}.pic.lg{width:60px;height:60px;border-radius:18px}
+:root[data-theme="dark"] .pic,:root:not([data-theme="light"]) .pic{color:#fff}
+
+/* home */
+.home{display:flex;flex-direction:column;gap:16px}
+.hero{padding:14px 2px 2px;display:flex;flex-direction:column;gap:8px}
+.hero h1{font-size:clamp(26px,6vw,34px);line-height:1.1;letter-spacing:-.015em}
+.hero p{color:var(--muted);max-width:56ch}
+.doors{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.door{border:0;border-radius:22px;padding:22px;text-align:left;display:flex;flex-direction:column;gap:10px;min-height:220px;font:inherit}
+.door.mun{background:var(--ink);color:var(--bg)}
+.door.inn{background:var(--accent);color:var(--on-accent)}
+.door .ic{width:50px;height:50px;border-radius:15px;display:grid;place-items:center;background:rgba(255,255,255,.16)}
+.door b{font-size:25px;letter-spacing:-.01em}
+.door span{font-size:14px;opacity:.9}
+.door em{font-style:normal;margin-top:auto;font-weight:700;font-size:14.5px;display:flex;gap:4px;align-items:center}
+.how{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.how div{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:2px}
+.how .hn{width:24px;height:24px;border-radius:50%;background:var(--ink);color:var(--bg);display:grid;place-items:center;font-size:12px;font-weight:700;margin-bottom:4px}
+.how b{font-size:14px}.how span{font-size:13px;color:var(--muted)}
+
+/* ===== InnovaMunt wizard (mobile first) ===== */
+.phone-col{max-width:520px;margin:0 auto;width:100%;display:flex;flex-direction:column;gap:12px}
+.wh{display:flex;flex-direction:column;gap:8px}
+.wtop{display:flex;align-items:center;gap:10px}
+.iconbtn{width:42px;height:42px;border-radius:12px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;flex:none}
+.prog{display:flex;gap:4px;flex:1;min-width:0}
+.prog span{flex:1;display:flex;flex-direction:column;gap:4px;min-width:0}
+.prog i{height:5px;border-radius:9px;background:var(--line)}
+.prog em{font-style:normal;font-size:10.5px;font-weight:600;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prog .done i{background:var(--accent)}.prog .on i{background:var(--warm)}.prog .on em{color:var(--ink)}
+.wh h2{font-size:24px;line-height:1.15;letter-spacing:-.01em;margin-top:4px}
+.patbar{display:flex;gap:10px;align-items:center;background:var(--sunk);border-radius:12px;padding:8px 10px;font-size:13.5px}
+.patbar .pic{width:30px;height:30px;border-radius:9px}
+.tiles1{display:flex;flex-direction:column;gap:8px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.tile{border:1px solid var(--line);background:var(--card);border-radius:18px;padding:14px;text-align:left;font:inherit;display:flex;gap:12px;align-items:center;position:relative;transition:transform .12s,border-color .12s}
+.tile:active{transform:scale(.98)}
+.tile:hover{border-color:var(--accent)}
+.tile .tt{display:flex;flex-direction:column;gap:1px;flex:1;min-width:0}
+.tile .tt b{font-size:16px;line-height:1.25}.tile .tt span{font-size:13px;color:var(--muted)}
+.tile .chev{color:var(--muted);display:flex}
+.tile.slim{padding:13px 14px;border-radius:14px}.tile.slim .tt b{font-size:15px;font-weight:600}
+.tile.sel{border:2px solid var(--accent);background:var(--accent-soft)}
+.tile.sq{flex-direction:column;align-items:flex-start;gap:6px;min-height:150px;padding:16px}
+.tile.sq b{font-size:16.5px;line-height:1.2}.tile.sq>span:last-child{font-size:12.5px;color:var(--muted)}
+.tile.cat{flex-direction:column;align-items:center;text-align:center;gap:6px;padding:12px 6px;min-height:104px;border-radius:16px}
+.tile.cat b{font-size:12.5px;line-height:1.2;font-weight:600}
+.bigic{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;color:#fff;flex:none}
+.bigic.soft{background:var(--accent-soft);color:var(--accent)}
+.tile.cat .bigic{width:44px;height:44px;border-radius:14px}
+.tile.rec{border:2px solid var(--accent)}
+.recb{position:absolute;top:10px;right:10px;font-style:normal;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;background:var(--accent);color:var(--on-accent);border-radius:999px;padding:2px 8px}
+.searchbox{background:var(--card);border:1.5px solid var(--accent);border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:8px}
+.searchbox .lbl{color:var(--accent)}
+.sin{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:0 12px;color:var(--muted)}
+.sin input{border:0;background:transparent;padding:13px 0;outline:none;color:var(--ink)}
+.sin:focus-within{outline:2px solid var(--warm);outline-offset:1px}
+.sin.sm input{padding:9px 0;font-size:14.5px}
+#sugg{display:flex;flex-direction:column;gap:6px}
+.sug{display:flex;gap:10px;align-items:center;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:10px;text-align:left;font:inherit}
+.sug.first{border:2px solid var(--accent);background:var(--accent-soft)}
+.sug .sic{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;background:var(--card);color:var(--accent);flex:none}
+.sug .tt{display:flex;flex-direction:column;flex:1;min-width:0}.sug .tt b{font-size:15px}.sug .tt span{font-size:12px;color:var(--muted)}
+.conf{font-size:10.5px;font-weight:700;border-radius:999px;padding:2px 8px;white-space:nowrap}
+.c-alta{background:var(--ok-bg);color:var(--ok)}.c-mitjana{background:var(--warn-bg);color:var(--warn)}.c-baixa{background:var(--sunk);color:var(--muted)}
+.chips2{display:flex;gap:8px;flex-wrap:wrap}
+.pchip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:10px 14px;font-weight:600;font-size:14px}
+.pchip:hover{border-color:var(--accent)}
+.signs2{display:flex;flex-direction:column;gap:8px}
+.sig{display:flex;gap:12px;align-items:center;border:1.5px solid var(--line);background:var(--card);border-radius:14px;padding:14px;text-align:left;font:inherit;font-size:15px;font-weight:500}
+.sig .box{width:28px;height:28px;border-radius:8px;border:2px solid var(--line);display:grid;place-items:center;color:transparent;flex:none}
+.sig em{margin-left:auto;font-style:normal;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--bad)}
+.sig.crit{border-color:var(--bad)}
+.sig[aria-pressed="true"]{background:var(--warn-bg);border-color:var(--warn)}
+.sig[aria-pressed="true"] .box{background:var(--warn);border-color:var(--warn);color:#fff}
+.sig.crit[aria-pressed="true"]{background:var(--bad-bg);border-color:var(--bad)}
+.sig.crit[aria-pressed="true"] .box{background:var(--bad);border-color:var(--bad)}
+.photo{display:flex;gap:10px;align-items:center;position:relative}
+.photo label{border:1.5px dashed var(--muted);border-radius:12px;padding:12px 14px;font-weight:600;font-size:14px;background:var(--surface);display:flex;gap:6px;align-items:center;cursor:pointer}
+.photo input{position:absolute;width:1px;height:1px;opacity:0;left:0;top:0}
+.photo img{width:64px;height:64px;object-fit:cover;border-radius:10px}
+.fld{display:flex;flex-direction:column;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}
+.fld>span{font-size:14px;font-weight:600}.fld>span em{font-style:normal;font-weight:500;color:var(--muted)}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.stepper{display:grid;grid-template-columns:48px minmax(0,1fr) 48px;gap:6px;align-items:center}
+.pair .stepper{grid-template-columns:38px minmax(0,1fr) 38px}
+.stepper button{height:48px;border:1px solid var(--line);background:var(--surface);border-radius:12px;font-size:22px;font-weight:600}
+.stepper input{height:48px;text-align:center;font:600 20px var(--mono);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:12px;width:100%;padding:0}
+.opts{display:flex;gap:6px;flex-wrap:wrap}
+.opts button{flex:1;min-width:52px;border:1px solid var(--line);background:var(--surface);font-weight:600;font-size:14px;padding:11px 6px;border-radius:12px}
+.opts button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.send{border:0;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:16.5px;padding:16px;border-radius:16px;width:100%;margin-top:4px}
+.send:disabled{opacity:.45;cursor:not-allowed}
+.summary{display:flex;flex-direction:column;gap:0;padding:4px 14px}
+.sr{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-top:1px solid var(--line);align-items:flex-start}
+.sr:first-child{border-top:0}
+.sr>span{font-size:13px;color:var(--muted);flex:none}.sr>b,.sr>div{text-align:right;justify-content:flex-end}
+.prev{display:flex;gap:12px;align-items:center;border-radius:16px;padding:14px;font-size:14px}
+.prev .pi{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:#fff;flex:none}
+.prev.ok{background:var(--ok-bg)}.prev.ok .pi{background:var(--ok)}
+.prev.warn{background:var(--warn-bg)}.prev.warn .pi{background:var(--warn)}
+.prev.orange{background:var(--warm-soft)}.prev.orange .pi{background:var(--warm)}
+.prev.bad{background:var(--bad-bg)}.prev.bad .pi{background:var(--bad)}
+.prev.blue{background:var(--accent-soft)}.prev.blue .pi{background:var(--accent)}
+.done-wrap{display:flex;flex-direction:column;align-items:center;text-align:center;gap:12px;padding-top:18px}
+.bigstat{width:120px;height:120px;border-radius:50%;display:grid;place-items:center;color:#fff;animation:pop .35s ease-out}
+.bigstat.ok{background:var(--ok)}.bigstat.warn{background:var(--warn)}.bigstat.orange{background:var(--warm)}.bigstat.bad{background:var(--bad)}.bigstat.blue{background:var(--accent)}
+@keyframes pop{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+.done-wrap h2{font-size:26px}.done-wrap>p{color:var(--muted);font-size:15.5px}
+.route2{display:flex;align-items:center;gap:6px;width:100%;justify-content:center;margin:6px 0 4px}
+.route2 .node{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:11.5px;font-weight:600;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 8px;min-width:0;flex:1;max-width:120px}
+.route2 .node.off{opacity:.45;text-decoration:line-through}
+.route2 .node.to{border:2px solid var(--ok);color:var(--ok)}
+.route2 .arrow{width:14px;height:2px;background:var(--muted);flex:none}
+.foot112{text-align:center;margin-top:8px}
+
+/* ===== MuntApp (responsive: phone ↔ desktop) ===== */
+.pro{display:grid;grid-template-columns:200px minmax(0,1fr);gap:18px;align-items:start}
+.pnav{position:sticky;top:12px;display:flex;flex-direction:column;gap:4px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:8px}
+.pnav button{display:flex;gap:10px;align-items:center;border:0;background:transparent;color:var(--muted);font-weight:600;font-size:14px;padding:10px 12px;border-radius:10px;text-align:left}
+.pnav button span{flex:1}
+.pnav button[aria-current="page"]{background:var(--ink);color:var(--bg)}
+.pnav button:hover:not([aria-current="page"]){background:var(--sunk);color:var(--ink)}
+.cnt{font-style:normal;font-size:11px;font-weight:700;background:var(--bad);color:#fff;border-radius:999px;padding:0 6px;line-height:18px;min-width:18px;text-align:center}
+.pmain{display:flex;flex-direction:column;gap:14px;min-width:0}
+.ptitle{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.ptitle h2{font-size:22px;letter-spacing:-.01em}
+.kpis5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;min-width:0;text-align:left;font:inherit;display:flex;flex-direction:column}
+button.kpi:hover{border-color:var(--accent)}
+.kpi b{font-family:var(--mono);font-size:26px;font-weight:600;line-height:1.15;font-variant-numeric:tabular-nums}
+.kpi span{font-size:12.5px;color:var(--muted)}
+.kpis5.sm .kpi b{font-size:21px}
+.k-bad b{color:var(--bad)}.k-sil b{color:var(--sil)}.k-ok b{color:var(--ok)}.k-warn b{color:var(--warn)}.k-acc b{color:var(--accent)}
+.igrid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:14px;align-items:start}
+.dgrid2{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:14px;align-items:start}
+.col{display:flex;flex-direction:column;gap:14px;min-width:0}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.pcard{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--pc);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.pch{display:flex;gap:10px;align-items:center;border:0;background:none;padding:0;text-align:left;font:inherit}
+.pch .tt{flex:1;min-width:0;display:flex;flex-direction:column}.pch .tt b{font-size:17px}.pch .tt span{font-size:12px;color:var(--muted);line-height:1.25}
+.stack{display:flex;height:22px;border-radius:7px;overflow:hidden;background:var(--sunk)}
+.stack span{display:grid;place-items:center;color:#fff;font-size:11.5px;font-weight:700;font-family:var(--mono);min-width:18px}
+.pmeta{display:flex;gap:12px;font-size:12.5px;color:var(--muted)}.pmeta b{color:var(--ink);font-family:var(--mono)}
+.att{display:flex;flex-direction:column;border-top:1px solid var(--line);padding-top:6px;gap:2px}
+.arow{display:grid;grid-template-columns:8px auto minmax(0,1fr) auto;gap:8px;align-items:center;border:0;background:none;padding:6px 2px;text-align:left;font:inherit;font-size:12.5px;border-radius:8px;color:var(--muted)}
+.arow:hover{background:var(--sunk)}
+.arow i{width:8px;height:8px;border-radius:50%}
+.arow .mono{font-weight:600;color:var(--ink)}
+.arow .aw{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+.okn{display:flex;gap:4px;align-items:center;color:var(--ok)}
+.chart{width:100%;height:auto;display:block}
+.clist{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.crow{display:flex;gap:10px;align-items:center;width:100%;border:0;border-top:1px solid var(--line);background:none;padding:11px 12px;text-align:left;font:inherit;border-left:4px solid var(--accent)}
+.crow:first-child{border-top:0}
+.crow.alta{border-left-color:var(--bad)}
+.crow:hover{background:var(--sunk)}
+.crow .tt{flex:1;min-width:0;display:flex;flex-direction:column}.crow .tt b{font-size:14px}.crow .tt>span{font-size:12px;color:var(--muted)}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;text-align:left;padding:6px 6px 6px 0;border-bottom:1px solid var(--line)}
+td{padding:7px 6px 7px 0;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+tr:last-child td{border-bottom:0}
+td.n,th.n{text-align:right}td.tb{color:var(--bad);font-weight:700}td.ts{color:var(--sil);font-weight:700}
+.pfil{display:flex;gap:10px;justify-content:space-between;align-items:center;flex-wrap:wrap}
+.pfil .sin{min-width:200px;flex:0 1 260px}
+.filters{display:flex;gap:6px;flex-wrap:wrap}
+.filters button{border:1px solid var(--line);background:var(--card);font-weight:600;font-size:13px;padding:7px 12px;border-radius:999px;display:inline-flex;gap:6px;align-items:center}
+.filters button small,.seg2 button small{font-family:var(--mono);opacity:.7}
+.filters button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.plist{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.prow{display:grid;grid-template-columns:5px 36px minmax(0,1fr) 130px 76px 92px 18px;gap:12px;align-items:center;width:100%;border:0;border-top:1px solid var(--line);background:none;padding:10px 12px 10px 0;text-align:left;font:inherit;color:var(--muted)}
+.prow:first-child{border-top:0}.prow:hover{background:var(--sunk)}
+.stripe{align-self:stretch;border-radius:0 4px 4px 0}
+.pm{display:flex;flex-direction:column;gap:2px;min-width:0;color:var(--ink)}
+.pl1{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.why{font-size:13px;font-weight:600}.why.bad{color:var(--bad)}.why.warn{color:var(--warn)}.why.silence{color:var(--sil)}.why.ok{color:var(--ok)}
+.l2{font-size:12px;color:var(--muted)}
+.spk{display:flex;flex-direction:column;gap:2px}.spk small,.adh small,.when small{font-size:10.5px;color:var(--muted)}
+.adh,.when{display:flex;flex-direction:column;text-align:right}.adh b,.when b{color:var(--ink);font-size:13.5px}.adh b{font-family:var(--mono)}
+.backl{align-self:flex-start}
+.phead{display:flex;gap:14px;align-items:center;background:var(--card);border:1px solid var(--line);border-left:6px solid var(--pc);border-radius:16px;padding:14px;flex-wrap:wrap}
+.phm{flex:1;min-width:220px;display:flex;flex-direction:column;gap:3px}
+.phm h2{font-size:22px}.phm p{font-size:13.5px;color:var(--muted)}.phm .why{font-size:14px}
+.pendc{border:1.5px solid var(--bad)}
+.charts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.ch{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px;min-width:0}
+.chh{display:flex;justify-content:space-between;gap:6px;align-items:baseline;margin-bottom:4px;font-size:13px;flex-wrap:wrap}
+.last{font-size:12px;color:var(--muted)}.last b{font-size:16px;color:var(--ink)}.last.bad b{color:var(--bad)}.last small{font-size:11px}
+.cal{display:grid;grid-template-columns:repeat(14,minmax(0,24px));gap:5px;margin-bottom:8px}
+.cal span{aspect-ratio:1;border-radius:5px;background:var(--sunk)}
+.cal span.ok{background:var(--ok)}.cal span.warn{background:var(--warn)}.cal span.bad{background:var(--bad)}
+.tl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.tl li{display:grid;grid-template-columns:28px minmax(0,1fr);gap:10px;padding:0 0 14px;position:relative}
+.tl li:before{content:"";position:absolute;left:13px;top:28px;bottom:0;width:2px;background:var(--line)}
+.tl li:last-child:before{display:none}
+.tli{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;color:#fff;background:var(--muted)}
+.tl li.bad .tli{background:var(--bad)}.tl li.warn .tli{background:var(--warn)}.tl li.ok .tli{background:var(--ok)}.tl li.acc .tli{background:var(--accent)}
+.tl li>div{display:flex;flex-direction:column;gap:3px;min-width:0}
+.tlh{display:flex;justify-content:space-between;gap:8px}.tlh b{font-size:14px}
+.tln{font-size:13.5px}
+.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px;align-items:start}
+.msg{display:flex;flex-direction:column;gap:8px}
+.msg.cmp{border-top:1px solid var(--line);padding-top:10px}.msg.cmp:first-of-type{border-top:0;padding-top:0}
+.msg.done{opacity:.7}
+.mgrid .card{border-left:5px solid var(--accent)}
+.mgrid .card:has(.msg.alta){border-left-color:var(--bad)}.mgrid .card:has(.msg.done){border-left-color:var(--ok)}
+.mh{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.mhl{display:flex;gap:10px;align-items:flex-start;min-width:0}
+.mt{font-size:15px}
+.codeb{border:0;background:var(--sunk);font-family:var(--mono);font-weight:600;font-size:12px;border-radius:6px;padding:1px 6px;color:var(--accent);text-decoration:underline}
+.mnote{font-size:14px}
+.mph{width:120px;height:120px;object-fit:cover;border-radius:10px}
+.aitag{font-size:12px;font-weight:600;color:var(--accent);background:var(--accent-soft);border-radius:8px;padding:4px 8px;align-self:flex-start;display:inline-flex;gap:4px;align-items:center}
+.seg2{display:flex;background:var(--sunk);border-radius:10px;padding:3px;gap:2px;flex-wrap:wrap}
+.seg2 button{border:0;background:transparent;font-weight:600;font-size:13.5px;padding:7px 11px;border-radius:8px}
+.seg2 button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent)}
+.flow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px}
+.flow span{display:flex;gap:6px;align-items:center;font-size:12.5px;font-weight:600;background:var(--sunk);border-radius:10px;padding:7px 10px}
+.flow i{width:12px;height:2px;background:var(--muted)}
+.prop{display:flex;flex-direction:column;gap:8px;border-left:5px solid var(--accent)}.prop p{font-size:14px}
+.prop.emer{border-left-color:var(--sil)}
+.bars{display:flex;flex-direction:column;gap:8px}
+.br{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) 24px;gap:8px;align-items:center;font-size:13.5px}
+.bn{display:flex;flex-direction:column;min-width:0}.bn small{font-size:11px;color:var(--muted)}
+.bt{height:12px;background:var(--sunk);border-radius:6px;overflow:hidden}.bt span{display:block;height:100%;border-radius:6px}
+.br b{text-align:right}
+.ul{margin:0;padding-left:18px;font-size:14px}
+.studies{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.study{display:flex;flex-direction:column;gap:10px}.study h3{font-size:15px;line-height:1.3}
+.pbar{height:8px;background:var(--sunk);border-radius:99px;overflow:hidden}.pbar span{display:block;height:100%;border-radius:99px}
+.mini2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mini2 div{background:var(--sunk);border-radius:10px;padding:8px 10px}
+.mini2 b{display:block;font-family:var(--mono);font-size:19px}.mini2 span{font-size:12px;color:var(--muted)}
+/* demand forecast */
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.kpis .kpi.k-bad b{color:var(--bad)}
+.ctrls{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:end;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}
+.ctl{display:flex;flex-direction:column;gap:5px}
+.ctrls select{width:auto;font-size:14px;padding:7px 10px;background:var(--sunk);border:0}
+.urow{display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:6px 10px;align-items:center;padding:10px 0;border:0;border-top:1px solid var(--line);width:100%;background:none;text-align:left;font:inherit}
+.urow:first-of-type{border-top:0}
+.urow .nm{font-weight:700;line-height:1.15}.urow .nm small{display:block;font-weight:500;color:var(--muted);font-size:11.5px}
+.slots{display:flex;gap:10px;font-size:12.5px;color:var(--muted);flex-wrap:wrap}
+.slots b{font-family:var(--mono);color:var(--ink);font-size:15px}.slots b.neg{color:var(--bad)}
+.sbar{grid-column:1 / 4;position:relative;height:12px;background:var(--sunk);border-radius:4px;overflow:hidden;display:flex}
+.sbar span{height:100%;transition:width .5s}
+.sbar .cap{position:absolute;top:-2px;bottom:-2px;border-left:2px solid var(--ink);opacity:.6}
+.sbar .t85{position:absolute;top:0;bottom:0;border-left:1.5px dashed var(--ink);opacity:.3}
+.sup{background:repeating-linear-gradient(135deg,var(--support) 0 4px,transparent 4px 7px)}
+.udet{grid-column:1 / 4;font-size:13px;color:var(--muted);background:var(--sunk);border-radius:10px;padding:9px 11px}.udet b{color:var(--ink)}
+.dgrid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:14px;align-items:start}
+.alerts{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+.alerts li{border-left:4px solid var(--line);background:var(--sunk);border-radius:6px;padding:8px 10px;font-size:13.5px}
+.alerts li.bad{border-color:var(--bad)}.alerts li.warn{border-color:var(--warn)}.alerts li.ok{border-color:var(--ok)}.alerts li.info{border-color:var(--accent)}
+
+@media (max-width:1100px){.prow{grid-template-columns:5px 36px minmax(0,1fr) 76px 92px 18px}.prow .spk{display:none}}
+@media (max-width:980px){
+  .pro{grid-template-columns:minmax(0,1fr);gap:12px}
+  .pnav{position:sticky;top:0;z-index:5;flex-direction:row;overflow-x:auto;padding:5px;gap:2px;scrollbar-width:none;border-radius:14px}
+  .pnav::-webkit-scrollbar{display:none}
+  .pnav button{flex:1 0 auto;flex-direction:column;gap:2px;font-size:11.5px;padding:7px 10px;position:relative;align-items:center}
+  .pnav button span{flex:none}
+  .pnav .cnt{position:absolute;top:2px;right:4px;font-size:10px;line-height:15px;min-width:15px;padding:0 4px}
+  .igrid,.dgrid2,.dgrid{grid-template-columns:minmax(0,1fr)}
+  .kpis5{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media (max-width:620px){
+  .doors,.how{grid-template-columns:1fr}.door{min-height:0}
+  .kpis5,.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .kpi b{font-size:22px}.kpi{padding:10px 12px}
+  .charts,.studies{grid-template-columns:minmax(0,1fr)}
+  .prow{grid-template-columns:5px 32px minmax(0,1fr) 18px;gap:10px}.prow .adh,.prow .when{display:none}
+  .prow .pic{width:32px;height:32px}
+  .pgrid{grid-template-columns:minmax(0,1fr)}
+  .mgrid{grid-template-columns:minmax(0,1fr)}
+  .pfil .sin{flex:1 1 100%}
+  .cal{grid-template-columns:repeat(14,minmax(0,1fr));gap:3px}
+  .pnav button{flex:1 1 0;min-width:0;padding:7px 2px;font-size:10.5px}
+  .pnav button span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+  .ptitle h2{font-size:19px}
+}
+@media (max-width:380px){.grid3{grid-template-columns:repeat(2,minmax(0,1fr))}.tile.sq{min-height:132px;padding:13px}.prog em{display:none}}
+@media (prefers-reduced-motion:reduce){.sbar span,.tile{transition:none}.bigstat{animation:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <button class="brand" type="button" data-go="home" aria-label="Inici">
+      <span class="lights" aria-hidden="true"><i style="background:var(--ok)"></i><i style="background:var(--warn)"></i><i style="background:var(--bad)"></i></span>
+      <span><b id="brandName">La Muntanyeta</b><small>EAP Adults · Castelldefels</small></span>
+    </button>
+    <span class="tag">Prototip · dades fictícies</span>
+  </header>
+  <main id="app"></main>
+</div>
+
+<script>
+(function(){
+"use strict";
+/* ---------- icons ---------- */
+var IC={
+ heart:"M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z",
+ drop:"M12 2.7l5.7 5.7a8 8 0 1 1-11.3 0z",
+ home:"M3 10l9-7 9 7v10a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z",
+ users:"M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8",
+ leaf:"M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10zM2 21c0-3 1.9-5.4 5.1-6",
+ band:"M10 10h.01M14 14h.01M10 14h.01M14 10h.01M18.5 5.5a3.5 3.5 0 0 0-5 0l-8 8a3.5 3.5 0 0 0 5 5l8-8a3.5 3.5 0 0 0 0-5z",
+ stomach:"M8 3v4a5 5 0 0 0 5 5h1a4 4 0 0 1 0 8H10a6 6 0 0 1-6-6",
+ lungs:"M12 3v9M12 12l-3-2M12 12l3-2M8 8C5 8 3 13 3 17c0 2 1 3 3 3s3-1 3-3V9M16 8c3 0 5 5 5 9 0 2-1 3-3 3s-3-1-3-3V9",
+ bolt:"M13 2L3 14h9l-1 8 10-12h-9z",
+ spiral:"M3 12a9 9 0 1 0 18 0 9 9 0 1 0-18 0M7 12a5 5 0 1 0 10 0M11 12a1 1 0 1 0 2 0",
+ thermo:"M14 14.8V4a2 2 0 0 0-4 0v10.8a4 4 0 1 0 4 0z",
+ cube:"M4 7l8-4 8 4v10l-8 4-8-4zM4 7l8 4 8-4M12 11v10",
+ walk:"M13 4a1 1 0 1 0 2 0 1 1 0 1 0-2 0M9 21l3-6 3 3v3M10 14l1-5 4 1 2 4M7 12l3-3",
+ moon:"M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z",
+ pill:"M10.5 20.5l10-10a5 5 0 0 0-7-7l-10 10a5 5 0 0 0 7 7zM8.5 8.5l7 7",
+ doc:"M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6M8 13h8M8 17h5",
+ gauge:"M12 14l4-4M3.3 19a10 10 0 1 1 17.4 0",
+ alert:"M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z",
+ search:"M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM21 21l-4.3-4.3",
+ check:"M20 6L9 17l-5-5",
+ plus:"M12 5v14M5 12h14",
+ steth:"M5 3v6a5 5 0 0 0 10 0V3M10 14v2a5 5 0 0 0 10 0v-3M20 13a2 2 0 1 0 0-4 2 2 0 0 0 0 4z",
+ drip:"M12 3v6M8 13a4 4 0 1 0 8 0c0-2-4-6-4-6s-4 4-4 6z",
+ sparkle:"M12 3l1.9 4.6L18.5 9l-4.6 1.9L12 15.5l-1.9-4.6L5.5 9l4.6-1.4zM19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z",
+ chev:"M9 6l6 6-6 6",
+ back:"M15 6l-6 6 6 6",
+ phone:"M22 16.9v3a2 2 0 0 0-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z",
+ x:"M18 6L6 18M6 6l12 12"
+};
+function ico(n,sz){return'<svg width="'+(sz||22)+'" height="'+(sz||22)+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="'+IC[n]+'"/></svg>'}
+var PICON={ICC:"heart",DM2:"drop",PCC:"users",MACA:"leaf",ATDOM:"home"};
+var DICON={inf:"plus",med:"steth",ts:"users",uac:"doc"};
+
+/* ---------- problem library (alarm signs: "!" = urgent) ---------- */
+function sg(t,c){return{t:t,c:!!c}}
+var CATS=[
+ {id:"pell",n:"Pell i ferides",ic:"band"},{id:"dig",n:"Digestiu",ic:"stomach"},{id:"resp",n:"Respiració",ic:"lungs"},
+ {id:"cor",n:"Cor i circulació",ic:"heart"},{id:"dolor",n:"Dolor",ic:"bolt"},{id:"uri",n:"Orina i sondes",ic:"drip"},
+ {id:"neuro",n:"Mareig i confusió",ic:"spiral"},{id:"febre",n:"Febre i infeccions",ic:"thermo"},{id:"diab",n:"Diabetis",ic:"cube"},
+ {id:"mob",n:"Caigudes i mobilitat",ic:"walk"},{id:"anim",n:"Ànim i son",ic:"moon"},{id:"cuid",n:"Cuidador i casa",ic:"home"}
+];
+var LIB=[];
+function P(id,cat,n,to,kw,signs){LIB.push({id:id,cat:cat,n:n,to:to,kw:kw,s:signs.map(function(x){return x.charAt(0)==="!"?sg(x.slice(1),1):sg(x)})})}
+P("ferida","pell","Nova ferida o úlcera","inf",["ferida","nafra","ulcera","llaga","herida","talls","tall","rascada"],["Vermellor que s’estén","Supuració o mal olor","Febre","Ferida profunda o més gran de 2 cm"]);
+P("ferida_no","pell","Ferida que no millora","inf",["no cicatritza","no cura","no se cura","no millora la ferida","cura","aposit","venda"],["Fa pudor","Ha crescut","Dolor que augmenta","Febre"]);
+P("nafra","pell","Nafra per pressió","inf",["nafra","escara","talo","sacre","culet","llaga por presion","vermell al cul"],["La pell s’ha obert","Zona negra o morada","Supura"]);
+P("picor","pell","Picor o erupció","inf",["picor","pica","erupcio","granets","taques","picazon","urticaria","sarpullido","rojeces","vermellor a la pell"],["!Inflor de cara o llavis","S’estén ràpid","Febre"]);
+P("cremada","pell","Cremada","inf",["cremada","cremat","quemadura","quemado","aigua bullint","escaldat"],["Més gran que el palmell","Butllofes","A la cara o les mans"]);
+P("celulitis","pell","Pell vermella i calenta","inf",["calenta","inflamada","cellulitis","pell vermella","cama vermella","roja y caliente"],["Febre","S’estén ràpid","Molt dolor"]);
+P("blau","pell","Blau o hematoma","inf",["blau","hematoma","morat","moraton","cop","golpe"],["Pren anticoagulants","Molt gran o creix","Després d’un cop al cap"]);
+P("restrenyiment","dig","Restrenyiment","inf",["restrenyiment","restret","restreny","estreny","estrenyi","estren","no fa caca","no ha fet caca","no ha anat de ventre","no va de ventre","no evacua","sense deposicions","no hace caca","no ha ido al bano","no defeca","caca dura"],["Més de 3 dies sense deposicions","Dolor fort a la panxa","Vòmits","!Panxa inflada i dura"]);
+P("diarrea","dig","Diarrea","inf",["diarrea","caca liquida","femta liquida","descomposicio","cagarrines","va molt de ventre"],["Més de 6 vegades al dia","Sang a la femta","No pot beure","Febre"]);
+P("vomits","dig","Nàusees o vòmits","inf",["vomit","vomita","vomitar","nausees","nausea","ganes de vomitar","arcades","mareo de estomago"],["No reté líquids","!Vòmits amb sang","Dolor a la panxa"]);
+P("panxa","dig","Dolor de panxa","inf",["panxa","abdomen","barriga","estomac","estomago","tripa","colic"],["!Dolor molt fort i sobtat","Febre","Vòmits","Panxa dura"]);
+P("gana","dig","No té gana","inf",["no menja","no te gana","inapetencia","no come","no tiene hambre","menja poc"],["Fa més de 3 dies","Ha perdut pes","No beu"]);
+P("empassar","dig","Dificultat per empassar","inf",["empassar","ennuega","atragant","tragar","se atraganta","disfagia","s ofega menjant"],["Tos quan beu","!S’ennuega i no respira bé","Ha deixat de menjar"]);
+P("sangfemta","dig","Sang a la femta","med",["sang a la femta","caca negra","femta negra","sangre en heces","heces negras"],["!Femta negra com el quitrà","Mareig","Pren anticoagulants"]);
+P("ofec","resp","Més ofec","inf",["ofec","ofega","asfixia","no pot respirar","li costa respirar","respira malament","ahoga","falta d aire","fatiga"],["Ofec en repòs","Ha de dormir assegut","!Llavis morats","!Tos amb esput rosat"]);
+P("tos","resp","Tos o refredat","inf",["tos","refredat","constipat","catarro","resfriado","mocs","esput","flegma"],["Febre més de 3 dies","Ofec","!Dolor al pit en respirar"]);
+P("coll","resp","Mal de coll","inf",["mal de coll","gola","garganta","faringe","angines"],["Febre alta","No pot empassar","Placas blanques"]);
+P("oxigen","resp","Problema amb l’oxigen","inf",["oxigen","bombona","concentrador","ulleres nasals","oxigeno"],["L’aparell no funciona","!Saturació per sota de 88%"]);
+P("cames","cor","Cames inflades","inf",["cames inflades","turmells","peus inflats","edema","hinchado","piernas hinchadas","tobillos","inflor"],["Ha augmentat en 2–3 dies","Pes +2 kg","Una sola cama vermella i calenta"]);
+P("pes","cor","El pes puja","inf",["pes","pesa","engreix","kilos","quilos","peso"],["+2 kg en 3 dies","Més ofec","Orina menys"]);
+P("palpit","cor","Palpitacions","med",["palpitacions","cor accelerat","taquicardia","arritmia","el cor va rapid","palpitaciones"],["!Amb dolor al pit","!Amb mareig o desmai","Pulsacions més de 120"]);
+P("tensioa","cor","Tensió alta","inf",["tensio alta","hipertensio","pressio alta","tension alta","presion alta"],["Més de 180","!Mal de cap fort o visió borrosa"]);
+P("tensiob","cor","Tensió baixa o mareig en aixecar-se","inf",["tensio baixa","hipotensio","tension baja","es mareja en aixecar"],["S’ha desmaiat","Ha caigut"]);
+P("pit","cor","Dolor al pit","med",["dolor al pit","pit","pecho","opressio","angina"],["!Dolor opressiu","!Suor freda","!Mareig o desmai"]);
+P("dolornc","dolor","Dolor no controlat","inf",["dolor","fa mal","duele","molt mal","no se li passa","rescat","morfina"],["Dolor de 7 o més","Els rescats no fan efecte","Dolor nou"]);
+P("esquena","dolor","Mal d’esquena","inf",["esquena","lumbar","ronyons","espalda","lumbago","cintura"],["Baixa per la cama","Febre","!Perd força a les cames"]);
+P("cap","dolor","Mal de cap","inf",["mal de cap","cap","cefalea","migranya","cabeza","jaqueca"],["!El pitjor de la seva vida","Febre","Després d’un cop"]);
+P("articular","dolor","Dolor d’articulacions","inf",["genoll","maluc","espatlla","articulacio","rodilla","cadera","hombro","artrosi"],["Inflada i calenta","No hi pot recolzar pes"]);
+P("orinar","uri","Molèsties en orinar","inf",["cou en orinar","coure","pica en orinar","escoz","orina","pipi","infeccio d orina","cistitis","orina fa pudor"],["Febre","Dolor a l’esquena","Sang a l’orina","Confusió nova"]);
+P("sonda","uri","Sonda o catèter","inf",["sonda","cateter","bossa d orina","no drena","sonda vesical"],["No drena","Sang a l’orina","Dolor a la panxa"]);
+P("menysorina","uri","Orina menys","inf",["orina poc","no orina","fa poc pipi","no hace pipi","orina menys"],["Fa més de 12 h","Panxa inflada","No beu"]);
+P("perdues","uri","Pèrdues d’orina","inf",["perdues","incontinencia","se li escapa","es pixa","bolquer","panal"],["És nou","Cou o febre"]);
+P("mareig","neuro","Mareig","inf",["mareig","marejat","mareja","mareo","vertigen","li gira tot","inestable"],["!S’ha desmaiat","!Dificultat per parlar","Ha caigut"]);
+P("confusio","neuro","Confusió o desorientació nova","inf",["confus","desorientat","no sap on es","diu coses estranyes","desorientado","confundido","delira"],["Ha començat avui","Febre","!No es pot despertar bé"]);
+P("agitacio","neuro","Agitació","inf",["agitat","nervios","no para","crida","agresiu","agitado","inquieto"],["De nit","No reconeix la família","Al·lucinacions"]);
+P("ictus","neuro","Pèrdua de força o de parla","med",["boca torta","no pot parlar","no mou el brac","perd forca","paralisi","no habla bien","boca torcida"],["!Ha començat de cop","!Boca torta","!No pot moure un braç o una cama"]);
+P("febre","febre","Febre","inf",["febre","fiebre","temperatura","calentura","38","39"],["Més de 38,5 °C","Confusió nova","!Dificultat per respirar","Orina menys"]);
+P("infeccioferida","febre","Ferida infectada","inf",["infectada","pus","supura","infeccion herida"],["Febre","Vermellor que s’estén","Fa pudor"]);
+P("hipo","diab","Hipoglucèmia","inf",["hipoglucemia","hipoglucemia","sucre baix","azucar baja","glucosa baixa","suda i tremola","bajon"],["Glucosa per sota de 70","Confusió o somnolència","!No es recupera amb sucre"]);
+P("hiper","diab","Glucoses altes","inf",["glucosa alta","sucre alt","azucar alta","hiperglucemia","300","molta set"],["Més de 300 repetides","Molta set i orina","Vòmits"]);
+P("peu","diab","Ferida al peu","inf",["peu","dit del peu","pie","dedo","ungla","callo","dit"],["Vermellor o calor","Supura","!Dit de color fosc"]);
+P("caiguda","mob","Caiguda","inf",["caiguda","ha caigut","caigut","se ha caido","caida","relliscat","al terra"],["Cop al cap","No es pot aixecar","Pren anticoagulants","!Ha perdut el coneixement"]);
+P("llit","mob","No es pot aixecar del llit","inf",["no es pot aixecar","no es lleva","encamat","no se levanta","postrat"],["És nou","Febre","Confusió"]);
+P("mobilitat","mob","Camina pitjor","inf",["camina pitjor","no camina","debilitat","sense forces","no puede andar","cansament"],["Ha empitjorat en pocs dies","!Una sola banda del cos"]);
+P("son","anim","No dorm","inf",["no dorm","insomni","no pot dormir","no duerme","dorm malament","desvetllat"],["Agitació de nit","Confusió nova"]);
+P("ansietat","anim","Tristesa o ansietat","inf",["trist","plora","ansietat","angoixa","ansiedad","deprimit","no te ganes","nervis"],["!Parla de no voler viure","No menja","No surt del llit"]);
+P("somnolent","anim","Molt adormit","inf",["adormit","dorm tot el dia","somnolent","no es desperta","somnoliento","muy dormido"],["!Costa molt despertar-lo","Ha començat avui","Medicació nova"]);
+P("cuidador","cuid","El cuidador no pot més","ts",["cuidador","no puc mes","estic esgotat","cansada","sobrecarrega","agotada","no puedo mas","ajuda a casa"],["No dorm","Necessita ajuda a casa","Problemes de tràmits o diners"]);
+P("material","cuid","Material o ajudes tècniques","ts",["bolquers","cadira de rodes","grua","llit articulat","caminador","material","panales","silla de ruedas"],["És urgent","No sabem on demanar-ho"]);
+P("cures","cuid","Dubte sobre com fer una cura","inf",["com faig","com s ha de","dubte","no se com","cures","como hago"],["La ferida ha canviat","Fa mal en fer-la"]);
+var GENERIC=[sg("Empitjora ràpidament"),sg("Febre"),sg("No pot menjar o beure"),sg("Dificultat per respirar",1)];
+var TOP={ICC:["ofec","cames","pes","pit"],DM2:["hipo","hiper","peu","mareig"],PCC:["febre","confusio","tos","restrenyiment"],MACA:["dolornc","empassar","agitacio","cuidador"],ATDOM:["ferida","nafra","caiguda","restrenyiment"]};
+var TRAM=["Renovar recepta","Informe mèdic","Baixa o alta laboral","Material (bolquers, apòsits)","Canvi de cita"];
+var STOP=["que","des","dies","molt","molta","una","uns","per","amb","perque","esta","tiene","avui","ahir","mama","pare","meu","meva","seva","seu","pero","tot","casa","desde","hace","dias","muy","para","porque","como","mucho","poco","bien","todo","este","esta","esto","hoy","ayer","tambe","tambien","sempre","siempre","quan","cuando","donde","algo","alguna","cosa","coses"];
+function norm(t){return String(t||"").toLowerCase().replace(/l·l/g,"ll").normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[’']/g," ")}
+LIB.forEach(function(p){p.kwn=p.kw.map(norm);p.tok=[];(p.kw.join(" ")+" "+p.n).split(/\s+/).forEach(function(w){w=norm(w).replace(/[^a-z0-9]/g,"");if(w.length>=4&&p.tok.indexOf(w)<0)p.tok.push(w)})});
+function search(q){
+  var t=" "+norm(q)+" ";if(t.trim().length<3)return[];
+  var toks=t.split(/[^a-z0-9]+/).filter(function(w){return w.length>=4&&STOP.indexOf(w)<0});
+  return LIB.map(function(p){var sc=0;
+    p.kwn.forEach(function(k){if(t.indexOf(k.length<5?" "+k:k)>=0)sc+=k.indexOf(" ")>0?3:2});
+    toks.forEach(function(w){var st=w.slice(0,Math.min(5,w.length));if(p.tok.some(function(k){return k.indexOf(st)===0}))sc+=1});
+    return{p:p,sc:sc}}).filter(function(x){return x.sc>=2}).sort(function(a,b){return b.sc-a.sc}).slice(0,3)
+   .map(function(x){return{p:x.p,conf:x.sc>=5?"alta":x.sc>=3?"mitjana":"baixa"}});
+}
+function libItem(id){return LIB.filter(function(p){return p.id===id})[0]}
+function keyOf(text){var w=norm(text).replace(/[^a-z\s]/g," ").split(/\s+/).filter(function(x){return x.length>=4&&STOP.indexOf(x)<0});return w[0]||"altres"}
+/* ---------- programs, variables, demo data ---------- */
+var D=864e5,H=36e5;
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function fmt(n){return String(n).replace(".",",")}
+function ago(t,now){var m=Math.round((now-t)/6e4);if(m<1)return"ara mateix";if(m<60)return"fa "+m+" min";var h=Math.round(m/60);if(h<24)return"fa "+h+" h";return"fa "+Math.round(h/24)+" d"}
+var PROG={
+  ICC:{n:"ICC",full:"Insuficiència cardíaca",c:"var(--icc)",freq:1,key:"pes"},
+  DM2:{n:"DM2",full:"Diabetis tipus 2",c:"var(--dm2)",freq:3,key:"glucosa"},
+  PCC:{n:"PCC",full:"Pacient crònic complex",c:"var(--pcc)",freq:3,key:"tas"},
+  MACA:{n:"MACA",full:"Malaltia crònica avançada",c:"var(--maca)",freq:2,key:"dolor"},
+  ATDOM:{n:"ATDOM",full:"Atenció domiciliària",c:"var(--atdom)",freq:7,key:"tas"}
+};
+var EST=["Bé","Regular","Malament"],ING=["Normal","Menys","Gairebé res"];
+var N={tas:{k:"tas",l:"Tensió alta",u:"mmHg",t:"num",s:1,pair:1},tad:{k:"tad",l:"Tensió baixa",u:"mmHg",t:"num",s:1,pair:1},fc:{k:"fc",l:"Pulsacions",u:"per minut",t:"num",s:1},sat:{k:"sat",l:"Saturació d’oxigen",u:"%",t:"num",s:1},temp:{k:"temp",l:"Temperatura",u:"°C",t:"num",s:0.1}};
+var VARS={
+  ICC:[{k:"pes",l:"Pes",u:"kg",t:"num",s:0.1},N.tas,N.tad,N.fc,N.sat,{k:"dispnea",l:"Com respira avui?",t:"opt",o:["Millor","Igual","Pitjor"]},{k:"edemes",l:"Té els turmells inflats?",t:"opt",o:["No","Sí"]}],
+  DM2:[{k:"glucosa",l:"Glucosa capil·lar",u:"mg/dL",t:"num",s:1},N.tas,N.tad,{k:"pes",l:"Pes",u:"kg",t:"num",s:0.1},{k:"hipo",l:"Ha tingut alguna hipoglucèmia?",t:"opt",o:["No","Sí"]}],
+  PCC:[N.tas,N.tad,N.fc,N.sat,N.temp,{k:"estat",l:"Com es troba?",t:"opt",o:EST}],
+  MACA:[{k:"dolor",l:"Dolor",u:"de 0 a 10",t:"num",s:1},{k:"son",l:"Com ha dormit?",t:"opt",o:EST},{k:"ingesta",l:"Com menja?",t:"opt",o:ING},{k:"estat",l:"Com el veieu?",t:"opt",o:EST}],
+  ATDOM:[N.tas,N.tad,N.fc,N.temp,N.sat,{k:"ingesta",l:"Com menja?",t:"opt",o:ING}]
+};
+var CUID={k:"cuid",l:"I vosaltres, com esteu?",t:"opt",o:["1","2","3","4","5"],hint:"1 = descansat · 5 = molt cansat"};
+var LABEL={pes:"Pes",tas:"TA sist.",tad:"TA diast.",fc:"FC",sat:"SatO₂",temp:"Temp.",glucosa:"Glucosa",dolor:"Dolor",dispnea:"Respira",edemes:"Edemes",hipo:"Hipo",estat:"Estat",son:"Son",ingesta:"Ingesta",cuid:"Cuidador"};
+/* chart set per program: key, label, unit, low/high alert lines */
+var CHARTS={
+  ICC:[{k:"pes",l:"Pes",u:"kg"},{k:"tas",l:"Tensió sistòlica",u:"mmHg",lo:90,hi:180},{k:"fc",l:"Freqüència cardíaca",u:"bpm",hi:100},{k:"sat",l:"Saturació",u:"%",lo:92}],
+  DM2:[{k:"glucosa",l:"Glucosa",u:"mg/dL",lo:70,hi:250},{k:"tas",l:"Tensió sistòlica",u:"mmHg",hi:180},{k:"pes",l:"Pes",u:"kg"}],
+  PCC:[{k:"tas",l:"Tensió sistòlica",u:"mmHg",lo:90,hi:180},{k:"sat",l:"Saturació",u:"%",lo:92},{k:"temp",l:"Temperatura",u:"°C",hi:38},{k:"fc",l:"Freqüència cardíaca",u:"bpm",hi:100}],
+  MACA:[{k:"dolor",l:"Dolor (0–10)",u:"",hi:7,min:0,max:10},{k:"cuid",l:"Càrrega del cuidador (1–5)",u:"",hi:4,min:1,max:5}],
+  ATDOM:[{k:"tas",l:"Tensió sistòlica",u:"mmHg",lo:90,hi:180},{k:"temp",l:"Temperatura",u:"°C",hi:38},{k:"sat",l:"Saturació",u:"%",lo:92},{k:"cuid",l:"Càrrega del cuidador (1–5)",u:"",hi:4,min:1,max:5}]
+};
+var DEST={inf:{n:"Infermeria",d:"La vostra infermera de la UBA"},med:{n:"Medicina",d:"El vostre metge o metgessa"},ts:{n:"Treball social",d:"Suport social i al cuidador"},uac:{n:"UAC",d:"Receptes, informes, baixes, cites"}};
+function destName(to,u){return to==="inf"?"Infermeria UBA "+u:to==="med"?"Medicina UBA "+u:to==="ts"?"Treball social":"UAC"}
+var SEED=[
+ ["P-0217",79,"ICC",1,"Parella","ok"],["P-0142",84,"ICC",3,"Filla","weight"],["P-0538",80,"ICC",2,"Fill","silence"],
+ ["P-0733",66,"DM2",2,"Ell mateix","ok"],["P-0781",71,"DM2",4,"Parella","hiper"],["P-0820",59,"DM2",5,"Ella mateixa","ok"],
+ ["P-0355",76,"PCC",2,"Parella","ok"],["P-0466",73,"PCC",3,"Fill","silence"],["P-0644",81,"PCC",4,"Filla","fever"],
+ ["P-0602",94,"MACA",5,"Néta","burden"],["P-0398",91,"MACA",4,"Filla","pain"],
+ ["P-0301",88,"ATDOM",3,"Fill","ok"],["P-0511",86,"ATDOM",1,"Filla","ok"],["P-0703",90,"ATDOM",2,"Parella","silence"]
+];
+var PROFILE={ICC:"P-0217",DM2:"P-0733",PCC:"P-0355",MACA:"P-0602",ATDOM:"P-0301"};
+function rnd(seed){var x=0;for(var i=0;i<seed.length;i++)x=(x*31+seed.charCodeAt(i))%2147483647;return function(){x=(x*48271)%2147483647;return x/2147483647}}
+function gen(now){
+  var S={patients:{},readings:{},msgs:[],free:[],created:[]};
+  SEED.forEach(function(s){
+    var code=s[0],prog=s[2],sc=s[5],f=PROG[prog].freq,r=rnd(code),items=[],last=sc==="silence"?(prog==="ICC"?3:prog==="PCC"?7:12):0;
+    var start=last+f*Math.floor((28-last)/f);
+    for(var d=start;d>=last;d-=f){
+      var t=now-d*D-(d===0?2*H:(8+Math.floor(r()*4))*H),v={};
+      if(prog==="ICC"){v.pes=+(78+(r()-.5)*.6).toFixed(1);v.tas=Math.round(128+(r()-.5)*12);v.tad=Math.round(74+(r()-.5)*8);v.fc=Math.round(76+(r()-.5)*10);v.sat=Math.round(95+r()*2);v.dispnea="Igual";v.edemes="No";
+        if(sc==="weight"&&d<=2){v.pes=[80.4,79.4,78.6][d];v.fc=[96,88,82][d];v.sat=[93,94,95][d];if(d===0){v.edemes="Sí";v.dispnea="Pitjor"}}}
+      if(prog==="DM2"){v.glucosa=Math.round(145+(r()-.5)*40);v.tas=Math.round(132+(r()-.5)*12);v.tad=Math.round(78+(r()-.5)*8);v.pes=+(84+(r()-.5)*.8).toFixed(1);v.hipo="No";if(sc==="hiper"&&d<=6)v.glucosa=({0:318,3:276,6:262})[d]||v.glucosa}
+      if(prog==="PCC"){v.tas=Math.round(134+(r()-.5)*14);v.tad=Math.round(78+(r()-.5)*8);v.fc=Math.round(78+(r()-.5)*10);v.sat=Math.round(94+r()*3);v.temp=+(36.4+r()*.5).toFixed(1);v.estat="Bé";if(sc==="fever"&&d<=3){v.temp=d===0?38.4:37.8;v.fc=d===0?104:92;v.estat="Regular"}}
+      if(prog==="MACA"){v.dolor=Math.round(3+r()*2);v.son="Regular";v.ingesta="Menys";v.estat="Regular";if(sc==="pain"&&d<=4)v.dolor=[8,7,6,5,5][d]}
+      if(prog==="ATDOM"){v.tas=Math.round(126+(r()-.5)*14);v.tad=Math.round(72+(r()-.5)*8);v.fc=Math.round(80+(r()-.5)*10);v.temp=+(36.3+r()*.5).toFixed(1);v.sat=Math.round(94+r()*3);v.ingesta="Normal"}
+      if(d%7===0||d===last)v.cuid=String(sc==="burden"?(d<=7?4:3):2+Math.floor(r()*2));
+      items.push({t:t,v:v});
+    }
+    S.patients[code]={code:code,age:s[1],prog:prog,uba:s[3],carer:s[4],reviewedAt:0,reviewedBy:"",reviewNote:""};
+    S.readings[code]={items:items};
+  });
+  function M(id,ago_,code,kind,title,signs,prio,to,note,status,log,ai){S.msgs.push({id:id,t:now-ago_,code:code,kind:kind,title:title,signs:signs,crit:false,prio:prio,to:to,note:note,photo:null,status:status,log:log,ai:ai||null})}
+  M("m1",40*6e4,"P-0511","prob","Nova ferida o úlcera",["Vermellor que s’estén","Supuració o mal olor"],"alta","inf","Al taló dret, des d’ahir fa pudor.","nou",["Enviat per la família a Infermeria UBA 1"]);
+  M("m6",70*6e4,"P-0142","prob","Més ofec",["Ha de dormir assegut"],"alta","inf","Aquesta nit s’ha hagut d’aixecar dues vegades.","nou",["Enviat per la família a Infermeria UBA 3"]);
+  M("m2",3*H,"P-0355","med","Dubte de medicació: furosemida",[],"normal","med","No sabem si l’ha de prendre si avui no menja.","nou",["Enviat per la família a Medicina UBA 2"]);
+  M("m3",5*H,"P-0602","tram","Material (bolquers, apòsits)",[],"normal","uac","Necessitem bolquers de talla M.","nou",["Enviat a la UAC"]);
+  M("m7",6*H,"P-0398","prob","Dolor no controlat",["Dolor de 7 o més","Els rescats no fan efecte"],"alta","inf","Ha necessitat tres rescats avui.","nou",["Enviat per la família a Infermeria UBA 4"]);
+  M("m4",26*H,"P-0733","prob","Hipoglucèmia",["Glucosa per sota de 70"],"alta","inf","62 mg/dL abans de sopar; s’ha recuperat amb sucre.","atès",["Enviat per la família a Infermeria UBA 2","Infermeria UBA 2 · trucada feta · ajust del pla"]);
+  M("m5",2*D,"P-0301","prob","Restrenyiment",["Més de 3 dies sense deposicions"],"alta","inf","Restrenyiment, li costa molt","atès",["Text lliure classificat per l’assistent","Infermeria UBA 3 · pauta i dieta"],{label:"Restrenyiment · Digestiu",conf:"alta"});
+  M("m8",9*D,"P-0217","prob","Cames inflades",["Ha augmentat en 2–3 dies"],"alta","inf","Turmells més inflats al vespre.","atès",["Enviat per la família a Infermeria UBA 1","Infermeria UBA 1 · visita presencial · ajust de diürètic"]);
+  M("m9",4*D,"P-0644","prob","Tos o refredat",[],"normal","inf","Tos amb mocs des de fa tres dies.","atès",["Enviat per la família a Infermeria UBA 4","Infermeria UBA 4 · consell telefònic"]);
+  S.free=[
+    {t:now-20*D,prof:"ATDOM",text:"Fa 4 dies que no fa caca i té la panxa inflada",id:"restrenyiment"},
+    {t:now-12*D,prof:"MACA",text:"Amb la morfina està molt restret",id:"restrenyiment"},
+    {t:now-6*D,prof:"ATDOM",text:"No ha anat de ventre des de dissabte",id:"restrenyiment"},
+    {t:now-2*D,prof:"ATDOM",text:"Restrenyiment, li costa molt",id:"restrenyiment"},
+    {t:now-9*D,prof:"PCC",text:"Té singlot des d’ahir i no para",id:null,key:"singlot"},
+    {t:now-5*D,prof:"MACA",text:"Singlot molt molest a la nit",id:null,key:"singlot"},
+    {t:now-1*D,prof:"ATDOM",text:"Singlot continu des de fa dos dies",id:null,key:"singlot"},
+    {t:now-4*D,prof:"DM2",text:"Li pica molt la pell de les cames",id:"picor"},
+    {t:now-3*D,prof:"PCC",text:"Té moltes lleganyes a l’ull",id:null,key:"lleganyes"}
+  ];
+  return S;
+}
+function lastOf(a){return a&&a.length?a[a.length-1]:null}
+function evaluate(p,items){
+  var L=lastOf(items),out={lvl:"ok",why:[]};if(!L)return out;var v=L.v;
+  function add(l,w){out.why.push(w);if(l==="bad")out.lvl="bad";else if(out.lvl==="ok")out.lvl="warn"}
+  if(v.sat!=null&&v.sat!==""&&v.sat<92)add("bad","Saturació "+v.sat+"%");
+  if(v.temp!=null&&v.temp>=38)add(v.temp>=38.5?"bad":"warn","Temperatura "+fmt(v.temp)+" °C");
+  if(v.fc!=null&&v.fc>100)add("warn","FC "+v.fc);
+  if(v.tas!=null&&v.tas!==""&&v.tas<90)add("warn","TA baixa "+v.tas);
+  if(v.tas!=null&&v.tas>180)add("warn","TA "+v.tas);
+  if(p.prog==="ICC"){var prev=items.filter(function(x){return x!==L&&x.t>=L.t-3.5*D&&x.v.pes!=null}).map(function(x){return x.v.pes});
+    if(prev.length&&v.pes!=null&&v.pes!==""){var dl=+(v.pes-Math.min.apply(null,prev)).toFixed(1);if(dl>=2)add("bad","Pes +"+fmt(dl)+" kg en 3 dies");else if(dl>=1.5)add("warn","Pes +"+fmt(dl)+" kg en 3 dies")}
+    if(v.dispnea==="Pitjor")add("bad","Respira pitjor");if(v.edemes==="Sí")add("warn","Edemes")}
+  if(p.prog==="DM2"){if(v.glucosa!=null&&v.glucosa!==""&&v.glucosa<70)add("bad","Glucosa "+v.glucosa);else if(v.glucosa>300)add("bad","Glucosa "+v.glucosa);else if(v.glucosa>250)add("warn","Glucosa "+v.glucosa);if(v.hipo==="Sí")add("warn","Hipoglucèmia recent")}
+  if(v.estat==="Malament")add("warn","Es troba malament");
+  if(p.prog==="MACA"){if(v.dolor>=7)add("bad","Dolor "+v.dolor+"/10");else if(v.dolor>=5)add("warn","Dolor "+v.dolor+"/10")}
+  if(v.ingesta==="Gairebé res")add("warn","Gairebé no menja");
+  var c=items.filter(function(x){return x.v.cuid}).pop();if(c&&+c.v.cuid>=4&&c.t>L.t-8*D)add("warn","Cuidador esgotat ("+c.v.cuid+"/5)");
+  return out;
+}
+function status(p,items,now){
+  var L=lastOf(items),f=PROG[p.prog].freq,ev=evaluate(p,items),silent=!L||now-L.t>f*1.5*D,since=silent?(L?L.t+f*1.5*D:0):(L?L.t:0);
+  var st=silent?"silence":ev.lvl,reviewed=p.reviewedAt&&p.reviewedAt>=since,pending=st!=="ok"&&!reviewed;
+  var dset={};items.filter(function(x){return x.t>now-14*D}).forEach(function(x){dset[Math.floor((now-x.t)/D)]=1});
+  return{st:st,ev:ev,pending:pending,reviewed:reviewed,last:L,adh:Math.min(100,Math.round(Object.keys(dset).length/Math.ceil(14/f)*100)),silentDays:L?Math.floor((now-L.t)/D):null};
+}
+/* ---------- InnovaMunt: patient & family wizard ---------- */
+var STEPN={user:0,what:1,cat:2,list:2,prob:2,"const":2,med:2,tram:2,dest:3,review:4,done:4};
+function innReset(keepProf){var p=keepProf?ui.inn.prof:null;ui.inn={step:keepProf?"what":"user",hist:keepProf?["user"]:[],prof:p,what:null,cat:null,pid:null,q:"",via:null,signs:{},note:"",photo:null,vals:null,med:"",tram:null,to:null,result:null}}
+function nav(step){ui.inn.hist.push(ui.inn.step);ui.inn.step=step;render();window.scrollTo(0,0)}
+function back(){var I=ui.inn;if(I.hist.length){I.step=I.hist.pop();render();window.scrollTo(0,0)}else go("home")}
+function curItem(){var I=ui.inn;if(I.pid==="free")return{id:null,n:"Altres: «"+I.q.trim().slice(0,60)+"»",s:GENERIC,to:"inf",cat:null};return I.pid?libItem(I.pid):null}
+function suggestedTo(){var I=ui.inn;if(I.what==="const")return"inf";if(I.what==="med")return"med";if(I.what==="tram")return(I.tram===3?"ts":"uac");var it=curItem();return it?it.to:"inf"}
+function initVals(){var code=PROFILE[ui.inn.prof],L=lastOf(S.readings[code].items),o={};VARS[ui.inn.prof].concat([CUID]).forEach(function(v){o[v.k]=L&&L.v[v.k]!=null&&v.k!=="cuid"?L.v[v.k]:(v.t==="opt"?null:"")});ui.inn.vals=o}
+function outcome(){
+  var I=ui.inn,p=S.patients[PROFILE[I.prof]];
+  if(I.what==="const"){var v={};Object.keys(I.vals||{}).forEach(function(k){if(I.vals[k]!==""&&I.vals[k]!=null)v[k]=I.vals[k]});var ev=evaluate(p,S.readings[p.code].items.concat([{t:Date.now(),v:v}]));return{lvl:ev.lvl==="bad"?"alta":ev.lvl==="warn"?"revisar":"ok",why:ev.why,vals:v}}
+  if(I.what==="prob"){var it=curItem(),signs=[],crit=false;it.s.forEach(function(s,i){if(I.signs[i]){signs.push(s.t);if(s.c)crit=true}});return{lvl:crit?"urgent":signs.length?"alta":"normal",why:signs,crit:crit}}
+  return{lvl:"normal",why:[]};
+}
+var OUT={urgent:{c:"bad",ic:"alert",t:"Urgent: truqueu al 112",d:"L’equip també ho rep, però ara cal trucar al 112."},
+  alta:{c:"orange",ic:"phone",t:"Prioritat alta",d:"Us trucaran avui."},
+  revisar:{c:"warn",ic:"alert",t:"Ho revisaran avui",d:"Algun valor està fora del que és habitual."},
+  normal:{c:"blue",ic:"check",t:"Rebut",d:"Us respondran en un màxim de 48 h."},
+  ok:{c:"ok",ic:"check",t:"Tot correcte",d:"Gràcies. Queda registrat al seguiment."}};
+
+function wizHead(title,sub){
+  var I=ui.inn,n=STEPN[I.step],L=["Usuari","Motiu","Detall","Destinatari","Enviar"];
+  return '<div class="wh"><div class="wtop"><button class="iconbtn" type="button" data-back="1" aria-label="Enrere">'+ico("back")+'</button><div class="prog" aria-label="Pas '+(n+1)+' de 5">'+L.map(function(l,i){return'<span class="'+(i<n?"done":i===n?"on":"")+'"><i></i><em>'+l+'</em></span>'}).join("")+'</div></div>'+
+    '<h2>'+title+'</h2>'+(sub?'<p class="note">'+sub+'</p>':'')+'</div>';
+}
+function patBar(){var p=S.patients[PROFILE[ui.inn.prof]],g=PROG[ui.inn.prof];return'<div class="patbar"><span class="pic" style="background:'+g.c+'">'+ico(PICON[ui.inn.prof],18)+'</span><span><b>'+esc(p.code)+'</b> · '+g.full+'</span></div>'}
+
+function sUser(){
+  var h=wizHead("Qui sou?","Trieu el pacient per provar la demostració.")+'<div class="tiles1">';
+  Object.keys(PROFILE).forEach(function(k){var p=S.patients[PROFILE[k]],g=PROG[k];
+    h+='<button class="tile row" type="button" data-prof="'+k+'"><span class="bigic" style="background:'+g.c+'">'+ico(PICON[k],26)+'</span><span class="tt"><b>'+g.full+'</b><span>'+esc(p.code)+' · '+p.age+' anys · registra: '+esc(p.carer)+'</span></span><span class="chev">'+ico("chev")+'</span></button>'});
+  return h+'</div>';
+}
+function sWhat(){
+  var T=[["const","gauge","Constants","Pes, tensió, glucosa, dolor…"],["prob","alert","Problema de salut","Alguna cosa nova o que empitjora"],["med","pill","Medicació","Dubtes o efectes"],["tram","doc","Tràmits","Receptes, informes, material"]];
+  return wizHead("Què voleu notificar?")+patBar()+'<div class="grid2">'+T.map(function(t){return'<button class="tile sq" type="button" data-what="'+t[0]+'"><span class="bigic soft">'+ico(t[1],28)+'</span><b>'+t[2]+'</b><span>'+t[3]+'</span></button>'}).join("")+'</div>';
+}
+function catOf(id){return CATS.concat([{id:"nous",n:"Motius nous",ic:"sparkle"}]).filter(function(c){return c.id===id})[0]}
+function suggHTML(){
+  var I=ui.inn,q=I.q.trim();if(q.length<3)return'';
+  var r=search(q),h='';
+  if(r.length){h+='<p class="lbl" style="margin:4px 0">L’assistent creu que pot ser…</p>';
+    r.forEach(function(x,i){var c=catOf(x.p.cat);h+='<button class="sug'+(i===0?" first":"")+'" type="button" data-pick="'+x.p.id+'" data-conf="'+x.conf+'"><span class="sic">'+ico(c.ic,20)+'</span><span class="tt"><b>'+esc(x.p.n)+'</b><span>'+c.n+'</span></span><span class="conf c-'+x.conf+'">'+(x.conf==="alta"?"Molt probable":x.conf==="mitjana"?"Probable":"Possible")+'</span></button>'})}
+  else h+='<p class="note" style="margin:4px 0">No trobem cap opció que encaixi.</p>';
+  if(q.length>=8)h+='<button class="link" type="button" data-free="1">Cap d’aquestes: enviar-ho tal com ho he escrit →</button>';
+  return h;
+}
+function sCat(){
+  var I=ui.inn,h=wizHead("Quin problema hi ha?")+patBar();
+  h+='<div class="searchbox"><label for="iQ" class="lbl">'+ico("sparkle",16)+' Expliqueu-ho amb les vostres paraules</label><div class="sin">'+ico("search",20)+'<input id="iQ" type="text" autocomplete="off" placeholder="Ex.: fa 4 dies que no fa caca" value="'+esc(I.q)+'"></div><div id="sugg" aria-live="polite">'+suggHTML()+'</div><p class="note">Assistent en català i castellà. Sempre ho revisa un professional.</p></div>';
+  h+='<p class="lbl" style="margin-top:6px">Els més habituals per a '+PROG[I.prof].n+'</p><div class="chips2">'+TOP[I.prof].map(function(id){var p=libItem(id);return'<button type="button" class="pchip" data-pick="'+id+'">'+esc(p.n)+'</button>'}).join("")+'</div>';
+  var cats=CATS.slice();if(LIB.some(function(p){return p.cat==="nous"}))cats.push({id:"nous",n:"Motius nous",ic:"sparkle"});
+  h+='<p class="lbl" style="margin-top:6px">O busqueu per tipus</p><div class="grid3">'+cats.map(function(c){return'<button class="tile cat" type="button" data-cat="'+c.id+'"><span class="bigic soft">'+ico(c.ic,24)+'</span><b>'+c.n+'</b></button>'}).join("")+'</div>';
+  return h;
+}
+function sList(){
+  var I=ui.inn,c=CATS.concat([{id:"nous",n:"Motius nous",ic:"sparkle"}]).filter(function(x){return x.id===I.cat})[0];
+  return wizHead(c.n)+patBar()+'<div class="tiles1">'+LIB.filter(function(p){return p.cat===I.cat}).map(function(p){return'<button class="tile row slim" type="button" data-pick="'+p.id+'"><span class="tt"><b>'+esc(p.n)+'</b><span>'+p.s.length+' preguntes ràpides</span></span><span class="chev">'+ico("chev")+'</span></button>'}).join("")+'</div>';
+}
+function sProb(){
+  var I=ui.inn,it=curItem(),photo=it.id&&/ferida|nafra|cremada|peu|picor|celulitis|blau|infeccioferida/.test(it.id)||I.pid==="free";
+  var h=wizHead(esc(it.n),I.via?'L’assistent ho ha classificat ('+(I.via==="alta"?"molt probable":I.via==="mitjana"?"probable":"possible")+'). Si no és correcte, torneu enrere.':(I.pid==="free"?"No hem trobat una opció exacta: ho classificarà la infermera.":""))+patBar();
+  h+='<p class="lbl">Marqueu el que passi ara</p><div class="signs2">'+it.s.map(function(s,i){return'<button type="button" class="sig'+(s.c?" crit":"")+'" data-sig="'+i+'" aria-pressed="'+(!!I.signs[i])+'"><span class="box">'+ico("check",18)+'</span><span>'+esc(s.t)+'</span>'+(s.c?'<em>Urgent</em>':'')+'</button>'}).join("")+'</div>';
+  if(photo)h+='<div class="photo"><label for="iPhoto">'+ico("plus",18)+' Afegir una foto</label><input type="file" id="iPhoto" accept="image/*" capture="environment">'+(I.photo?'<img src="'+I.photo+'" alt="Foto adjunta">':'<span class="note">Opcional</span>')+'</div>';
+  h+='<label class="lbl" for="iNote">Voleu afegir alguna cosa?</label><textarea id="iNote" maxlength="400" placeholder="Opcional">'+esc(I.note)+'</textarea>';
+  return h+'<button class="send" type="button" data-next="dest">Continuar</button>';
+}
+function sConst(){
+  var I=ui.inn;if(!I.vals)initVals();var h=wizHead("Constants d’avui","Hem posat els últims valors: canvieu només el que calgui.")+patBar(),open=false;
+  VARS[I.prof].concat([CUID]).forEach(function(v){
+    if(v.t==="num"){var f='<div class="fld"><span>'+v.l+' <em>'+(v.u||"")+'</em></span><div class="stepper"><button type="button" data-dec="'+v.k+'" aria-label="Menys">−</button><input id="in_'+v.k+'" data-k="'+v.k+'" inputmode="decimal" aria-label="'+v.l+'" value="'+esc(fmt(I.vals[v.k]))+'"><button type="button" data-inc="'+v.k+'" aria-label="Més">+</button></div></div>';
+      if(v.pair){if(!open){h+='<div class="pair">'+f;open=true}else{h+=f+'</div>';open=false}}else h+=f}
+    else h+='<div class="fld"><span>'+v.l+(v.hint?' <em>'+v.hint+'</em>':'')+'</span><div class="opts">'+v.o.map(function(o){return'<button type="button" data-opt="'+v.k+'" data-val="'+esc(o)+'" aria-pressed="'+(I.vals[v.k]===o)+'">'+esc(o)+'</button>'}).join("")+'</div></div>';
+  });
+  return h+'<button class="send" type="button" data-next="dest">Continuar</button>';
+}
+function sMed(){var I=ui.inn;return wizHead("Medicació")+patBar()+'<label class="lbl" for="iMed">Quin medicament?</label><input type="text" id="iMed" maxlength="80" value="'+esc(I.med)+'" placeholder="Nom del medicament"><label class="lbl" for="iNote">Quin és el dubte o què ha passat?</label><textarea id="iNote" maxlength="400">'+esc(I.note)+'</textarea><button class="send" type="button" data-next="dest">Continuar</button>'}
+function sTram(){var I=ui.inn;return wizHead("Quin tràmit?")+patBar()+'<div class="tiles1">'+TRAM.map(function(t,i){return'<button class="tile row slim'+(I.tram===i?" sel":"")+'" type="button" data-tram="'+i+'"><span class="tt"><b>'+t+'</b></span><span class="chev">'+ico(I.tram===i?"check":"chev")+'</span></button>'}).join("")+'</div><label class="lbl" for="iNote">Detalls</label><textarea id="iNote" maxlength="400">'+esc(I.note)+'</textarea><button class="send" type="button" data-next="dest"'+(I.tram==null?" disabled":"")+'>Continuar</button>'}
+function sDest(){
+  var I=ui.inn,p=S.patients[PROFILE[I.prof]],rec=suggestedTo();
+  return wizHead("A qui ho envieu?","Arriba directament a aquest professional, sense passar per la centraleta.")+patBar()+'<div class="grid2">'+Object.keys(DEST).map(function(k){return'<button class="tile sq dest'+(k===rec?" rec":"")+'" type="button" data-to="'+k+'">'+(k===rec?'<em class="recb">Recomanat</em>':'')+'<span class="bigic soft">'+ico(DICON[k],26)+'</span><b>'+DEST[k].n+(k==="inf"||k==="med"?" UBA "+p.uba:"")+'</b><span>'+DEST[k].d+'</span></button>'}).join("")+'</div>';
+}
+function sReview(){
+  var I=ui.inn,p=S.patients[PROFILE[I.prof]],o=outcome(),O=OUT[o.lvl],what={"const":"Constants",prob:"Problema de salut",med:"Medicació",tram:"Tràmit"}[I.what];
+  var motiu=I.what==="prob"?curItem().n:I.what==="tram"?TRAM[I.tram]:I.what==="med"?(I.med||"Dubte de medicació"):"Constants d’avui";
+  var h=wizHead("Reviseu i envieu")+'<div class="card summary">';
+  h+='<div class="sr"><span>Pacient</span><b>'+esc(p.code)+' · '+PROG[I.prof].n+'</b></div><div class="sr"><span>Tipus</span><b>'+what+'</b></div><div class="sr"><span>Motiu</span><b>'+esc(motiu)+'</b></div>';
+  if(o.vals)h+='<div class="sr"><span>Valors</span><div class="vals">'+Object.keys(o.vals).map(function(k){return'<span>'+esc(LABEL[k]||k)+' '+esc(fmt(o.vals[k]))+'</span>'}).join("")+'</div></div>';
+  else if(o.why.length)h+='<div class="sr"><span>Ha marcat</span><div class="signs">'+o.why.map(function(s){return'<span>'+esc(s)+'</span>'}).join("")+'</div></div>';
+  if(I.note)h+='<div class="sr"><span>Nota</span><b style="font-weight:500">«'+esc(I.note)+'»</b></div>';
+  if(I.photo)h+='<div class="sr"><span>Foto</span><img src="'+I.photo+'" alt="Foto adjunta" style="width:64px;height:64px;object-fit:cover;border-radius:10px"></div>';
+  h+='<div class="sr"><span>Per a</span><b>'+esc(destName(I.to,p.uba))+'</b></div></div>';
+  h+='<div class="prev '+O.c+'"><span class="pi">'+ico(O.ic,20)+'</span><span><b>'+O.t+'</b><br>'+O.d+'</span></div>';
+  return h+'<button class="send" type="button" id="iSend">Enviar</button>';
+}
+function sDone(){
+  var I=ui.inn,r=I.result,O=OUT[r.lvl];
+  return '<div class="done-wrap"><div class="bigstat '+O.c+'">'+ico(O.ic,54)+'</div><h2>'+O.t+'</h2><p>'+O.d+'</p>'+(r.why&&r.why.length?'<div class="signs" style="justify-content:center">'+r.why.map(function(s){return'<span>'+esc(s)+'</span>'}).join("")+'</div>':'')+
+    '<div class="route2"><span class="node">'+ico("home",18)+'Família</span><span class="arrow"></span><span class="node off">'+ico("x",16)+'Centraleta</span><span class="arrow"></span><span class="node to">'+ico(DICON[r.to],18)+esc(r.dest)+'</span></div>'+
+    '<div class="tiles1" style="width:100%"><button class="send" type="button" data-new="1">Fer una altra notificació</button><button class="tile row slim" type="button" data-go="mun"><span class="tt"><b>Veure com ho rep l’equip</b><span>Obre MuntApp, la vista professional</span></span><span class="chev">'+ico("chev")+'</span></button></div></div>';
+}
+function vInn(){
+  var I=ui.inn,st=I.step;
+  var h=st==="user"?sUser():st==="what"?sWhat():st==="cat"?sCat():st==="list"?sList():st==="prob"?sProb():st==="const"?sConst():st==="med"?sMed():st==="tram"?sTram():st==="dest"?sDest():st==="review"?sReview():sDone();
+  return '<div class="phone-col">'+h+'<p class="note foot112">Si hi ha dolor al pit, molta dificultat per respirar o pèrdua de consciència, truqueu al 112.</p></div>';
+}
+function innSend(){
+  var I=ui.inn,code=PROFILE[I.prof],p=S.patients[code],now=Date.now(),o=outcome(),to=I.to,m;
+  if(I.what==="const"){
+    S.readings[code].items.push({t:now,v:o.vals});
+    m={id:"m"+now,t:now,code:code,kind:"const",title:"Constants",signs:o.why,crit:false,prio:o.lvl==="ok"?"normal":"alta",to:to,note:"",vals:o.vals,photo:null,status:o.lvl==="ok"?"atès":"nou",log:["Enviat per la família a "+destName(to,p.uba)].concat(o.lvl==="ok"?["Valors habituals: registrat al seguiment"]:[])};
+  }else{
+    var it=I.what==="prob"?curItem():null,title=I.what==="prob"?it.n:I.what==="med"?"Medicació"+(I.med?": "+I.med:""):TRAM[I.tram],ai=null;
+    if(I.what==="prob"&&(I.via||I.pid==="free")){
+      if(I.pid==="free"){var key=keyOf(I.q);S.free.unshift({t:now,prof:I.prof,text:I.q,id:null,key:key});ai={label:"Sense classificar · «"+key+"»",conf:"—"}}
+      else{S.free.unshift({t:now,prof:I.prof,text:I.q,id:it.id});ai={label:it.n,conf:I.via}}
+    }
+    m={id:"m"+now,t:now,code:code,kind:I.what,title:title,signs:o.why,crit:!!o.crit,prio:o.lvl==="urgent"||o.lvl==="alta"?"alta":"normal",to:to,note:I.what==="prob"&&I.pid==="free"?I.q+(I.note?" · "+I.note:""):I.note,photo:I.photo,status:"nou",ai:ai,log:(ai?["Text lliure interpretat per l’assistent"]:[]).concat(["Enviat per la família a "+destName(to,p.uba)])};
+  }
+  S.msgs.unshift(m);
+  I.result={lvl:o.lvl,why:o.why,to:to,dest:destName(to,p.uba)};I.hist=[];I.step="done";render();window.scrollTo(0,0);
+}
+var DD=["Dl","Dt","Dc","Dj","Dv"],DN=["Dilluns","Dimarts","Dimecres","Dijous","Divendres"],IDX=[1.24,0.96,1.06,1.07,0.67],REAL=[1.27,0.93,1.09,1.04,0.67];
+var SHIFT=["Matí","Matí","Matí","Tarda","Tarda","Matí","Matí","Tarda","Tarda","Tarda"],RELIEF=[3,4,3,0,1,7,8,5,6,5],MFC=24,INC=14;
+var UB=[[8,10,5,6,2],[7,10,6,5,2],[9,11,5,7,2],[8,9,5,6,2],[7,10,6,6,2],[8,10,6,5,2],[9,11,5,6,3],[7,9,5,6,2],[8,10,6,6,2],[7,10,5,6,2]];
+function dnoise(i,d){return((i*37+d*11)%13-6)/100}
+function demCompute(){
+  var dm=ui.dm,d=dm.day,grip=dm.scen===1,u=[];
+  for(var i=0;i<10;i++){var b=UB[i],f=dm.cut?REAL[d]*(1+dnoise(i,d)):IDX[d],gm=grip?1.28:1;
+    u.push({i:i,sp:(b[1]+b[4])*f*gm,pr:b[0]+b[2],sh:b[3]*(grip?0.3:1),sup:0,mf:b[0]+b[1]*f*gm,inf:b[2]+b[3]*(grip?0.3:1)+b[4]*f*gm,absent:i===dm.abs})}
+  if(dm.abs>=0){var a=u[dm.abs],mt=Math.floor(dm.abs/5),ms=u.filter(function(x){return Math.floor(x.i/5)===mt&&!x.absent}),k=ms.length;ms.forEach(function(m){m.sup=(a.mf+a.inf)/k;m.mf+=a.mf/k;m.inf+=a.inf/k});a.sp=a.pr=a.sh=a.mf=a.inf=0}
+  u.forEach(function(x){x.mfFree=Math.round(MFC-x.mf);x.inFree=Math.round(INC-x.inf);x.min=Math.max(0,x.mfFree)*10+Math.max(0,x.inFree)*15;x.forced=Math.max(0,-x.mfFree)+Math.max(0,-x.inFree);x.occ=x.absent?0:Math.round((x.mf+x.inf)/(MFC+INC)*100);x.st=x.absent?"off":(x.forced>0||x.occ>100)?"bad":x.occ>=85?"warn":"ok"});
+  return u;
+}
+var DSL={ok:"Verd",warn:"Ambre",bad:"Vermell",off:"Absent"};
+function vDem(){
+  var dm=ui.dm,u=demCompute(),act=u.filter(function(x){return!x.absent});
+  function seg(labels,key){return'<div class="seg2">'+labels.map(function(t,i){return'<button type="button" data-dk="'+key+'" data-di="'+i+'" aria-pressed="'+(dm[key]===i)+'">'+t+'</button>'}).join("")+'</div>'}
+  var h='<div class="ctrls"><div class="ctl"><span class="lbl">Dia</span>'+seg(DD,"day")+'</div><div class="ctl"><span class="lbl">Tall eCAP</span>'+seg(["14:00","19:45"],"cut")+'</div><div class="ctl"><span class="lbl">Escenari</span>'+seg(["Normal","Pic de grip"],"scen")+'</div>'+
+    '<div class="ctl"><label class="lbl" for="dAbs">UBA absent</label><select id="dAbs"><option value="-1">Cap</option>'+[0,1,2,3,4,5,6,7,8,9].map(function(i){return'<option value="'+i+'"'+(dm.abs===i?" selected":"")+'>UBA '+(i+1)+'</option>'}).join("")+'</select></div></div>';
+  var fv=act.reduce(function(s,x){return s+Math.max(0,x.mfFree)+Math.max(0,x.inFree)},0),mn=act.reduce(function(s,x){return s+x.min},0),red=u.filter(function(x){return x.st==="bad"}).length,forced=u.reduce(function(s,x){return s+x.forced},0);
+  var mape=IDX.reduce(function(s,v,i){return s+Math.abs(REAL[i]-v)/REAL[i]},0)/5*100;
+  h+='<div class="kpis"><div class="kpi"><b>'+fv+'</b><span>visites lliures a l’equip</span></div><div class="kpi"><b>'+mn+'</b><span>minuts d’agenda lliures</span></div><div class="kpi k-bad"><b>'+red+'/10</b><span>UBA en vermell · '+forced+(forced===1?" forçada":" forçades")+'</span></div><div class="kpi"><b>'+fmt(mape.toFixed(1))+'%</b><span>error de previsió (meta ≤ 10%)</span></div></div>';
+  h+='<div class="dgrid"><div style="display:flex;flex-direction:column;gap:12px">';
+  var tot=(MFC+INC)*1.15,w=function(v){return(v/tot*100).toFixed(2)+"%"};
+  [0,1].forEach(function(mt){var L=u.filter(function(x){return Math.floor(x.i/5)===mt});
+    h+='<div class="card"><h3 style="font-size:15.5px;margin-bottom:4px">Microequip '+(mt?"B":"A")+'</h3>';
+    L.forEach(function(x){h+='<button type="button" class="urow" data-uba="'+x.i+'"><div class="nm">UBA '+(x.i+1)+'<small>'+SHIFT[x.i]+'</small></div>'+
+      (x.absent?'<div class="slots">Absent · demanda repartida al microequip</div>':'<div class="slots"><span><b class="'+(x.mfFree<0?"neg":"")+'">'+x.mfFree+'</b> metge</span><span><b class="'+(x.inFree<0?"neg":"")+'">'+x.inFree+'</b> infermeria</span><span><b>'+x.min+'</b> min</span></div>')+
+      '<span class="pill '+x.st+'">'+DSL[x.st]+(x.absent?"":" · "+x.occ+"%")+'</span>'+
+      '<div class="sbar"><span style="width:'+w(x.sp)+';background:var(--accent)"></span><span style="width:'+w(x.pr)+';background:var(--ink)"></span><span style="width:'+w(x.sh)+';background:var(--short)"></span><span class="sup" style="width:'+w(x.sup)+'"></span><i class="t85" style="left:'+w((MFC+INC)*.85)+'"></i><i class="cap" style="left:'+w(MFC+INC)+'"></i></div>';
+      if(dm.open===x.i&&!x.absent){var r=u[RELIEF[x.i]],m=L.filter(function(y){return y.i!==x.i&&!y.absent}).sort(function(a,b){return(b.mfFree+b.inFree)-(a.mfFree+a.inFree)})[0];
+        h+='<div class="udet">'+(x.forced?'<b>'+x.forced+(x.forced>1?' visites forçades.':' visita forçada.')+'</b> ':'')+'Ordre de suport: <b>UBA '+(r.i+1)+'</b> de relleu → <b>UBA '+(m.i+1)+'</b>, amb més forats → PIUC en últim lloc.</div>'}
+      h+='</button>'});
+    h+='</div>'});
+  h+='<p class="note">Blau: espontània · fosc: programades · clar: visites curtes · ratllat: suport. Línia contínua 100%, discontínua 85%. Toqueu una UBA per veure l’ordre de suport.</p></div><div style="display:flex;flex-direction:column;gap:12px">';
+  var t=dm.cut?"19:45":"14:00",o=[];
+  if(dm.scen===1){o.push(["info","SIVIC per sobre del llindar: més forats del mateix dia per microequip i contacte amb IC i MPOC d’alt risc."]);o.push(["info","Reforç PIUC: alarma i visites curtes; revisa el PAPPS i retorna el pacient a la seva infermera."])}
+  if(dm.abs>=0)o.push(["warn","UBA "+(dm.abs+1)+" absent: la seva demanda es reparteix al microequip."]);
+  u.filter(function(x){return x.st==="bad"}).forEach(function(x){var mt=Math.floor(x.i/5),r=u[RELIEF[x.i]],c=u.filter(function(y){return Math.floor(y.i/5)===mt&&y.i!==x.i&&!y.absent}).sort(function(a,b){return a.occ-b.occ})[0];
+    o.push(["bad","UBA "+(x.i+1)+" al "+x.occ+"% → suport: "+((!r.absent&&r.occ<100)?"UBA de relleu "+(r.i+1):(c&&c.occ<100)?"UBA "+(c.i+1):"PIUC")+"."])});
+  if(!o.length)o.push(["ok","Tot l’equip dins de capacitat."]);
+  h+='<div class="card"><h3 style="font-size:15.5px">Avisos</h3><p class="note">'+DN[dm.day]+' · tall de les '+t+'</p><ul class="alerts">'+o.map(function(a){return'<li class="'+a[0]+'">'+esc(a[1])+'</li>'}).join("")+'</ul></div>';
+  var W=460,Hh=200,Lf=40,Rr=10,T=26,B=28,pw=W-Lf-Rr,ph=Hh-T-B,mx=1.4,y=function(v){return T+ph-(v/mx)*ph},g="",bw=pw/5,pts=[];
+  [0,0.5,1,1.4].forEach(function(v){g+='<line x1="'+Lf+'" x2="'+(W-Rr)+'" y1="'+y(v)+'" y2="'+y(v)+'" stroke="var(--line)"/><text x="'+(Lf-6)+'" y="'+(y(v)+4)+'" text-anchor="end" font-size="11" fill="var(--muted)">'+Math.round(v*100)+'%</text>'});
+  g+='<line x1="'+Lf+'" x2="'+(W-Rr)+'" y1="'+y(1.1)+'" y2="'+y(1.1)+'" stroke="var(--warm)" stroke-dasharray="5 4"/><text x="'+(W-Rr)+'" y="'+(y(1.1)-5)+'" text-anchor="end" font-size="11" fill="var(--warm)" font-weight="600">pic ≥ 110%</text>';
+  IDX.forEach(function(v,i){var x=Lf+i*bw+bw*.2,ww=bw*.6;g+='<rect x="'+x+'" y="'+y(v)+'" width="'+ww+'" height="'+(y(0)-y(v))+'" rx="3" fill="'+(i===dm.day?"var(--accent)":"var(--sunk)")+'"/><text x="'+(x+ww/2)+'" y="'+(Hh-9)+'" text-anchor="middle" font-size="12" fill="var(--muted)">'+DD[i]+'</text>';pts.push([x+ww/2,y(REAL[i])])});
+  g+='<polyline points="'+pts.map(function(p){return p.join(",")}).join(" ")+'" fill="none" stroke="var(--warm)" stroke-width="2.5"/>'+pts.map(function(p){return'<circle cx="'+p[0]+'" cy="'+p[1]+'" r="4" fill="var(--card)" stroke="var(--warm)" stroke-width="2.5"/>'}).join("");
+  g+='<rect x="'+Lf+'" y="4" width="10" height="10" rx="2" fill="var(--accent)"/><text x="'+(Lf+14)+'" y="13" font-size="11" fill="var(--muted)">Previsió</text><line x1="'+(Lf+80)+'" x2="'+(Lf+96)+'" y1="9" y2="9" stroke="var(--warm)" stroke-width="2.5"/><text x="'+(Lf+100)+'" y="13" font-size="11" fill="var(--muted)">Real</text>';
+  h+='<div class="card"><h3 style="font-size:15.5px">Índex diari de demanda</h3><p class="note">Visites del dia / mitjana setmanal</p><svg viewBox="0 0 '+W+' '+Hh+'" style="width:100%;height:auto;display:block" role="img" aria-label="Índex diari previst i real">'+g+'</svg></div>';
+  return h+'</div></div>';
+}
+
+/* ---------- MuntApp: professional panel ---------- */
+var LBL={bad:"Alerta",silence:"Sense registre",warn:"Vigilar",ok:"Estable"},COL={bad:"var(--bad)",silence:"var(--sil)",warn:"var(--warn)",ok:"var(--ok)"};
+var KIND={"const":"Constants",prob:"Problema de salut",med:"Medicació",tram:"Tràmit"};
+var GROUPS=[["ICC",["ICC"]],["DM2",["DM2"]],["PCC",["PCC"]],["MACA",["MACA"]],["ATDOM",["ATDOM"]]];
+function codes(){return Object.keys(S.patients).sort()}
+function rows(now){var O={bad:0,silence:1,warn:2,ok:3};return codes().map(function(c){var p=S.patients[c],it=S.readings[c].items;return{p:p,it:it,s:status(p,it,now)}}).sort(function(a,b){return(b.s.pending-a.s.pending)||(O[a.s.st]-O[b.s.st])||(a.p.code<b.p.code?-1:1)})}
+function pendingMsgs(){return S.msgs.filter(function(m){return m.status==="nou"})}
+function whyText(r){var s=r.s,g=PROG[r.p.prog];return s.st==="silence"?"Sense registre fa "+s.silentDays+" dies (previst cada "+(g.freq===1?"dia":g.freq+" dies")+")":s.ev.why.length?s.ev.why.join(" · "):"Dins dels valors habituals"}
+function spark(vals,w,h,col){
+  if(vals.length<2)return"";var mn=Math.min.apply(null,vals),mx=Math.max.apply(null,vals);if(mx-mn<1){mx+=.5;mn-=.5}
+  var pts=vals.map(function(v,i){return[(i/(vals.length-1))*(w-8)+4,h-4-((v-mn)/(mx-mn))*(h-8)]}),d=pts.map(function(p,i){return(i?"L":"M")+p[0].toFixed(1)+" "+p[1].toFixed(1)}).join(" ");
+  return'<svg width="100%" height="'+h+'" viewBox="0 0 '+w+' '+h+'" preserveAspectRatio="none" aria-hidden="true"><path d="'+d+'" fill="none" stroke="'+col+'" stroke-width="2" vector-effect="non-scaling-stroke"/></svg>';
+}
+function pchip(prog){return'<span class="chip" style="background:'+PROG[prog].c+'">'+PROG[prog].n+'</span>'}
+function codeBtn(code){return'<button type="button" class="codeb" data-pat="'+code+'">'+esc(code)+'</button>'}
+
+/* stacked status bar */
+function stack(R){var c={bad:0,warn:0,silence:0,ok:0};R.forEach(function(r){c[r.s.st]++});var n=R.length||1;
+  return'<div class="stack" role="img" aria-label="'+c.bad+' alerta, '+c.warn+' vigilar, '+c.silence+' sense registre, '+c.ok+' estables">'+["bad","warn","silence","ok"].map(function(k){return c[k]?'<span style="width:'+(c[k]/n*100)+'%;background:'+COL[k]+'">'+c[k]+'</span>':''}).join("")+'</div>'}
+function ring(pct,col){var r=20,C=2*Math.PI*r;return'<svg width="54" height="54" viewBox="0 0 54 54" role="img" aria-label="Adherència '+pct+'%"><circle cx="27" cy="27" r="'+r+'" fill="none" stroke="var(--sunk)" stroke-width="6"/><circle cx="27" cy="27" r="'+r+'" fill="none" stroke="'+col+'" stroke-width="6" stroke-linecap="round" stroke-dasharray="'+(C*pct/100).toFixed(1)+' '+C.toFixed(1)+'" transform="rotate(-90 27 27)"/><text x="27" y="31" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)" font-family="var(--mono)">'+pct+'%</text></svg>'}
+
+/* ---------- Inici ---------- */
+function vIni(){
+  var now=Date.now(),R=rows(now),pm=pendingMsgs(),alta=pm.filter(function(m){return m.prio==="alta"}).length;
+  var al=R.filter(function(r){return r.s.pending&&r.s.st!=="silence"}).length,sil=R.filter(function(r){return r.s.pending&&r.s.st==="silence"}).length,adh=Math.round(R.reduce(function(s,r){return s+r.s.adh},0)/R.length);
+  var h='<div class="kpis5">'+
+    '<button type="button" class="kpi k-acc" data-tab="bus"><b>'+pm.length+'</b><span>consultes noves</span></button>'+
+    '<button type="button" class="kpi k-bad" data-tab="bus"><b>'+alta+'</b><span>alta prioritat</span></button>'+
+    '<button type="button" class="kpi k-warn" data-tab="pac"><b>'+al+'</b><span>alertes de constants</span></button>'+
+    '<button type="button" class="kpi k-sil" data-tab="pac"><b>'+sil+'</b><span>famílies en silenci</span></button>'+
+    '<div class="kpi"><b>'+adh+'%</b><span>adherència (14 d)</span></div></div>';
+  h+='<div class="igrid"><div class="col"><div class="sech"><h3>Programes</h3><span class="legend"><i style="background:var(--bad)"></i>Alerta<i style="background:var(--warn)"></i>Vigilar<i style="background:var(--sil)"></i>Silenci<i style="background:var(--ok)"></i>Estable</span></div><div class="pgrid">';
+  GROUPS.forEach(function(G){var k=G[0],g=PROG[k],L=R.filter(function(r){return G[1].indexOf(r.p.prog)>=0}),att=L.filter(function(r){return r.s.pending}),a=Math.round(L.reduce(function(s,r){return s+r.s.adh},0)/(L.length||1)),nm=pm.filter(function(m){return S.patients[m.code].prog===k}).length;
+    h+='<div class="pcard" style="--pc:'+g.c+'"><button type="button" class="pch" data-prog="'+k+'"><span class="pic" style="background:'+g.c+'">'+ico(PICON[k],20)+'</span><span class="tt"><b>'+g.n+'</b><span>'+g.full+'</span></span>'+ring(a,g.c)+'</button>'+stack(L)+
+      '<div class="pmeta"><span><b>'+L.length+'</b> pacients</span><span><b>'+nm+'</b> consultes noves</span></div>'+
+      (att.length?'<div class="att">'+att.slice(0,3).map(function(r){return'<button type="button" class="arow" data-pat="'+r.p.code+'"><i style="background:'+COL[r.s.st]+'"></i><span class="mono">'+r.p.code+'</span><span class="aw">'+esc(whyText(r))+'</span>'+ico("chev",16)+'</button>'}).join("")+'</div>':'<p class="note okn">'+ico("check",14)+' Tots estables</p>')+'</div>'});
+  h+='</div>'+vAct(now)+'</div><div class="col"><div class="sech"><h3>Consultes noves</h3><button type="button" class="link" data-tab="bus">Bústia →</button></div><div class="clist">';
+  var L=pm.slice().sort(function(a,b){return((a.prio==="alta"?0:1)-(b.prio==="alta"?0:1))||(b.t-a.t)});
+  h+=L.length?L.map(function(m){var p=S.patients[m.code];return'<button type="button" class="crow '+m.prio+'" data-pat="'+m.code+'"><span class="pic sm" style="background:'+PROG[p.prog].c+'">'+ico(PICON[p.prog],15)+'</span><span class="tt"><b>'+esc(m.title)+'</b><span><span class="mono">'+m.code+'</span> · '+ago(m.t,now)+' · '+esc(destName(m.to,p.uba))+'</span></span>'+(m.prio==="alta"?'<span class="pill alta">'+(m.crit?"Urgent":"Alta")+'</span>':'')+'</button>'}).join(""):'<p class="note" style="padding:12px">Cap consulta pendent.</p>';
+  h+='</div>'+vUBA(R,now)+'</div></div>';
+  return h;
+}
+function vAct(now){
+  var days=14,W=560,Hh=150,Lf=26,Rr=6,T=12,B=22,pw=W-Lf-Rr,ph=Hh-T-B,bins=[];
+  for(var d=days-1;d>=0;d--){var o={d:d};Object.keys(PROG).forEach(function(k){o[k]=0});bins.push(o)}
+  codes().forEach(function(c){var p=S.patients[c];S.readings[c].items.forEach(function(x){var d=Math.floor((now-x.t)/D);if(d<days)bins[days-1-d][p.prog]++})});
+  var mx=Math.max.apply(null,bins.map(function(b){return Object.keys(PROG).reduce(function(s,k){return s+b[k]},0)}))||1,bw=pw/days,g="";
+  [0,Math.round(mx/2),mx].forEach(function(v){var y=T+ph-v/mx*ph;g+='<line x1="'+Lf+'" x2="'+(W-Rr)+'" y1="'+y+'" y2="'+y+'" stroke="var(--line)"/><text x="'+(Lf-5)+'" y="'+(y+4)+'" text-anchor="end" font-size="10" fill="var(--muted)">'+v+'</text>'});
+  bins.forEach(function(b,i){var y=T+ph,x=Lf+i*bw+bw*.18;Object.keys(PROG).forEach(function(k){var hgt=b[k]/mx*ph;if(hgt>0){y-=hgt;g+='<rect x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+(bw*.64).toFixed(1)+'" height="'+hgt.toFixed(1)+'" fill="'+PROG[k].c+'"/>'}});
+    if(i%2===1||i===days-1)g+='<text x="'+(x+bw*.32).toFixed(1)+'" y="'+(Hh-6)+'" text-anchor="middle" font-size="10" fill="var(--muted)">'+(b.d===0?"avui":"-"+b.d+"d")+'</text>'});
+  return'<div class="card"><div class="sech"><h3>Registres de les famílies</h3><span class="note">últims 14 dies</span></div><svg viewBox="0 0 '+W+' '+Hh+'" class="chart" role="img" aria-label="Registres diaris per programa">'+g+'</svg><div class="legend" style="margin-top:4px">'+Object.keys(PROG).map(function(k){return'<i style="background:'+PROG[k].c+'"></i>'+k}).join("")+'</div></div>';
+}
+function vUBA(R,now){
+  var Nn={};R.forEach(function(r){var k=r.p.uba;Nn[k]=Nn[k]||{n:0,al:0,sil:0,rev:0};var o=Nn[k];o.n++;if(r.s.pending&&r.s.st!=="silence")o.al++;if(r.s.pending&&r.s.st==="silence")o.sil++;if(r.p.reviewedAt&&now-r.p.reviewedAt<24*H)o.rev++});
+  return'<div class="card"><div class="sech"><h3>Per infermera referent</h3></div><div style="overflow-x:auto"><table><thead><tr><th>UBA</th><th class="n">Pacients</th><th class="n">Alertes</th><th class="n">Silencis</th><th class="n">Revisats</th></tr></thead><tbody>'+
+    Object.keys(Nn).sort().map(function(k){var o=Nn[k];return'<tr><td>Infermeria '+k+'</td><td class="n">'+o.n+'</td><td class="n'+(o.al?" tb":"")+'">'+o.al+'</td><td class="n'+(o.sil?" ts":"")+'">'+o.sil+'</td><td class="n">'+o.rev+'</td></tr>'}).join("")+'</tbody></table></div></div>';
+}
+
+/* ---------- Pacients ---------- */
+function vPac(){
+  var now=Date.now(),M=ui.mun,R=rows(now),F=["Tots"].concat(Object.keys(PROG)),q=norm(M.q||"");
+  var h='<div class="pfil"><div class="filters" role="group" aria-label="Programa">'+F.map(function(f){var n=f==="Tots"?R.length:R.filter(function(r){return r.p.prog===f}).length;return'<button type="button" data-pf="'+f+'" aria-pressed="'+(M.prog===f)+'">'+(f!=="Tots"?'<i class="dot" style="background:'+PROG[f].c+'"></i>':'')+f+' <small>'+n+'</small></button>'}).join("")+'</div>'+
+    '<div class="sin sm">'+ico("search",18)+'<input id="pQ" type="text" placeholder="Cerca per codi" value="'+esc(M.q||"")+'" aria-label="Cerca pacient"></div></div>';
+  var L=R.filter(function(r){return(M.prog==="Tots"||r.p.prog===M.prog)&&(!q||norm(r.p.code).indexOf(q)>=0)});
+  h+='<div class="plist">'+(L.length?L.map(function(r){var p=r.p,s=r.s,g=PROG[p.prog],nm=S.msgs.filter(function(m){return m.code===p.code&&m.status==="nou"}).length;
+    var vals=r.it.filter(function(x){return x.v[g.key]!=null&&x.v[g.key]!==""&&x.t>now-14*D}).map(function(x){return x.v[g.key]});
+    return'<button type="button" class="prow" data-pat="'+p.code+'"><span class="stripe" style="background:'+(s.pending||s.st==="ok"?COL[s.st]:"var(--line)")+'"></span>'+
+      '<span class="pic" style="background:'+g.c+'">'+ico(PICON[p.prog],18)+'</span>'+
+      '<span class="pm"><span class="pl1"><b class="mono">'+p.code+'</b>'+pchip(p.prog)+'<span class="pill '+s.st+'">'+LBL[s.st]+'</span>'+(nm?'<span class="pill normal">'+nm+' nova'+(nm>1?"s":"")+'</span>':'')+'</span><span class="why '+s.st+'">'+esc(whyText(r))+'</span><span class="l2">'+p.age+' anys · '+esc(p.carer)+' · UBA '+p.uba+'</span></span>'+
+      '<span class="spk"><small>'+LABEL[g.key]+' 14 d</small>'+spark(vals,120,30,g.c)+'</span>'+
+      '<span class="adh"><b>'+s.adh+'%</b><small>adherència</small></span><span class="when"><b>'+(s.last?ago(s.last.t,now):"—")+'</b><small>últim registre</small></span>'+ico("chev",18)+'</button>'}).join(""):'<p class="note" style="padding:14px">Cap pacient amb aquest filtre.</p>')+'</div>';
+  return h;
+}
+
+/* ---------- Patient detail ---------- */
+function lineChart(items,c,now,col){
+  var W=340,Hh=150,Lf=34,Rr=8,T=10,B=20,pw=W-Lf-Rr,ph=Hh-T-B,days=28;
+  var P=items.filter(function(x){return x.v[c.k]!=null&&x.v[c.k]!==""&&x.t>now-days*D}).map(function(x){return{t:x.t,v:+x.v[c.k]}});
+  if(!P.length)return'<div class="ch"><div class="chh"><b>'+c.l+'</b></div><p class="note">Sense dades en 28 dies</p></div>';
+  var vs=P.map(function(p){return p.v}),mn=c.min!=null?c.min:Math.min.apply(null,vs.concat(c.lo!=null?[c.lo]:[])),mx=c.max!=null?c.max:Math.max.apply(null,vs.concat(c.hi!=null?[c.hi]:[]));
+  var pad=(mx-mn)*.12||1;if(c.min==null)mn-=pad;if(c.max==null)mx+=pad;
+  var X=function(t){return Lf+(1-(now-t)/(days*D))*pw},Y=function(v){return T+ph-(v-mn)/(mx-mn)*ph},g="",dec=(mx-mn)<8?1:0;
+  [mn,(mn+mx)/2,mx].forEach(function(v){g+='<line x1="'+Lf+'" x2="'+(W-Rr)+'" y1="'+Y(v).toFixed(1)+'" y2="'+Y(v).toFixed(1)+'" stroke="var(--line)"/><text x="'+(Lf-5)+'" y="'+(Y(v)+4).toFixed(1)+'" text-anchor="end" font-size="10" fill="var(--muted)">'+fmt(v.toFixed(dec))+'</text>'});
+  if(c.hi!=null)g+='<rect x="'+Lf+'" y="'+T+'" width="'+pw+'" height="'+Math.max(0,Y(c.hi)-T).toFixed(1)+'" fill="var(--bad)" opacity=".07"/><line x1="'+Lf+'" x2="'+(W-Rr)+'" y1="'+Y(c.hi).toFixed(1)+'" y2="'+Y(c.hi).toFixed(1)+'" stroke="var(--bad)" stroke-dasharray="4 3"/>';
+  if(c.lo!=null)g+='<rect x="'+Lf+'" y="'+Y(c.lo).toFixed(1)+'" width="'+pw+'" height="'+Math.max(0,T+ph-Y(c.lo)).toFixed(1)+'" fill="var(--bad)" opacity=".07"/><line x1="'+Lf+'" x2="'+(W-Rr)+'" y1="'+Y(c.lo).toFixed(1)+'" y2="'+Y(c.lo).toFixed(1)+'" stroke="var(--bad)" stroke-dasharray="4 3"/>';
+  [28,21,14,7,0].forEach(function(d){g+='<text x="'+X(now-d*D).toFixed(1)+'" y="'+(Hh-5)+'" text-anchor="'+(d===28?"start":d===0?"end":"middle")+'" font-size="10" fill="var(--muted)">'+(d?"-"+d+"d":"avui")+'</text>'});
+  g+='<path d="'+P.map(function(p,i){return(i?"L":"M")+X(p.t).toFixed(1)+" "+Y(p.v).toFixed(1)}).join(" ")+'" fill="none" stroke="'+col+'" stroke-width="2.2" stroke-linejoin="round"/>';
+  P.forEach(function(p){var out=(c.hi!=null&&p.v>=c.hi)||(c.lo!=null&&p.v<c.lo);g+='<circle cx="'+X(p.t).toFixed(1)+'" cy="'+Y(p.v).toFixed(1)+'" r="'+(out?4.5:2.6)+'" fill="'+(out?"var(--bad)":col)+'" stroke="var(--card)" stroke-width="1.5"/>'});
+  var last=P[P.length-1].v,prev=P.length>1?P[P.length-2].v:null,dl=prev!=null?+(last-prev).toFixed(1):null,out=(c.hi!=null&&last>=c.hi)||(c.lo!=null&&last<c.lo);
+  return'<div class="ch"><div class="chh"><b>'+c.l+'</b><span class="last'+(out?" bad":"")+'"><b class="mono">'+fmt(last)+'</b> '+c.u+(dl?' <small>'+(dl>0?"▲ +":"▼ ")+fmt(dl)+'</small>':'')+'</span></div><svg viewBox="0 0 '+W+' '+Hh+'" class="chart" role="img" aria-label="'+c.l+', últims 28 dies">'+g+'</svg></div>';
+}
+function timeline(code,items,p,now){
+  var E=[];
+  S.msgs.filter(function(m){return m.code===code}).forEach(function(m){E.push({t:m.t,k:"msg",m:m})});
+  for(var i=0;i<items.length;i++){if(items[i].t<now-28*D)continue;var ev=evaluate(p,items.slice(0,i+1));if(ev.lvl!=="ok")E.push({t:items[i].t,k:"al",lvl:ev.lvl,why:ev.why})}
+  if(p.reviewedAt)E.push({t:p.reviewedAt,k:"rev",txt:p.reviewNote,by:p.reviewedBy});
+  E.sort(function(a,b){return b.t-a.t});
+  if(!E.length)return'<p class="note">Cap incidència en 28 dies.</p>';
+  return'<ol class="tl">'+E.slice(0,14).map(function(e){
+    if(e.k==="msg"){var m=e.m;return'<li class="'+(m.status==="nou"?(m.prio==="alta"?"bad":"acc"):"ok")+'"><span class="tli">'+ico(m.kind==="tram"?"doc":m.kind==="med"?"pill":m.kind==="const"?"gauge":"alert",14)+'</span><div><div class="tlh"><b>'+esc(m.title)+'</b><span class="note">'+ago(m.t,now)+'</span></div><div class="note">'+KIND[m.kind]+' · '+esc(destName(m.to,p.uba))+' · '+(m.status==="nou"?'<b style="color:var(--bad)">pendent</b>':'atès')+'</div>'+(m.signs&&m.signs.length?'<div class="signs">'+m.signs.map(function(s){return'<span>'+esc(s)+'</span>'}).join("")+'</div>':'')+(m.note?'<p class="tln">«'+esc(m.note)+'»</p>':'')+(m.status!=="nou"&&m.log.length>1?'<p class="note">→ '+esc(m.log[m.log.length-1])+'</p>':'')+'</div></li>'}
+    if(e.k==="al")return'<li class="'+(e.lvl==="bad"?"bad":"warn")+'"><span class="tli">'+ico("gauge",14)+'</span><div><div class="tlh"><b>Alerta de constants</b><span class="note">'+ago(e.t,now)+'</span></div><div class="note">'+esc(e.why.join(" · "))+'</div></div></li>';
+    return'<li class="ok"><span class="tli">'+ico("check",14)+'</span><div><div class="tlh"><b>Revisat</b><span class="note">'+ago(e.t,now)+'</span></div><div class="note">'+esc(e.by)+' · '+esc(e.txt)+'</div></div></li>'}).join("")+'</ol>';
+}
+function vPat(code){
+  var now=Date.now(),p=S.patients[code],it=S.readings[code].items,s=status(p,it,now),g=PROG[p.prog],r={p:p,it:it,s:s};
+  var pend=S.msgs.filter(function(m){return m.code===code&&m.status==="nou"}),m30=S.msgs.filter(function(m){return m.code===code&&now-m.t<30*D}).length;
+  var al28=0;for(var i=0;i<it.length;i++){if(it[i].t>now-28*D&&evaluate(p,it.slice(0,i+1)).lvl!=="ok")al28++}
+  var h='<button type="button" class="link backl" data-tab="'+(ui.mun.from||"pac")+'">'+ico("back",16)+' Tornar</button>';
+  h+='<div class="phead" style="--pc:'+g.c+'"><span class="pic lg" style="background:'+g.c+'">'+ico(PICON[p.prog],30)+'</span><div class="phm"><div class="pl1"><h2 class="mono">'+p.code+'</h2>'+pchip(p.prog)+'<span class="pill '+s.st+'">'+LBL[s.st]+'</span></div><p>'+g.full+' · '+p.age+' anys · registra: '+esc(p.carer)+' · Infermeria UBA '+p.uba+'</p><p class="why '+s.st+'">'+esc(whyText(r))+'</p></div>'+
+    '<div class="acts">'+(s.pending?'<button type="button" data-rev="'+code+'" data-note="'+(s.st==="silence"?"Trucada a la família":"Alerta revisada")+'">'+ico(s.st==="silence"?"phone":"check",16)+(s.st==="silence"?" He trucat":" Revisat")+'</button>':'')+'<button type="button" class="sec" data-rev="'+code+'" data-note="Visita programada">'+ico("plus",16)+' Programar visita</button></div></div>';
+  h+='<div class="kpis5 sm"><div class="kpi"><b>'+s.adh+'%</b><span>adherència 14 d</span></div><div class="kpi"><b>'+(s.last?ago(s.last.t,now).replace("fa ",""):"—")+'</b><span>últim registre</span></div><div class="kpi'+(pend.length?" k-bad":"")+'"><b>'+pend.length+'</b><span>consultes pendents</span></div><div class="kpi"><b>'+m30+'</b><span>consultes en 30 d</span></div><div class="kpi'+(al28?" k-warn":"")+'"><b>'+al28+'</b><span>alertes en 28 d</span></div></div>';
+  if(pend.length)h+='<div class="card pendc"><div class="sech"><h3>Consultes pendents</h3></div>'+pend.map(function(m){return msgCard(m,now,true)}).join("")+'</div>';
+  h+='<div class="dgrid2"><div class="col"><div class="card"><div class="sech"><h3>Evolució</h3><span class="note">28 dies · franja vermella = fora de rang</span></div><div class="charts">'+CHARTS[p.prog].map(function(c){return lineChart(it,c,now,g.c)}).join("")+'</div></div>';
+  var days=[];for(var d=27;d>=0;d--)days.push(d);var set={};it.forEach(function(x){set[Math.floor((now-x.t)/D)]=x});
+  h+='<div class="card"><div class="sech"><h3>Registres</h3><span class="note">previst cada '+(g.freq===1?"dia":g.freq+" dies")+'</span></div><div class="cal">'+days.map(function(d){var x=set[d],lv=x?evaluate(p,it.slice(0,it.indexOf(x)+1)).lvl:null;return'<span class="'+(x?(lv==="bad"?"bad":lv==="warn"?"warn":"ok"):"")+'" title="'+(d?"fa "+d+" dies":"avui")+'"></span>'}).join("")+'</div><div class="legend"><i style="background:var(--ok)"></i>Correcte<i style="background:var(--warn)"></i>Vigilar<i style="background:var(--bad)"></i>Alerta<i style="background:var(--sunk)"></i>Sense registre</div>';
+  var L=lastOf(it);if(L)h+='<p class="lbl" style="margin-top:10px">Últim registre · '+ago(L.t,now)+'</p><div class="vals">'+Object.keys(L.v).map(function(k){return'<span>'+esc(LABEL[k]||k)+' '+esc(fmt(L.v[k]))+'</span>'}).join("")+'</div>';
+  h+='</div></div><div class="col"><div class="card"><div class="sech"><h3>Incidències i consultes</h3></div>'+timeline(code,it,p,now)+'</div></div></div>';
+  return h;
+}
+
+/* ---------- Bústia ---------- */
+function msgCard(m,now,compact){
+  var p=S.patients[m.code],g=PROG[p.prog];
+  var h='<div class="msg '+(m.status==="atès"?"done":m.prio)+(compact?" cmp":"")+'"><div class="mh"><div class="mhl">'+(compact?'':'<span class="pic sm" style="background:'+g.c+'">'+ico(PICON[p.prog],15)+'</span>')+'<div><b class="mt">'+esc(m.title)+'</b><div class="note">'+(compact?'':codeBtn(m.code)+' · ')+KIND[m.kind]+' · '+ago(m.t,now)+' · → '+esc(destName(m.to,p.uba))+'</div></div></div>'+(m.status==="atès"?'<span class="pill ok">Atès</span>':'<span class="pill '+m.prio+'">'+(m.crit?"Urgent":m.prio==="alta"?"Alta":"Normal")+'</span>')+'</div>';
+  if(m.signs&&m.signs.length)h+='<div class="signs">'+m.signs.map(function(s){return'<span>'+esc(s)+'</span>'}).join("")+'</div>';
+  if(m.vals)h+='<div class="vals">'+Object.keys(m.vals).map(function(k){return'<span>'+esc(LABEL[k]||k)+' '+esc(fmt(m.vals[k]))+'</span>'}).join("")+'</div>';
+  if(m.ai)h+='<span class="aitag">'+ico("sparkle",13)+' Assistent · '+esc(m.ai.label)+(m.ai.conf!=="—"?' · confiança '+esc(m.ai.conf):'')+'</span>';
+  if(m.note)h+='<p class="mnote">«'+esc(m.note)+'»</p>';
+  if(m.photo)h+='<img src="'+m.photo+'" alt="Foto enviada per la família" class="mph">';
+  if(m.status!=="atès"){var other=m.to==="inf"?["med","A Medicina"]:["inf","A Infermeria"];
+    h+='<div class="acts"><button type="button" data-ma="call" data-id="'+m.id+'">'+ico("phone",15)+' He trucat</button><button type="button" data-ma="done" data-id="'+m.id+'">'+ico("check",15)+' Resolt</button><button type="button" class="sec" data-ma="mv" data-to="'+other[0]+'" data-id="'+m.id+'">'+other[1]+'</button></div>'}
+  else h+='<p class="note">✓ '+esc(m.log[m.log.length-1])+'</p>';
+  return h+'</div>';
+}
+function vBus(){
+  var now=Date.now(),M=ui.mun,F=[["nou","Pendents"],["atès","Atesos"],["tots","Tots"]],T=[["all","Tothom"],["inf","Infermeria"],["med","Medicina"],["ts","Treball social"],["uac","UAC"]];
+  var h='<div class="pfil"><div class="seg2">'+F.map(function(f){var n=f[0]==="tots"?S.msgs.length:S.msgs.filter(function(m){return m.status===f[0]}).length;return'<button type="button" data-bs="'+f[0]+'" aria-pressed="'+(M.bs===f[0])+'">'+f[1]+' <small>'+n+'</small></button>'}).join("")+'</div><div class="filters">'+T.map(function(t){return'<button type="button" data-bt="'+t[0]+'" aria-pressed="'+(M.bt===t[0])+'">'+t[1]+'</button>'}).join("")+'</div></div>';
+  var L=S.msgs.filter(function(m){return(M.bs==="tots"||m.status===M.bs)&&(M.bt==="all"||m.to===M.bt)}).sort(function(a,b){var sa=a.status==="nou"?0:1,sb=b.status==="nou"?0:1;return(sa-sb)||((a.prio==="alta"?0:1)-(b.prio==="alta"?0:1))||(b.t-a.t)});
+  h+=L.length?'<div class="mgrid">'+L.map(function(m){return'<div class="card">'+msgCard(m,now,false)+'</div>'}).join("")+'</div>':'<p class="note">Cap notificació amb aquest filtre.</p>';
+  return h;
+}
+function msgAct(id,a,to){
+  var m=S.msgs.filter(function(x){return x.id===id})[0];if(!m)return;var p=S.patients[m.code],hh=new Date().toLocaleTimeString("ca",{hour:"2-digit",minute:"2-digit"});
+  if(a==="call"){m.status="atès";m.log.push(destName(m.to,p.uba)+" · trucada feta a les "+hh);toast("Trucada registrada")}
+  else if(a==="done"){m.status="atès";m.log.push(destName(m.to,p.uba)+" · resolt a les "+hh);toast("Marcat com a resolt")}
+  else{var from=destName(m.to,p.uba);m.to=to;m.log.push(from+" → "+destName(to,p.uba)+" · passat directament");toast("Passat a "+destName(to,p.uba))}
+  render();
+}
+function review(code,note){var p=S.patients[code];p.reviewedAt=Date.now();p.reviewedBy="Infermeria UBA "+p.uba;p.reviewNote=note;toast(code+": "+note.toLowerCase());render()}
+
+/* ---------- Motius IA ---------- */
+function freeStats(){
+  var now=Date.now(),F=S.free.filter(function(f){return now-f.t<30*D}),G={};
+  F.forEach(function(f){var k=f.id?"m:"+f.id:"k:"+f.key;G[k]=G[k]||{k:k,id:f.id,key:f.key,n:0,profs:{},last:0,ex:f.text};var g=G[k];g.n++;g.profs[f.prof]=1;if(f.t>g.last){g.last=f.t;g.ex=f.text}});
+  return Object.keys(G).map(function(k){return G[k]}).sort(function(a,b){return b.n-a.n});
+}
+function proposals(){return freeStats().filter(function(g){if(g.n<3||S.dismissed.indexOf(g.k)>=0)return false;if(g.id)return Object.keys(g.profs).some(function(pf){return TOP[pf].indexOf(g.id)<0});return true})}
+function vIA(){
+  var now=Date.now(),F=S.free.filter(function(f){return now-f.t<30*D}),auto=F.filter(function(f){return f.id}).length,st=freeStats(),P=proposals();
+  var pct=F.length?Math.round(auto/F.length*100):0;
+  var h='<div class="kpis5"><div class="kpi"><b>'+F.length+'</b><span>textos lliures (30 d)</span></div><div class="kpi k-ok"><b>'+pct+'%</b><span>classificats per l’assistent</span></div><div class="kpi k-sil"><b>'+(F.length-auto)+'</b><span>sense classificar</span></div><div class="kpi k-acc"><b>'+P.length+'</b><span>propostes</span></div><div class="kpi"><b>'+S.created.length+'</b><span>opcions creades</span></div></div>';
+  h+='<div class="flow"><span>'+ico("users",16)+'Família escriu</span><i></i><span>'+ico("sparkle",16)+'Assistent classifica</span><i></i><span>'+ico("alert",16)+'Pregunta signes</span><i></i><span>'+ico("steth",16)+'Professional</span><i></i><span>'+ico("plus",16)+'≥ 3 en 30 d: opció nova</span></div>';
+  h+='<div class="dgrid2"><div class="col">';
+  if(P.length){h+='<div class="sech"><h3>Propostes de l’assistent</h3></div>';
+    P.forEach(function(g){var pf=Object.keys(g.profs);
+      if(g.id){var m=libItem(g.id),miss=pf.filter(function(x){return TOP[x].indexOf(g.id)<0});
+        h+='<div class="card prop"><div class="mh"><b>'+esc(m.n)+'</b><span class="pill normal">'+g.n+' vegades</span></div><p>Afegir-lo a les opcions ràpides de '+miss.join(" i ")+'. Ja té signes d’alarma: '+m.s.map(function(s){return s.t.toLowerCase()}).join(", ")+'.</p><p class="note">Últim text: «'+esc(g.ex)+'»</p><div class="acts"><button type="button" data-pa="add" data-g="'+g.k+'">Afegir</button><button type="button" class="sec" data-pa="no" data-g="'+g.k+'">Descartar</button></div></div>';
+      }else{var nm=g.key.charAt(0).toUpperCase()+g.key.slice(1);
+        h+='<div class="card prop emer"><div class="mh"><b>Motiu emergent: «'+esc(nm)+'»</b><span class="pill silence">'+g.n+' sense classificar</span></div><p>L’assistent no el reconeix i es repeteix a '+pf.join(", ")+'. Proposa crear una opció nova amb signes provisionals que infermeria haurà de validar.</p><p class="note">Últim text: «'+esc(g.ex)+'»</p><div class="acts"><button type="button" data-pa="new" data-g="'+g.k+'">Crear «'+esc(nm)+'»</button><button type="button" class="sec" data-pa="no" data-g="'+g.k+'">Descartar</button></div></div>';
+      }});
+  }else h+='<div class="card"><p class="note">Cap proposta pendent. Quan un motiu nou es repeteixi, apareixerà aquí.</p></div>';
+  if(S.created.length)h+='<div class="card"><div class="sech"><h3>Opcions creades</h3></div><ul class="ul">'+S.created.map(function(c){return'<li>'+esc(c)+'</li>'}).join("")+'</ul></div>';
+  h+='</div><div class="col"><div class="card"><div class="sech"><h3>Motius escrits (30 dies)</h3></div><div class="bars">';
+  var mx=st.length?st[0].n:1;
+  h+=st.map(function(g){var m=g.id?libItem(g.id):null,nm=m?m.n:"«"+g.key+"»";return'<div class="br"><span class="bn">'+esc(nm)+'<small>'+Object.keys(g.profs).join(", ")+'</small></span><span class="bt"><span style="width:'+(g.n/mx*100)+'%;background:'+(m?"var(--accent)":"var(--sil)")+'"></span></span><b class="mono">'+g.n+'</b></div>'}).join("")+'</div><div class="legend" style="margin-top:8px"><i style="background:var(--accent)"></i>Classificat<i style="background:var(--sil)"></i>Sense classificar</div></div>';
+  h+='<p class="note">L’assistent d’aquesta maqueta és un classificador de paraules clau que simula un model d’IA. En la versió real caldria un model validat clínicament, i cada classificació la confirma un professional.</p></div></div>';
+  return h;
+}
+function propAct(k,a){
+  var g=freeStats().filter(function(x){return x.k===k})[0];if(!g)return;
+  if(a==="no"){S.dismissed.push(k);toast("Proposta descartada");render();return}
+  if(a==="add"){var m=libItem(g.id),miss=Object.keys(g.profs).filter(function(pf){return TOP[pf].indexOf(g.id)<0});miss.forEach(function(pf){TOP[pf].push(g.id)});S.created.push(m.n+" · opció ràpida a "+miss.join(", "));toast("«"+m.n+"» ja surt a InnovaMunt")}
+  if(a==="new"){var nm=g.key.charAt(0).toUpperCase()+g.key.slice(1),id="nou_"+g.key;
+    P(id,"nous",nm,"inf",[g.key],["Dura més de 2 dies","No pot menjar o dormir","Empitjora"]);var it=libItem(id);it.kwn=it.kw.map(norm);it.tok=[norm(g.key)];
+    Object.keys(g.profs).forEach(function(pf){if(TOP[pf].indexOf(id)<0)TOP[pf].push(id)});
+    S.free.forEach(function(f){if(f.key===g.key){f.id=id;delete f.key}});
+    S.created.push(nm+" · opció nova (signes provisionals)");toast("Opció «"+nm+"» creada")}
+  render();
+}
+
+/* ---------- Recerca ---------- */
+function vRec(){
+  var now=Date.now(),R=rows(now),regs=0,alerts=0,fam80=0;
+  R.forEach(function(r){regs+=r.it.filter(function(x){return x.t>now-14*D}).length;if(r.s.adh>=80)fam80++;for(var i=0;i<r.it.length;i++){if(r.it[i].t<now-14*D)continue;if(evaluate(r.p,r.it.slice(0,i+1)).lvl!=="ok")alerts++}});
+  var direct=S.msgs.filter(function(m){return m.to!=="uac"}).length;
+  var h='<div class="kpis5"><div class="kpi"><b>'+regs+'</b><span>registres (14 d)</span></div><div class="kpi k-bad"><b>'+alerts+'</b><span>alertes detectades a casa</span></div><div class="kpi"><b>'+fam80+'/'+R.length+'</b><span>adherència ≥ 80%</span></div><div class="kpi k-ok"><b>'+direct+'</b><span>consultes sense traspassos</span></div><div class="kpi"><b>'+S.free.length+'</b><span>textos per a l’assistent</span></div></div>';
+  function by(pr){return R.filter(function(r){return pr.indexOf(r.p.prog)>=0})}
+  function avg(a){return a.length?Math.round(a.reduce(function(s,r){return s+r.s.adh},0)/a.length):0}
+  function card(chips,title,goal,n,target,minis){return'<div class="card study"><div style="display:flex;gap:6px">'+chips.map(pchip).join("")+'</div><h3>'+title+'</h3><div class="sech"><span class="note">Reclutament</span><span class="note"><b style="color:var(--ink)">'+n+'</b> de '+target+'</span></div><div class="pbar"><span style="width:'+Math.min(100,n/target*100)+'%;background:'+PROG[chips[0]].c+'"></span></div><div class="mini2">'+minis.map(function(m){return'<div><b>'+m[0]+'</b><span>'+m[1]+'</span></div>'}).join("")+'</div><p class="note">'+goal+'</p></div>'}
+  var icc=by(["ICC"]),dm2=by(["DM2"]),pm=by(["PCC","MACA"]),at=by(["ATDOM"]);
+  h+='<div class="studies">'+
+   card(["ICC"],"Seguiment proactiu de la insuficiència cardíaca amb la família","Hipòtesi: detectar la descompensació a casa redueix urgències i reingressos (fase 2, HC3).",icc.length,60,[[avg(icc)+"%","adherència"],[icc.filter(function(r){return r.s.st==="bad"}).length,"alertes actives"]])+
+   card(["DM2"],"Hipoglucèmies i peu diabètic notificats des de casa","Variables: glucosa, hipoglucèmies i ferides al peu amb foto.",dm2.length,80,[[avg(dm2)+"%","adherència"],[S.msgs.filter(function(m){return S.patients[m.code].prog==="DM2"}).length,"notificacions"]])+
+   card(["PCC","MACA"],"Pla compartit (PIIC) i control de símptomes","Variables: dolor, son, ingesta i sobrecàrrega del cuidador.",pm.length,40,[[avg(pm)+"%","adherència"],[pm.filter(function(r){return r.s.ev.why.some(function(w){return/Cuidador/.test(w)})}).length,"cuidadors esgotats"]])+
+   card(["ATDOM"],"Ferides i continuïtat infermera al domicili","Meta: continuïtat infermera ≥ 75%. Ferides noves detectades amb foto.",at.length,50,[[avg(at)+"%","adherència"],[S.msgs.filter(function(m){return/ferida|nafra/i.test(m.title)}).length,"ferides notificades"]])+
+  '</div><p class="note">Xifres d’exemple. L’explotació real seria anonimitzada i aprovada pel comitè d’ètica.</p>';
+  return h;
+}
+
+/* ---------- shell ---------- */
+function vMun(){
+  var M=ui.mun,pm=pendingMsgs().length,pr=proposals().length;
+  var T=[["ini","Inici","gauge",0],["pac","Pacients","users",0],["bus","Bústia","doc",pm],["dem","Previsió","bolt",0],["ia","Motius IA","sparkle",pr],["rec","Recerca","search",0]];
+  var cur=M.pat?"pac":M.tab;
+  var nav='<nav class="pnav" aria-label="Seccions">'+T.map(function(t){return'<button type="button" data-tab="'+t[0]+'" aria-current="'+(cur===t[0]?"page":"false")+'">'+ico(t[2],18)+'<span>'+t[1]+'</span>'+(t[3]?'<em class="cnt">'+t[3]+'</em>':'')+'</button>'}).join("")+'</nav>';
+  var title=M.pat?"Fitxa del pacient":{ini:"Tauler",pac:"Pacients en seguiment",bus:"Bústia de consultes",dem:"Previsió de la demanda",ia:"Motius detectats per l’assistent",rec:"Recerca de l’equip"}[M.tab];
+  var body=M.pat?vPat(M.pat):M.tab==="ini"?vIni():M.tab==="pac"?vPac():M.tab==="bus"?vBus():M.tab==="dem"?vDem():M.tab==="ia"?vIA():vRec();
+  return'<div class="pro">'+nav+'<section class="pmain"><div class="ptitle"><h2>'+title+'</h2><span class="note">Microequip A i B · '+new Date().toLocaleDateString("ca",{weekday:"long",day:"numeric",month:"long"})+'</span></div>'+body+'</section></div>';
+}
+/* ---------- state, render, events ---------- */
+var S=gen(Date.now()),HS=location.hash;S.dismissed=[];
+var ui={screen:HS==="#innovamunt"||HS==="#familia"?"inn":HS==="#muntapp"?"mun":"home",inn:null,
+  mun:{tab:"ini",pat:null,from:"pac",prog:"Tots",q:"",bs:"nou",bt:"all"},
+  dm:{day:0,cut:0,scen:0,abs:-1,open:-1}};
+innReset(false);
+var app=document.getElementById("app");
+function vHome(){
+  return '<div class="home">'+
+  '<div class="hero"><h1>Dues portes, un mateix equip</h1><p>InnovaMunt dona als pacients i a les famílies un accés directe al professional que els cal. MuntApp és el tauler de l’equip: consultes, evolució de cada pacient i previsió de la demanda.</p></div>'+
+  '<div class="doors">'+
+   '<button class="door inn" type="button" data-go="inn"><span class="ic">'+ico("heart",26)+'</span><b>InnovaMunt</b><span>Per a pacients i famílies. Pensat per al mòbil: trieu el pacient, què passa i a qui ho envieu.</span><em>Entrar com a família '+ico("chev",16)+'</em></button>'+
+   '<button class="door mun" type="button" data-go="mun"><span class="ic">'+ico("gauge",26)+'</span><b>MuntApp</b><span>Per a professionals. Tauler per programa (ICC, DM2, PCC, MACA, ATDOM), fitxa de cada pacient i bústia.</span><em>Entrar com a professional '+ico("chev",16)+'</em></button>'+
+  '</div>'+
+  '<div class="how"><div><span class="hn">1</span><b>La família notifica</b><span>Constants, un problema nou, un dubte o un tràmit.</span></div><div><span class="hn">2</span><b>Arriba directe</b><span>A infermeria, medicina, treball social o la UAC, sense centraleta.</span></div><div><span class="hn">3</span><b>L’equip actua</b><span>Prioritat automàtica i evolució del pacient en una sola pantalla.</span></div></div>'+
+  '<p class="note">Prototip amb dades fictícies. No introduïu dades reals de pacients.</p></div>';
+}
+function render(){
+  document.body.dataset.screen=ui.screen;
+  document.getElementById("brandName").textContent=ui.screen==="inn"?"InnovaMunt":ui.screen==="mun"?"MuntApp":"La Muntanyeta";
+  app.innerHTML=ui.screen==="inn"?vInn():ui.screen==="mun"?vMun():vHome();
+}
+var tt;function toast(m){var o=document.querySelector(".toast");if(o)o.remove();var t=document.createElement("div");t.className="toast";t.setAttribute("role","status");t.textContent=m;document.body.appendChild(t);clearTimeout(tt);tt=setTimeout(function(){t.remove()},2600)}
+function go(s){if(s==="inn"&&ui.screen!=="inn")innReset(false);ui.screen=s;window.scrollTo(0,0);render()}
+function numVar(k){return VARS[ui.inn.prof].concat([CUID]).filter(function(x){return x.k===k})[0]}
+document.querySelector(".top").addEventListener("click",function(e){if(e.target.closest("[data-go]"))go("home")});
+app.addEventListener("click",function(e){
+  var b=e.target.closest("button");if(!b)return;var d=b.dataset,I=ui.inn,M=ui.mun;
+  if(d.go){if(d.go==="mun"){M.tab=ui.screen==="inn"?"bus":M.tab;M.pat=null}go(d.go);return}
+  /* wizard */
+  if(d.back){back();return}
+  if(d.prof){I.prof=d.prof;I.vals=null;nav("what");return}
+  if(d.what){I.what=d.what;I.signs={};I.note="";I.photo=null;I.to=null;I.pid=null;I.q="";I.via=null;I.tram=null;I.med="";if(d.what==="const")I.vals=null;nav(d.what==="prob"?"cat":d.what);return}
+  if(d.cat){I.cat=d.cat;nav("list");return}
+  if(d.pick){I.pid=d.pick;I.via=d.conf||null;I.signs={};nav("prob");return}
+  if(d.free){I.pid="free";I.via=null;I.signs={};nav("prob");return}
+  if(d.sig!=null){I.signs[d.sig]=!I.signs[d.sig];b.setAttribute("aria-pressed",!!I.signs[d.sig]);return}
+  if(d.opt){I.vals[d.opt]=d.val;b.parentNode.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",x===b)});return}
+  var k=d.inc||d.dec;if(k){var v=numVar(k),inp=document.getElementById("in_"+k),n=parseFloat(String(inp.value).replace(",","."))||0;n=+(n+(d.inc?v.s:-v.s)).toFixed(v.s<1?1:0);if(k==="dolor")n=Math.max(0,Math.min(10,n));I.vals[k]=n;inp.value=fmt(n);return}
+  if(d.tram!=null){I.tram=+d.tram;render();return}
+  if(d.next){nav(d.next);return}
+  if(d.to){I.to=d.to;nav("review");return}
+  if(b.id==="iSend"){innSend();return}
+  if(d["new"]){innReset(true);render();window.scrollTo(0,0);return}
+  /* professional */
+  if(d.pat){if(!M.pat)M.from=M.tab;M.pat=d.pat;render();window.scrollTo(0,0);return}
+  if(d.tab){M.tab=d.tab;M.pat=null;render();window.scrollTo(0,0);return}
+  if(d.prog){M.tab="pac";M.prog=d.prog;M.pat=null;render();window.scrollTo(0,0);return}
+  if(d.pf){M.prog=d.pf;render();return}
+  if(d.bs){M.bs=d.bs;render();return}
+  if(d.bt){M.bt=d.bt;render();return}
+  if(d.ma){msgAct(d.id,d.ma,d.to);return}
+  if(d.rev){review(d.rev,d.note);return}
+  if(d.pa){propAct(d.g,d.pa);return}
+  if(d.dk){ui.dm[d.dk]=+d.di;if(d.dk==="day")ui.dm.open=-1;render();return}
+  if(d.uba){var i=+d.uba;ui.dm.open=ui.dm.open===i?-1:i;render();return}
+});
+app.addEventListener("change",function(e){
+  var t=e.target,I=ui.inn;
+  if(t.id==="iPhoto"&&t.files&&t.files[0]){try{if(I.photo)URL.revokeObjectURL(I.photo)}catch(x){}I.photo=URL.createObjectURL(t.files[0]);render()}
+  else if(t.id==="dAbs"){ui.dm.abs=+t.value;ui.dm.open=-1;render()}
+});
+app.addEventListener("input",function(e){
+  var t=e.target,I=ui.inn;
+  if(t.dataset&&t.dataset.k){var n=parseFloat(String(t.value).replace(",","."));I.vals[t.dataset.k]=isNaN(n)?"":n}
+  else if(t.id==="iNote")I.note=t.value;else if(t.id==="iMed")I.med=t.value;
+  else if(t.id==="iQ"){I.q=t.value;document.getElementById("sugg").innerHTML=suggHTML()}
+  else if(t.id==="pQ"){ui.mun.q=t.value;render();var q=document.getElementById("pQ");q.focus();q.setSelectionRange(q.value.length,q.value.length)}
+});
+app.addEventListener("keydown",function(e){if(e.key==="Enter"&&e.target.id==="iQ"){var f=document.querySelector("#sugg [data-pick]");if(f)f.click();else{var fr=document.querySelector("#sugg [data-free]");if(fr)fr.click()}}});
+window.addEventListener("hashchange",function(){var h=location.hash;go(h==="#innovamunt"||h==="#familia"?"inn":h==="#muntapp"?"mun":"home")});
+render();
+})();
+</script>
+</body>
+</html>
