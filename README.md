@@ -14,9 +14,9 @@ Prototip web per a l’**EAP Adults La Muntanyeta** (Castelldefels): previsió d
 
 **MuntApp (web i mòbil)**
 
-| Tauler | Fitxa del pacient | Bústia | Previsió |
-| --- | --- | --- | --- |
-| ![Tauler](docs/muntapp-tauler.png) | ![Pacient](docs/muntapp-pacient.png) | ![Bústia](docs/muntapp-bustia.png) | ![Previsió](docs/muntapp-previsio.png) |
+| Avui | Fitxa del pacient | Previsió |
+| --- | --- | --- |
+| ![Avui](docs/muntapp-avui.png) | ![Pacient](docs/muntapp-pacient.png) | ![Previsió](docs/muntapp-previsio.png) |
 
 ## Què és
 
@@ -37,13 +37,16 @@ Un assistent pas a pas, amb una pantalla per decisió i barra de progrés:
 
 ### MuntApp · equip (web i mòbil)
 
-- **Tauler:** indicadors clau i una targeta per programa (ICC, DM2, PCC, MACA, ATDOM) amb la barra d’estat, l’adherència i els pacients que requereixen atenció. Inclou les consultes noves, els registres diaris per programa i el seguiment per infermera referent.
+- **Avui:** una sola pantalla per saber què passa. Tres blocs, cadascun amb el seu comptador i una sola acció per fila:
+  - **Peticions de les famílies** (consultes noves, ordenades per urgència) → «Resolt».
+  - **Alertes de constants** (valors fora de rang) → «Revisat».
+  - **Sense seguiment:** famílies que han deixat de registrar. L’app els envia un recordatori automàtic i, si en 24 h no responen, avisa l’equip que cal trucar → «He trucat».
+  - Tocar una fila obre la fitxa del pacient. Al peu, els pacients sense res pendent i l’historial de peticions ateses.
 - **Pacients:** filtre per programa i cerca. Cada fila mostra l’estat, el motiu, la tendència i l’adherència.
 - **Fitxa del pacient:** consultes pendents amb accions, gràfiques d’evolució de 28 dies amb els llindars d’alerta, calendari de registres, últims valors i cronologia d’incidències i consultes.
-- **Bústia:** consultes pendents i ateses, filtrades per destinatari, amb «He trucat», «Resolt» o passar-la directament a un altre professional.
 - **Previsió:** visites i minuts lliures per UBA i microequip, semàfor de càrrega, escenaris i ordre de suport.
 - **Motius IA:** textos lliures de les famílies. Si un motiu es repeteix 3 vegades o més en 30 dies, l’assistent proposa afegir-lo com a opció o crear-ne una de nova. L’equip decideix.
-- **Recerca:** indicadors dels estudis de l’equip.
+- **Recerca:** indicadors dels estudis de l’equip i seguiment per infermera referent.
 
 ## Implantació per fases
 

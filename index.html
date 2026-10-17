@@ -347,6 +347,44 @@ td.n,th.n{text-align:right}td.tb{color:var(--bad);font-weight:700}td.ts{color:va
 }
 @media (max-width:380px){.grid3{grid-template-columns:repeat(2,minmax(0,1fr))}.tile.sq{min-height:132px;padding:13px}.prog em{display:none}}
 @media (prefers-reduced-motion:reduce){.sbar span,.tile{transition:none}.bigstat{animation:none}}
+/* Avui */
+.ttiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.ttile{border:0;border-radius:18px;padding:16px;text-align:left;font:inherit;display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;column-gap:12px;align-items:center;color:var(--ink);background:var(--card);border:2px solid transparent}
+.ttile .tic{grid-row:1 / 3;width:46px;height:46px;border-radius:14px;display:grid;place-items:center;color:#fff}
+.ttile b{font-family:var(--mono);font-size:34px;line-height:1;font-variant-numeric:tabular-nums}
+.ttile span:last-child{font-size:13.5px;color:var(--muted);font-weight:600}
+.t-acc .tic{background:var(--accent)}.t-acc b{color:var(--accent)}
+.t-bad .tic{background:var(--bad)}.t-bad b{color:var(--bad)}
+.t-sil .tic{background:var(--sil)}.t-sil b{color:var(--sil)}
+.ttile[aria-pressed="true"]{border-color:currentColor}
+.t-acc[aria-pressed="true"]{border-color:var(--accent)}.t-bad[aria-pressed="true"]{border-color:var(--bad)}.t-sil[aria-pressed="true"]{border-color:var(--sil)}
+.tcols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:start}
+.tcols.one{grid-template-columns:minmax(0,1fr);max-width:760px}
+.tcol{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;min-width:0}
+.tcol header{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line)}
+.tcol header h3{font-size:15px;flex:1}
+.tcol header em{font-style:normal;font-family:var(--mono);font-weight:600;font-size:14px;background:var(--sunk);border-radius:999px;padding:1px 9px}
+.th{width:28px;height:28px;border-radius:9px;display:grid;place-items:center;color:#fff}
+.th.acc{background:var(--accent)}.th.bad{background:var(--bad)}.th.sil{background:var(--sil)}
+.trow{display:flex;align-items:center;gap:6px;border-top:1px solid var(--line);padding-right:10px}
+.tcol header+.trow{border-top:0}
+.tmain{flex:1;min-width:0;display:flex;gap:10px;align-items:flex-start;border:0;background:none;text-align:left;font:inherit;padding:11px 4px 11px 14px}
+.tmain:hover{background:var(--sunk)}
+.tdot{width:10px;height:10px;border-radius:50%;margin-top:5px;flex:none;background:var(--accent)}
+.trow.bad .tdot{background:var(--bad)}.trow.warn .tdot{background:var(--warn)}.trow.sil .tdot{background:var(--sil)}
+.tmain .tt{display:flex;flex-direction:column;gap:2px;min-width:0}
+.tl1{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.tl2{font-size:14px;font-weight:600;color:var(--ink)}
+.trow.bad .tl2{color:var(--bad)}.trow.warn .tl2{color:var(--warn)}.trow.sil .tl2{color:var(--sil)}
+.tl3{font-size:12px;color:var(--muted)}
+.tact{flex:none;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 10px;font-weight:600;font-size:12.5px;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:68px}
+.tact:hover{border-color:var(--accent);color:var(--accent)}
+.tempty{display:flex;gap:6px;align-items:center;padding:16px 14px;color:var(--ok);font-weight:600;font-size:13.5px;margin:0}
+.tfoot{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;font-size:13.5px;color:var(--muted)}
+.tfoot>span{display:flex;gap:6px;align-items:center;color:var(--ok)}.tfoot b{font-family:var(--mono)}
+.crow.done{border-left-color:var(--ok)}
+@media (max-width:1100px){.tcols{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:620px){.ttiles{gap:8px}.ttile{grid-template-columns:1fr;grid-template-rows:auto;padding:12px;gap:4px}.ttile .tic{grid-row:auto;width:34px;height:34px;border-radius:10px}.ttile b{font-size:28px}.ttile span:last-child{font-size:12px;line-height:1.25}}
 </style>
 </head>
 <body>
@@ -779,36 +817,40 @@ function stack(R){var c={bad:0,warn:0,silence:0,ok:0};R.forEach(function(r){c[r.
   return'<div class="stack" role="img" aria-label="'+c.bad+' alerta, '+c.warn+' vigilar, '+c.silence+' sense registre, '+c.ok+' estables">'+["bad","warn","silence","ok"].map(function(k){return c[k]?'<span style="width:'+(c[k]/n*100)+'%;background:'+COL[k]+'">'+c[k]+'</span>':''}).join("")+'</div>'}
 function ring(pct,col){var r=20,C=2*Math.PI*r;return'<svg width="54" height="54" viewBox="0 0 54 54" role="img" aria-label="Adherència '+pct+'%"><circle cx="27" cy="27" r="'+r+'" fill="none" stroke="var(--sunk)" stroke-width="6"/><circle cx="27" cy="27" r="'+r+'" fill="none" stroke="'+col+'" stroke-width="6" stroke-linecap="round" stroke-dasharray="'+(C*pct/100).toFixed(1)+' '+C.toFixed(1)+'" transform="rotate(-90 27 27)"/><text x="27" y="31" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)" font-family="var(--mono)">'+pct+'%</text></svg>'}
 
-/* ---------- Inici ---------- */
-function vIni(){
-  var now=Date.now(),R=rows(now),pm=pendingMsgs(),alta=pm.filter(function(m){return m.prio==="alta"}).length;
-  var al=R.filter(function(r){return r.s.pending&&r.s.st!=="silence"}).length,sil=R.filter(function(r){return r.s.pending&&r.s.st==="silence"}).length,adh=Math.round(R.reduce(function(s,r){return s+r.s.adh},0)/R.length);
-  var h='<div class="kpis5">'+
-    '<button type="button" class="kpi k-acc" data-tab="bus"><b>'+pm.length+'</b><span>consultes noves</span></button>'+
-    '<button type="button" class="kpi k-bad" data-tab="bus"><b>'+alta+'</b><span>alta prioritat</span></button>'+
-    '<button type="button" class="kpi k-warn" data-tab="pac"><b>'+al+'</b><span>alertes de constants</span></button>'+
-    '<button type="button" class="kpi k-sil" data-tab="pac"><b>'+sil+'</b><span>famílies en silenci</span></button>'+
-    '<div class="kpi"><b>'+adh+'%</b><span>adherència (14 d)</span></div></div>';
-  h+='<div class="igrid"><div class="col"><div class="sech"><h3>Programes</h3><span class="legend"><i style="background:var(--bad)"></i>Alerta<i style="background:var(--warn)"></i>Vigilar<i style="background:var(--sil)"></i>Silenci<i style="background:var(--ok)"></i>Estable</span></div><div class="pgrid">';
-  GROUPS.forEach(function(G){var k=G[0],g=PROG[k],L=R.filter(function(r){return G[1].indexOf(r.p.prog)>=0}),att=L.filter(function(r){return r.s.pending}),a=Math.round(L.reduce(function(s,r){return s+r.s.adh},0)/(L.length||1)),nm=pm.filter(function(m){return S.patients[m.code].prog===k}).length;
-    h+='<div class="pcard" style="--pc:'+g.c+'"><button type="button" class="pch" data-prog="'+k+'"><span class="pic" style="background:'+g.c+'">'+ico(PICON[k],20)+'</span><span class="tt"><b>'+g.n+'</b><span>'+g.full+'</span></span>'+ring(a,g.c)+'</button>'+stack(L)+
-      '<div class="pmeta"><span><b>'+L.length+'</b> pacients</span><span><b>'+nm+'</b> consultes noves</span></div>'+
-      (att.length?'<div class="att">'+att.slice(0,3).map(function(r){return'<button type="button" class="arow" data-pat="'+r.p.code+'"><i style="background:'+COL[r.s.st]+'"></i><span class="mono">'+r.p.code+'</span><span class="aw">'+esc(whyText(r))+'</span>'+ico("chev",16)+'</button>'}).join("")+'</div>':'<p class="note okn">'+ico("check",14)+' Tots estables</p>')+'</div>'});
-  h+='</div>'+vAct(now)+'</div><div class="col"><div class="sech"><h3>Consultes noves</h3><button type="button" class="link" data-tab="bus">Bústia →</button></div><div class="clist">';
-  var L=pm.slice().sort(function(a,b){return((a.prio==="alta"?0:1)-(b.prio==="alta"?0:1))||(b.t-a.t)});
-  h+=L.length?L.map(function(m){var p=S.patients[m.code];return'<button type="button" class="crow '+m.prio+'" data-pat="'+m.code+'"><span class="pic sm" style="background:'+PROG[p.prog].c+'">'+ico(PICON[p.prog],15)+'</span><span class="tt"><b>'+esc(m.title)+'</b><span><span class="mono">'+m.code+'</span> · '+ago(m.t,now)+' · '+esc(destName(m.to,p.uba))+'</span></span>'+(m.prio==="alta"?'<span class="pill alta">'+(m.crit?"Urgent":"Alta")+'</span>':'')+'</button>'}).join(""):'<p class="note" style="padding:12px">Cap consulta pendent.</p>';
-  h+='</div>'+vUBA(R,now)+'</div></div>';
-  return h;
+/* ---------- Avui: what is happening ---------- */
+function todayLists(now){
+  var R=rows(now),pm=pendingMsgs().slice().sort(function(a,b){return((a.crit?0:a.prio==="alta"?1:2)-(b.crit?0:b.prio==="alta"?1:2))||(b.t-a.t)});
+  var al=R.filter(function(r){return r.s.pending&&(r.s.st==="bad"||r.s.st==="warn")}).sort(function(a,b){return(a.s.st==="bad"?0:1)-(b.s.st==="bad"?0:1)});
+  var sil=R.filter(function(r){return r.s.pending&&r.s.st==="silence"}).sort(function(a,b){return b.s.silentDays-a.s.silentDays});
+  var ok=R.filter(function(r){return!r.s.pending}).length;
+  return{R:R,pm:pm,al:al,sil:sil,ok:ok};
 }
-function vAct(now){
-  var days=14,W=560,Hh=150,Lf=26,Rr=6,T=12,B=22,pw=W-Lf-Rr,ph=Hh-T-B,bins=[];
-  for(var d=days-1;d>=0;d--){var o={d:d};Object.keys(PROG).forEach(function(k){o[k]=0});bins.push(o)}
-  codes().forEach(function(c){var p=S.patients[c];S.readings[c].items.forEach(function(x){var d=Math.floor((now-x.t)/D);if(d<days)bins[days-1-d][p.prog]++})});
-  var mx=Math.max.apply(null,bins.map(function(b){return Object.keys(PROG).reduce(function(s,k){return s+b[k]},0)}))||1,bw=pw/days,g="";
-  [0,Math.round(mx/2),mx].forEach(function(v){var y=T+ph-v/mx*ph;g+='<line x1="'+Lf+'" x2="'+(W-Rr)+'" y1="'+y+'" y2="'+y+'" stroke="var(--line)"/><text x="'+(Lf-5)+'" y="'+(y+4)+'" text-anchor="end" font-size="10" fill="var(--muted)">'+v+'</text>'});
-  bins.forEach(function(b,i){var y=T+ph,x=Lf+i*bw+bw*.18;Object.keys(PROG).forEach(function(k){var hgt=b[k]/mx*ph;if(hgt>0){y-=hgt;g+='<rect x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+(bw*.64).toFixed(1)+'" height="'+hgt.toFixed(1)+'" fill="'+PROG[k].c+'"/>'}});
-    if(i%2===1||i===days-1)g+='<text x="'+(x+bw*.32).toFixed(1)+'" y="'+(Hh-6)+'" text-anchor="middle" font-size="10" fill="var(--muted)">'+(b.d===0?"avui":"-"+b.d+"d")+'</text>'});
-  return'<div class="card"><div class="sech"><h3>Registres de les famílies</h3><span class="note">últims 14 dies</span></div><svg viewBox="0 0 '+W+' '+Hh+'" class="chart" role="img" aria-label="Registres diaris per programa">'+g+'</svg><div class="legend" style="margin-top:4px">'+Object.keys(PROG).map(function(k){return'<i style="background:'+PROG[k].c+'"></i>'+k}).join("")+'</div></div>';
+function tRow(o){
+  return'<div class="trow '+o.c+'"><button type="button" class="tmain" data-pat="'+o.code+'"><span class="tdot"></span><span class="tt"><span class="tl1"><b class="mono">'+o.code+'</b>'+pchip(o.prog)+(o.badge?'<span class="pill alta">'+o.badge+'</span>':'')+'</span><span class="tl2">'+esc(o.what)+'</span><span class="tl3">'+esc(o.meta)+'</span></span></button>'+o.act+'</div>';
+}
+function vIni(){
+  var now=Date.now(),M=ui.mun,T=todayLists(now),f=M.f||"tot";
+  function tile(k,n,l,c,ic){return'<button type="button" class="ttile '+c+'" data-tf="'+k+'" aria-pressed="'+(f===k)+'"><span class="tic">'+ico(ic,22)+'</span><b>'+n+'</b><span>'+l+'</span></button>'}
+  var h='<div class="ttiles">'+tile("pet",T.pm.length,T.pm.length===1?"petició nova":"peticions noves","t-acc","doc")+tile("al",T.al.length,T.al.length===1?"alerta de constants":"alertes de constants","t-bad","alert")+tile("sil",T.sil.length,"sense seguiment","t-sil","phone")+'</div>';
+  if(f!=="tot")h+='<button type="button" class="link" data-tf="tot">'+ico("back",16)+' Veure-ho tot</button>';
+  var cols='';
+  if(f==="tot"||f==="pet"){
+    var L=T.pm.map(function(m){var p=S.patients[m.code];return tRow({c:m.crit?"bad":m.prio==="alta"?"bad":"acc",code:m.code,prog:p.prog,badge:m.crit?"Urgent":m.prio==="alta"?"Alta":"",what:m.title+(m.signs&&m.signs.length?" · "+m.signs.length+(m.signs.length>1?" signes":" signe")+" d’alarma":""),meta:KIND[m.kind]+" · "+ago(m.t,now)+" · per a "+destName(m.to,p.uba),act:'<button type="button" class="tact" data-ma="done" data-id="'+m.id+'">'+ico("check",16)+'<span>Resolt</span></button>'})}).join("");
+    cols+='<section class="tcol"><header><span class="th acc">'+ico("doc",16)+'</span><h3>Peticions de les famílies</h3><em>'+T.pm.length+'</em></header>'+(L||'<p class="tempty">'+ico("check",16)+' Cap petició pendent</p>')+'</section>';
+  }
+  if(f==="tot"||f==="al"){
+    var L2=T.al.map(function(r){return tRow({c:r.s.st==="bad"?"bad":"warn",code:r.p.code,prog:r.p.prog,badge:"",what:r.s.ev.why.join(" · "),meta:"Registre "+ago(r.s.last.t,now)+" · Infermeria UBA "+r.p.uba,act:'<button type="button" class="tact" data-rev="'+r.p.code+'" data-note="Alerta revisada">'+ico("check",16)+'<span>Revisat</span></button>'})}).join("");
+    cols+='<section class="tcol"><header><span class="th bad">'+ico("alert",16)+'</span><h3>Alertes de constants</h3><em>'+T.al.length+'</em></header>'+(L2||'<p class="tempty">'+ico("check",16)+' Cap alerta pendent</p>')+'</section>';
+  }
+  if(f==="tot"||f==="sil"){
+    var L3=T.sil.map(function(r){var g=PROG[r.p.prog],rem=r.s.last.t+g.freq*1.5*D,late=now-rem>24*H;return tRow({c:"sil",code:r.p.code,prog:r.p.prog,badge:"",what:"Fa "+r.s.silentDays+" dies que no registra (cada "+(g.freq===1?"dia":g.freq+" dies")+")",meta:"Recordatori automàtic enviat "+ago(rem,now)+(late?" · sense resposta: cal trucar":"")+" · "+r.p.carer,act:'<button type="button" class="tact" data-rev="'+r.p.code+'" data-note="Trucada a la família">'+ico("phone",16)+'<span>He trucat</span></button>'})}).join("");
+    cols+='<section class="tcol"><header><span class="th sil">'+ico("phone",16)+'</span><h3>Sense seguiment</h3><em>'+T.sil.length+'</em></header>'+(L3||'<p class="tempty">'+ico("check",16)+' Totes les famílies registren</p>')+'</section>';
+  }
+  h+='<div class="tcols'+(f!=="tot"?" one":"")+'">'+cols+'</div>';
+  var done=S.msgs.filter(function(m){return m.status==="atès"}).sort(function(a,b){return b.t-a.t});
+  h+='<div class="tfoot"><span>'+ico("check",16)+' <b>'+T.ok+'</b> de '+T.R.length+' pacients sense res pendent</span><button type="button" class="link" data-hist="1">'+(M.hist?"Amagar":"Veure")+' peticions ateses ('+done.length+')</button></div>';
+  if(M.hist)h+='<div class="clist">'+done.map(function(m){var p=S.patients[m.code];return'<button type="button" class="crow done" data-pat="'+m.code+'"><span class="pic sm" style="background:'+PROG[p.prog].c+'">'+ico(PICON[p.prog],15)+'</span><span class="tt"><b>'+esc(m.title)+'</b><span><span class="mono">'+m.code+'</span> · '+ago(m.t,now)+' · '+esc(m.log[m.log.length-1])+'</span></span></button>'}).join("")+'</div>';
+  return h;
 }
 function vUBA(R,now){
   var Nn={};R.forEach(function(r){var k=r.p.uba;Nn[k]=Nn[k]||{n:0,al:0,sil:0,rev:0};var o=Nn[k];o.n++;if(r.s.pending&&r.s.st!=="silence")o.al++;if(r.s.pending&&r.s.st==="silence")o.sil++;if(r.p.reviewedAt&&now-r.p.reviewedAt<24*H)o.rev++});
@@ -963,18 +1005,18 @@ function vRec(){
    card(["DM2"],"Hipoglucèmies i peu diabètic notificats des de casa","Variables: glucosa, hipoglucèmies i ferides al peu amb foto.",dm2.length,80,[[avg(dm2)+"%","adherència"],[S.msgs.filter(function(m){return S.patients[m.code].prog==="DM2"}).length,"notificacions"]])+
    card(["PCC","MACA"],"Pla compartit (PIIC) i control de símptomes","Variables: dolor, son, ingesta i sobrecàrrega del cuidador.",pm.length,40,[[avg(pm)+"%","adherència"],[pm.filter(function(r){return r.s.ev.why.some(function(w){return/Cuidador/.test(w)})}).length,"cuidadors esgotats"]])+
    card(["ATDOM"],"Ferides i continuïtat infermera al domicili","Meta: continuïtat infermera ≥ 75%. Ferides noves detectades amb foto.",at.length,50,[[avg(at)+"%","adherència"],[S.msgs.filter(function(m){return/ferida|nafra/i.test(m.title)}).length,"ferides notificades"]])+
-  '</div><p class="note">Xifres d’exemple. L’explotació real seria anonimitzada i aprovada pel comitè d’ètica.</p>';
+  '</div>'+vUBA(R,now)+'<p class="note">Xifres d’exemple. L’explotació real seria anonimitzada i aprovada pel comitè d’ètica.</p>';
   return h;
 }
 
 /* ---------- shell ---------- */
 function vMun(){
   var M=ui.mun,pm=pendingMsgs().length,pr=proposals().length;
-  var T=[["ini","Inici","gauge",0],["pac","Pacients","users",0],["bus","Bústia","doc",pm],["dem","Previsió","bolt",0],["ia","Motius IA","sparkle",pr],["rec","Recerca","search",0]];
+  var td=todayLists(Date.now()),nt=td.pm.length+td.al.length+td.sil.length;var T=[["ini","Avui","alert",nt],["pac","Pacients","users",0],["dem","Previsió","bolt",0],["ia","Motius IA","sparkle",pr],["rec","Recerca","search",0]];
   var cur=M.pat?"pac":M.tab;
   var nav='<nav class="pnav" aria-label="Seccions">'+T.map(function(t){return'<button type="button" data-tab="'+t[0]+'" aria-current="'+(cur===t[0]?"page":"false")+'">'+ico(t[2],18)+'<span>'+t[1]+'</span>'+(t[3]?'<em class="cnt">'+t[3]+'</em>':'')+'</button>'}).join("")+'</nav>';
-  var title=M.pat?"Fitxa del pacient":{ini:"Tauler",pac:"Pacients en seguiment",bus:"Bústia de consultes",dem:"Previsió de la demanda",ia:"Motius detectats per l’assistent",rec:"Recerca de l’equip"}[M.tab];
-  var body=M.pat?vPat(M.pat):M.tab==="ini"?vIni():M.tab==="pac"?vPac():M.tab==="bus"?vBus():M.tab==="dem"?vDem():M.tab==="ia"?vIA():vRec();
+  var title=M.pat?"Fitxa del pacient":{ini:"Què cal fer avui",pac:"Pacients en seguiment",bus:"Bústia de consultes",dem:"Previsió de la demanda",ia:"Motius detectats per l’assistent",rec:"Recerca de l’equip"}[M.tab];
+  var body=M.pat?vPat(M.pat):M.tab==="ini"?vIni():M.tab==="pac"?vPac():M.tab==="dem"?vDem():M.tab==="ia"?vIA():vRec();
   return'<div class="pro">'+nav+'<section class="pmain"><div class="ptitle"><h2>'+title+'</h2><span class="note">Microequip A i B · '+new Date().toLocaleDateString("ca",{weekday:"long",day:"numeric",month:"long"})+'</span></div>'+body+'</section></div>';
 }
 /* ---------- state, render, events ---------- */
@@ -1005,7 +1047,7 @@ function numVar(k){return VARS[ui.inn.prof].concat([CUID]).filter(function(x){re
 document.querySelector(".top").addEventListener("click",function(e){if(e.target.closest("[data-go]"))go("home")});
 app.addEventListener("click",function(e){
   var b=e.target.closest("button");if(!b)return;var d=b.dataset,I=ui.inn,M=ui.mun;
-  if(d.go){if(d.go==="mun"){M.tab=ui.screen==="inn"?"bus":M.tab;M.pat=null}go(d.go);return}
+  if(d.go){if(d.go==="mun"){M.tab=ui.screen==="inn"?"ini":M.tab;M.pat=null}go(d.go);return}
   /* wizard */
   if(d.back){back();return}
   if(d.prof){I.prof=d.prof;I.vals=null;nav("what");return}
@@ -1025,6 +1067,8 @@ app.addEventListener("click",function(e){
   if(d.pat){if(!M.pat)M.from=M.tab;M.pat=d.pat;render();window.scrollTo(0,0);return}
   if(d.tab){M.tab=d.tab;M.pat=null;render();window.scrollTo(0,0);return}
   if(d.prog){M.tab="pac";M.prog=d.prog;M.pat=null;render();window.scrollTo(0,0);return}
+  if(d.tf){M.f=d.tf;render();return}
+  if(d.hist){M.hist=!M.hist;render();return}
   if(d.pf){M.prog=d.pf;render();return}
   if(d.bs){M.bs=d.bs;render();return}
   if(d.bt){M.bt=d.bt;render();return}
