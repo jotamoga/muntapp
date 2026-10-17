@@ -4,7 +4,7 @@ Prototip web per a l’**EAP Adults La Muntanyeta** (Castelldefels): previsió d
 
 > **Prototip de demostració amb dades fictícies.** No és un producte sanitari ni està connectat a cap sistema clínic. No hi introduïu dades reals de pacients.
 
-**Demo:** https://USUARI.github.io/muntapp/ *(substituïu-ho per l’adreça de GitHub Pages)*
+**Demo:** https://jotamoga.github.io/muntapp/ 
 
 | Inici | InnovaMunt | Assistent | Bústia de l’equip | Previsió |
 | --- | --- | --- | --- | --- |
