@@ -34,6 +34,7 @@ Un assistent pas a pas, amb una pantalla per decisió i barra de progrés:
    - **Medicació** i **tràmits:** pantalles pròpies.
 4. **Destinatari:** infermeria, medicina, treball social o UAC, amb l’opció recomanada marcada.
 5. **Enviar:** resum i un sol resultat gràfic (urgent 112, prioritat alta, revisar avui, rebut o tot correcte).
+6. **Seguiment de la petició:** la família veu si l’han rebuda, qui l’ha assumit, quan la trucaran i quan s’ha resolt (també a «Les meves peticions»), amb consells d’autocura mentre espera i quan tornar a avisar.
 
 ### MuntApp · equip (web i mòbil)
 
@@ -41,12 +42,23 @@ Un assistent pas a pas, amb una pantalla per decisió i barra de progrés:
   - **Peticions de les famílies** (consultes noves, ordenades per urgència) → «Resolt».
   - **Alertes de constants** (valors fora de rang) → «Revisat».
   - **Sense seguiment:** famílies que han deixat de registrar. L’app els envia un recordatori automàtic i, si en 24 h no responen, avisa l’equip que cal trucar → «He trucat».
+  - **Escalat dels signes d’alarma:** si la infermera referent no està disponible (domicilis, absència…), la petició arriba també a la seva **UBA mirall**; si ningú la «Assumeix» en 30 minuts, avisa tot el **microequip**. Els signes urgents avisen el microequip a l’instant. Quan algú l’assumeix, la resta deixa de rebre l’avís. El selector «Veure com a» mostra què li toca a cada infermera.
+  - **Abans de l’alerta:** pacients encara dins de rang però amb una tendència que s’hi acosta (glucosa que puja, freqüència cardíaca que puja, menja menys…), per fer una trucada preventiva.
   - Tocar una fila obre la fitxa del pacient. Al peu, els pacients sense res pendent i l’historial de peticions ateses.
 - **Pacients:** filtre per programa i cerca. Cada fila mostra l’estat, el motiu, la tendència i l’adherència.
 - **Fitxa del pacient:** consultes pendents amb accions, gràfiques d’evolució de 28 dies amb els llindars d’alerta, calendari de registres, últims valors i cronologia d’incidències i consultes.
-- **Previsió:** visites i minuts lliures per UBA i microequip, semàfor de càrrega, escenaris i ordre de suport.
+- **Previsió (agendes dinàmiques):** visites i minuts lliures per UBA i microequip, semàfor de càrrega, escenaris i ordre de suport. A cada tall, MuntApp dona indicacions que es retroalimenten:
+  1. **Mig tall (14 h):** quina UBA de relleu obre forats i si la demanda creix respecte a la setmana anterior.
+  2. **Final del dia (19.45 h):** proposta per a la setmana vinent (moure controls de crònics estables al dia amb menys càrrega), amb el botó «Aplicar».
+  3. **Cada 2 setmanes:** recalibrar la plantilla de cada dia segons la tendència (menys crònics i més forats del mateix dia si creix; recuperar crònics si baixa).
+  4. **Cada mes:** tendència de 4 setmanes i error de previsió, per revisar-ho amb l’equip (PDCA).
+  Cada ajust aplicat mostra el seu efecte en la previsió i es pot desfer.
 - **Motius IA:** textos lliures de les famílies. Si un motiu es repeteix 3 vegades o més en 30 dies, l’assistent proposa afegir-lo com a opció o crear-ne una de nova. L’equip decideix.
 - **Recerca:** indicadors dels estudis de l’equip i seguiment per infermera referent.
+
+## InnovaMunt, La Meva Salut i eOSS
+
+InnovaMunt no vol ser una altra app. La eConsulta de La Meva Salut és la porta d’entrada de tot Catalunya, però és asíncrona i no pregunta signes d’alarma. eOSS (Hospital de Bellvitge) fa telemonitoratge excel·lent de la insuficiència cardíaca, liderat des de l’hospital. InnovaMunt aporta el que falta a l’atenció primària: tots els programes de crònics i el domicili, la infermera de la UBA i el microequip, el cuidador com a usuari i la connexió amb les agendes. Està pensat per integrar-se a La Meva Salut (HES) i conviure amb eOSS.
 
 ## Implantació per fases
 

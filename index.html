@@ -385,6 +385,65 @@ td.n,th.n{text-align:right}td.tb{color:var(--bad);font-weight:700}td.ts{color:va
 .crow.done{border-left-color:var(--ok)}
 @media (max-width:1100px){.tcols{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:620px){.ttiles{gap:8px}.ttile{grid-template-columns:1fr;grid-template-rows:auto;padding:12px;gap:4px}.ttile .tic{grid-row:auto;width:34px;height:34px;border-radius:10px}.ttile b{font-size:28px}.ttile span:last-child{font-size:12px;line-height:1.25}}
+/* escalation */
+.ttop{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.mesel{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px 6px 4px 12px;font-size:13px;font-weight:600;color:var(--muted)}
+.mesel select{width:auto;border:0;background:var(--sunk);font-size:14px;font-weight:600;padding:7px 10px;border-radius:9px}
+.sban{display:flex;gap:12px;align-items:center;text-align:left;font:inherit;font-size:13.5px;border:2px solid var(--warm);background:var(--warm-soft);color:var(--ink);border-radius:16px;padding:12px 14px;width:100%}
+.sban b{font-size:15px}
+.sbi{width:42px;height:42px;border-radius:12px;background:var(--warm);color:#fff;display:grid;place-items:center;flex:none;animation:ring 1.6s ease-in-out infinite}
+.sban>span:nth-child(2){flex:1}
+@keyframes ring{0%,100%{transform:rotate(0)}10%{transform:rotate(-12deg)}20%{transform:rotate(12deg)}30%{transform:rotate(0)}}
+.pill.mine{background:var(--warm);color:#fff;display:inline-flex;gap:3px;align-items:center}
+.trow.mine{background:var(--warm-soft);box-shadow:inset 4px 0 0 var(--warm)}
+.esc{display:flex;flex-wrap:wrap;gap:3px;align-items:center;margin-top:4px}
+.esc i{font-style:normal;color:var(--muted);font-size:12px}
+.en{font-size:11px;font-weight:600;border-radius:6px;padding:2px 6px;display:inline-flex;gap:3px;align-items:center}
+.en.on{background:var(--accent-soft);color:var(--accent)}
+.en.off{background:var(--sunk);color:var(--muted)}
+.en.idle{background:transparent;color:var(--muted);border:1px dashed var(--line)}
+.en.ok{background:var(--ok-bg);color:var(--ok)}
+.tact.hot,.acts button.hot{background:var(--warm);border-color:var(--warm);color:#fff}
+.tact.hot:hover{color:#fff;filter:brightness(1.05)}
+.escn{display:flex;gap:6px;align-items:flex-start;text-align:left;max-width:420px;background:var(--sunk);border-radius:12px;padding:10px 12px}
+@media (prefers-reduced-motion:reduce){.sbi{animation:none}}
+/* recommendations */
+.recs{display:flex;flex-direction:column;gap:12px}
+.rsec{display:flex;flex-direction:column;gap:6px}
+.rh{display:flex;gap:8px;align-items:center;font-size:14px}.rh em{margin-left:auto;font-style:normal;font-size:12px;color:var(--muted)}
+.rk{width:22px;height:22px;border-radius:50%;background:var(--ink);color:var(--bg);display:grid;place-items:center;font-size:12px;font-weight:700;flex:none}
+.rl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.rl li{display:flex;gap:8px;align-items:center;border-left:4px solid var(--line);background:var(--sunk);border-radius:6px;padding:8px 10px;font-size:13.5px}
+.rl li>span{flex:1}
+.rl li.bad{border-color:var(--bad)}.rl li.warn{border-color:var(--warn)}.rl li.ok{border-color:var(--ok)}.rl li.info{border-color:var(--accent)}
+.rbtn{border:0;background:var(--accent);color:var(--on-accent);font-weight:700;font-size:12.5px;padding:7px 10px;border-radius:8px;flex:none}
+.rbtn.sec{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+b.tb{color:var(--bad)}
+/* tracking, self-care, risk */
+.trk{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.trk li{display:grid;grid-template-columns:26px 1fr;gap:10px;position:relative;padding-bottom:12px}
+.trk li:before{content:"";position:absolute;left:12px;top:24px;bottom:0;width:2px;background:var(--line)}
+.trk li:last-child{padding-bottom:0}.trk li:last-child:before{display:none}
+.trk i{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;border:2px solid var(--line);background:var(--card);color:#fff}
+.trk li.ok i{background:var(--ok);border-color:var(--ok)}
+.trk li.now i{border-color:var(--warm);box-shadow:0 0 0 4px var(--warm-soft);animation:pulse 1.6s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 7px var(--warm-soft)}}
+.trk b{display:block;font-size:14.5px}.trk span{display:block;font-size:12.5px;color:var(--muted)}
+.trk li.wait b{color:var(--muted);font-weight:600}
+.trcard{display:flex;flex-direction:column;gap:10px}
+.trh{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.care{width:100%;text-align:left;background:var(--ok-bg);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:6px}
+.care>b{display:flex;gap:6px;align-items:center;color:var(--ok);font-size:15px}
+.care ul{margin:0;padding-left:20px;font-size:14px;display:flex;flex-direction:column;gap:3px}
+.cback{display:flex;gap:6px;align-items:flex-start;font-size:13px;font-weight:600;color:var(--bad);margin-top:4px}
+.trackt{border-color:var(--accent)}
+.risk{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--warn);border-radius:16px;overflow:hidden}
+.risk header{display:flex;gap:10px;align-items:center;padding:12px 14px;border-bottom:1px solid var(--line)}
+.risk header h3{font-size:15px}
+.th.rk2{background:var(--warn)}
+.rbar{width:10px;height:38px;border-radius:5px;background:var(--sunk);display:flex;align-items:flex-end;overflow:hidden;flex:none;margin-top:2px}
+.rbar i{display:block;width:100%;background:var(--warn);border-radius:5px}
+@media (prefers-reduced-motion:reduce){.trk li.now i{animation:none}}
 </style>
 </head>
 <body>
@@ -431,7 +490,8 @@ var IC={
  chev:"M9 6l6 6-6 6",
  back:"M15 6l-6 6 6 6",
  phone:"M22 16.9v3a2 2 0 0 0-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z",
- x:"M18 6L6 18M6 6l12 12"
+ x:"M18 6L6 18M6 6l12 12",
+ bell:"M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"
 };
 function ico(n,sz){return'<svg width="'+(sz||22)+'" height="'+(sz||22)+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="'+IC[n]+'"/></svg>'}
 var PICON={ICC:"heart",DM2:"drop",PCC:"users",MACA:"leaf",ATDOM:"home"};
@@ -514,6 +574,24 @@ function search(q){
 }
 function libItem(id){return LIB.filter(function(p){return p.id===id})[0]}
 function keyOf(text){var w=norm(text).replace(/[^a-z\s]/g," ").split(/\s+/).filter(function(x){return x.length>=4&&STOP.indexOf(x)<0});return w[0]||"altres"}
+
+/* self-care while waiting (from nurse acute-demand protocols; to validate with the team) */
+var CARE={
+ ferida:[["Renteu la ferida amb sèrum fisiològic o aigua i sabó","Tapeu-la amb una gasa neta, sense cremes ni pomades","No traieu crostes ni punxeu butllofes"],["Febre o vermellor que s’estén","Supura molt o fa més pudor"]],
+ nafra:[["Canvieu-lo de posició cada 2–3 hores","Mantingueu la pell neta i seca","No feu massatges sobre la zona vermella"],["La pell s’obre o surt líquid","Zona negra o morada"]],
+ restrenyiment:[["Beveu 6–8 gots d’aigua si no hi ha restricció de líquids","Fruita amb pell, verdura i kiwi","Camineu una mica si és possible"],["Dolor fort de panxa o vòmits","Panxa molt inflada i dura"]],
+ diarrea:[["Beveu sovint en petites quantitats (sèrum oral)","Dieta astringent: arròs, poma, pastanaga","Rentat de mans freqüent"],["Sang a les femtes","Més de 6 deposicions al dia o no orina"]],
+ febre:[["Paracetamol segons la pauta habitual","Beveu líquids i roba lleugera","Preneu la temperatura cada 6 hores"],["Més de 39 °C o tremolors","Confusió nova o dificultat per respirar"]],
+ tos:[["Beveu líquids i humitegeu l’ambient","Mel amb llimona (no en diabetis mal controlada)","Reposeu amb el capçal alt"],["Ofec o saturació per sota de 92%","Febre de més de 3 dies"]],
+ hipo:[["Preneu 15 g de sucre (un got de suc o 3 terrossos)","Torneu a mirar la glucosa en 15 minuts","Quan pugi, mengeu pa o galetes"],["No es recupera o està confús","Hipoglucèmies repetides"]],
+ hiper:[["Beveu aigua","Mireu la glucosa cada 4 hores","No deixeu la insulina sense consultar"],["Més de 300 mg/dL dues vegades","Vòmits, molta set o somnolència"]],
+ caiguda:[["Si no hi ha dolor, ajudeu-lo a aixecar-se a poc a poc","Gel 15 minuts als cops","Retireu catifes i obstacles"],["Dolor fort o no pot caminar","Cop al cap amb anticoagulants o vòmits"]],
+ cames:[["Cames enlaire quan seu","Pes cada matí, en dejú","Limiteu la sal"],["Ofec en estirar-se","Pes +2 kg en 3 dies"]],
+ ofec:[["Seieu-lo incorporat","Mesureu la saturació si teniu pulsioxímetre","Preneu la medicació habitual"],["Saturació per sota de 90% o llavis morats","Ofec en repòs que no millora: 112"]],
+ dolornc:[["Doneu el rescat pautat i anoteu l’hora","Posició còmoda i ambient tranquil","Calor local si l’alleuja"],["El rescat no fa efecte en 30 min","Dolor nou o diferent"]],
+ cuidador:[["Demaneu ajuda a un altre familiar avui","Feu una pausa curta i mengeu","Treball social us trucarà per valorar suports"],["Sentiu que no podeu continuar avui"]]
+};
+var CARE_GEN=[["Anoteu com evoluciona i a quina hora","Seguiu amb la medicació habitual","Tingueu a mà la llista de medicaments"],["Empitjora ràpidament","Febre, ofec o dolor fort"]];
 /* ---------- programs, variables, demo data ---------- */
 var D=864e5,H=36e5;
 function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
@@ -549,10 +627,10 @@ var DEST={inf:{n:"Infermeria",d:"La vostra infermera de la UBA"},med:{n:"Medicin
 function destName(to,u){return to==="inf"?"Infermeria UBA "+u:to==="med"?"Medicina UBA "+u:to==="ts"?"Treball social":"UAC"}
 var SEED=[
  ["P-0217",79,"ICC",1,"Parella","ok"],["P-0142",84,"ICC",3,"Filla","weight"],["P-0538",80,"ICC",2,"Fill","silence"],
- ["P-0733",66,"DM2",2,"Ell mateix","ok"],["P-0781",71,"DM2",4,"Parella","hiper"],["P-0820",59,"DM2",5,"Ella mateixa","ok"],
+ ["P-0733",66,"DM2",2,"Ell mateix","ok"],["P-0781",71,"DM2",4,"Parella","hiper"],["P-0820",59,"DM2",5,"Ella mateixa","drift"],
  ["P-0355",76,"PCC",2,"Parella","ok"],["P-0466",73,"PCC",3,"Fill","silence"],["P-0644",81,"PCC",4,"Filla","fever"],
  ["P-0602",94,"MACA",5,"Néta","burden"],["P-0398",91,"MACA",4,"Filla","pain"],
- ["P-0301",88,"ATDOM",3,"Fill","ok"],["P-0511",86,"ATDOM",1,"Filla","ok"],["P-0703",90,"ATDOM",2,"Parella","silence"]
+ ["P-0301",88,"ATDOM",3,"Fill","ok"],["P-0511",86,"ATDOM",1,"Filla","drift"],["P-0703",90,"ATDOM",2,"Parella","silence"]
 ];
 var PROFILE={ICC:"P-0217",DM2:"P-0733",PCC:"P-0355",MACA:"P-0602",ATDOM:"P-0301"};
 function rnd(seed){var x=0;for(var i=0;i<seed.length;i++)x=(x*31+seed.charCodeAt(i))%2147483647;return function(){x=(x*48271)%2147483647;return x/2147483647}}
@@ -565,10 +643,10 @@ function gen(now){
       var t=now-d*D-(d===0?2*H:(8+Math.floor(r()*4))*H),v={};
       if(prog==="ICC"){v.pes=+(78+(r()-.5)*.6).toFixed(1);v.tas=Math.round(128+(r()-.5)*12);v.tad=Math.round(74+(r()-.5)*8);v.fc=Math.round(76+(r()-.5)*10);v.sat=Math.round(95+r()*2);v.dispnea="Igual";v.edemes="No";
         if(sc==="weight"&&d<=2){v.pes=[80.4,79.4,78.6][d];v.fc=[96,88,82][d];v.sat=[93,94,95][d];if(d===0){v.edemes="Sí";v.dispnea="Pitjor"}}}
-      if(prog==="DM2"){v.glucosa=Math.round(145+(r()-.5)*40);v.tas=Math.round(132+(r()-.5)*12);v.tad=Math.round(78+(r()-.5)*8);v.pes=+(84+(r()-.5)*.8).toFixed(1);v.hipo="No";if(sc==="hiper"&&d<=6)v.glucosa=({0:318,3:276,6:262})[d]||v.glucosa}
+      if(prog==="DM2"){v.glucosa=Math.round(145+(r()-.5)*40);v.tas=Math.round(132+(r()-.5)*12);v.tad=Math.round(78+(r()-.5)*8);v.pes=+(84+(r()-.5)*.8).toFixed(1);v.hipo="No";if(sc==="drift"&&d<=9)v.glucosa=Math.round(236-d*9);if(sc==="hiper"&&d<=6)v.glucosa=({0:318,3:276,6:262})[d]||v.glucosa}
       if(prog==="PCC"){v.tas=Math.round(134+(r()-.5)*14);v.tad=Math.round(78+(r()-.5)*8);v.fc=Math.round(78+(r()-.5)*10);v.sat=Math.round(94+r()*3);v.temp=+(36.4+r()*.5).toFixed(1);v.estat="Bé";if(sc==="fever"&&d<=3){v.temp=d===0?38.4:37.8;v.fc=d===0?104:92;v.estat="Regular"}}
       if(prog==="MACA"){v.dolor=Math.round(3+r()*2);v.son="Regular";v.ingesta="Menys";v.estat="Regular";if(sc==="pain"&&d<=4)v.dolor=[8,7,6,5,5][d]}
-      if(prog==="ATDOM"){v.tas=Math.round(126+(r()-.5)*14);v.tad=Math.round(72+(r()-.5)*8);v.fc=Math.round(80+(r()-.5)*10);v.temp=+(36.3+r()*.5).toFixed(1);v.sat=Math.round(94+r()*3);v.ingesta="Normal"}
+      if(prog==="ATDOM"){v.tas=Math.round(126+(r()-.5)*14);v.tad=Math.round(72+(r()-.5)*8);v.fc=Math.round(80+(r()-.5)*10);v.temp=+(36.3+r()*.5).toFixed(1);v.sat=Math.round(94+r()*3);v.ingesta="Normal";if(sc==="drift"&&d<=8){v.sat=93+Math.min(3,Math.floor(d/3));v.fc=Math.round(94-d*2);if(d<=1)v.ingesta="Menys"}}
       if(d%7===0||d===last)v.cuid=String(sc==="burden"?(d<=7?4:3):2+Math.floor(r()*2));
       items.push({t:t,v:v});
     }
@@ -577,7 +655,7 @@ function gen(now){
   });
   function M(id,ago_,code,kind,title,signs,prio,to,note,status,log,ai){S.msgs.push({id:id,t:now-ago_,code:code,kind:kind,title:title,signs:signs,crit:false,prio:prio,to:to,note:note,photo:null,status:status,log:log,ai:ai||null})}
   M("m1",40*6e4,"P-0511","prob","Nova ferida o úlcera",["Vermellor que s’estén","Supuració o mal olor"],"alta","inf","Al taló dret, des d’ahir fa pudor.","nou",["Enviat per la família a Infermeria UBA 1"]);
-  M("m6",70*6e4,"P-0142","prob","Més ofec",["Ha de dormir assegut"],"alta","inf","Aquesta nit s’ha hagut d’aixecar dues vegades.","nou",["Enviat per la família a Infermeria UBA 3"]);
+  M("m6",20*6e4,"P-0142","prob","Més ofec",["Ha de dormir assegut"],"alta","inf","Aquesta nit s’ha hagut d’aixecar dues vegades.","nou",["Enviat per la família a Infermeria UBA 3"]);
   M("m2",3*H,"P-0355","med","Dubte de medicació: furosemida",[],"normal","med","No sabem si l’ha de prendre si avui no menja.","nou",["Enviat per la família a Medicina UBA 2"]);
   M("m3",5*H,"P-0602","tram","Material (bolquers, apòsits)",[],"normal","uac","Necessitem bolquers de talla M.","nou",["Enviat a la UAC"]);
   M("m7",6*H,"P-0398","prob","Dolor no controlat",["Dolor de 7 o més","Els rescats no fan efecte"],"alta","inf","Ha necessitat tres rescats avui.","nou",["Enviat per la família a Infermeria UBA 4"]);
@@ -585,6 +663,7 @@ function gen(now){
   M("m5",2*D,"P-0301","prob","Restrenyiment",["Més de 3 dies sense deposicions"],"alta","inf","Restrenyiment, li costa molt","atès",["Text lliure classificat per l’assistent","Infermeria UBA 3 · pauta i dieta"],{label:"Restrenyiment · Digestiu",conf:"alta"});
   M("m8",9*D,"P-0217","prob","Cames inflades",["Ha augmentat en 2–3 dies"],"alta","inf","Turmells més inflats al vespre.","atès",["Enviat per la família a Infermeria UBA 1","Infermeria UBA 1 · visita presencial · ajust de diürètic"]);
   M("m9",4*D,"P-0644","prob","Tos o refredat",[],"normal","inf","Tos amb mocs des de fa tres dies.","atès",["Enviat per la família a Infermeria UBA 4","Infermeria UBA 4 · consell telefònic"]);
+  S.msgs.forEach(function(m){if(m.id==="m7"){m.ack={by:"Infermeria UBA 4",t:m.t+12*6e4};m.log.push("Infermeria UBA 4 l’ha assumit")}});
   S.free=[
     {t:now-20*D,prof:"ATDOM",text:"Fa 4 dies que no fa caca i té la panxa inflada",id:"restrenyiment"},
     {t:now-12*D,prof:"MACA",text:"Amb la morfina està molt restret",id:"restrenyiment"},
@@ -623,8 +702,32 @@ function status(p,items,now){
   var dset={};items.filter(function(x){return x.t>now-14*D}).forEach(function(x){dset[Math.floor((now-x.t)/D)]=1});
   return{st:st,ev:ev,pending:pending,reviewed:reviewed,last:L,adh:Math.min(100,Math.round(Object.keys(dset).length/Math.ceil(14/f)*100)),silentDays:L?Math.floor((now-L.t)/D):null};
 }
+/* nurse availability right now (demo) and escalation */
+var AVAIL={1:"En domicilis fins a les 13 h",3:"Absent (formació)"};
+function avail(u){return!AVAIL[u]}
+function mirrorOf(u){return RELIEF[u-1]+1}
+function mtOf(u){return u<=5?"A":"B"}
+var ESC_MIN=30;
+function escInfo(m,now){
+  if(m.prio!=="alta"||m.status!=="nou"||(m.to!=="inf"&&m.to!=="med"))return null;
+  var p=S.patients[m.code],u=p.uba,role=m.to==="med"?"Medicina":"Infermeria",mir=mirrorOf(u),refOk=avail(u),mirOk=avail(mir);
+  var mirN=!refOk||m.crit,late=now-m.t>ESC_MIN*6e4,microN=!m.ack&&(m.crit||late||(!refOk&&!mirOk));
+  return{u:u,role:role,mir:mir,mt:mtOf(u),refOk:refOk,mirOk:mirOk,mirN:mirN,microN:microN,late:late,ack:m.ack||null};
+}
+function forMe(m,me,now){var e=escInfo(m,now),p=S.patients[m.code];if(!me)return false;if(!e)return m.status==="nou"&&p.uba===me&&m.to==="inf";if(e.ack)return e.ack.by==="Infermeria UBA "+me;return e.u===me||(e.mirN&&e.mir===me)||(e.microN&&mtOf(me)===e.mt)}
+
+/* risk before the alert: trend of key variables + adherence + caregiver */
+var RISKV={ICC:[["pes",1],["fc",1]],DM2:[["glucosa",1]],PCC:[["temp",1],["sat",-1],["fc",1]],MACA:[["dolor",1]],ATDOM:[["sat",-1],["fc",1],["temp",1]]};
+function riskOf(p,items,now){
+  var win=Math.max(10,PROG[p.prog].freq*3),R=items.filter(function(x){return x.t>now-win*D}),out={score:0,why:[]};if(R.length<3)return out;
+  RISKV[p.prog].forEach(function(kv){var k=kv[0],dir=kv[1],pts=R.filter(function(x){return x.v[k]!=null&&x.v[k]!==""});if(pts.length<3)return;
+    var a=pts[0].v[k],b=pts[pts.length-1].v[k],ch=(b-a)*dir,rel=ch/Math.max(1,Math.abs(a));
+    if(rel>0.1||(k==="sat"&&ch>=2)||(k==="temp"&&ch>=0.6)){out.score+=Math.min(3,Math.round(rel*20)+1);out.why.push(LABEL[k]+" "+(b>a?"en augment":"en descens")+" ("+fmt(a)+" → "+fmt(b)+")")}});
+  var L=lastOf(items);if(L&&L.v.ingesta==="Menys"){out.score+=1;out.why.push("Menja menys")}
+  return out;
+}
 /* ---------- InnovaMunt: patient & family wizard ---------- */
-var STEPN={user:0,what:1,cat:2,list:2,prob:2,"const":2,med:2,tram:2,dest:3,review:4,done:4};
+var STEPN={track:1,user:0,what:1,cat:2,list:2,prob:2,"const":2,med:2,tram:2,dest:3,review:4,done:4};
 function innReset(keepProf){var p=keepProf?ui.inn.prof:null;ui.inn={step:keepProf?"what":"user",hist:keepProf?["user"]:[],prof:p,what:null,cat:null,pid:null,q:"",via:null,signs:{},note:"",photo:null,vals:null,med:"",tram:null,to:null,result:null}}
 function nav(step){ui.inn.hist.push(ui.inn.step);ui.inn.step=step;render();window.scrollTo(0,0)}
 function back(){var I=ui.inn;if(I.hist.length){I.step=I.hist.pop();render();window.scrollTo(0,0)}else go("home")}
@@ -658,7 +761,19 @@ function sUser(){
 }
 function sWhat(){
   var T=[["const","gauge","Constants","Pes, tensió, glucosa, dolor…"],["prob","alert","Problema de salut","Alguna cosa nova o que empitjora"],["med","pill","Medicació","Dubtes o efectes"],["tram","doc","Tràmits","Receptes, informes, material"]];
-  return wizHead("Què voleu notificar?")+patBar()+'<div class="grid2">'+T.map(function(t){return'<button class="tile sq" type="button" data-what="'+t[0]+'"><span class="bigic soft">'+ico(t[1],28)+'</span><b>'+t[2]+'</b><span>'+t[3]+'</span></button>'}).join("")+'</div>';
+  var mine=S.msgs.filter(function(m){return m.code===PROFILE[ui.inn.prof]}),pend=mine.filter(function(m){return m.status==="nou"}).length;
+  return wizHead("Què voleu notificar?")+patBar()+(mine.length?'<button class="tile row slim trackt" type="button" data-next="track"><span class="bigic soft" style="width:40px;height:40px">'+ico("doc",20)+'</span><span class="tt"><b>Les meves peticions</b><span>'+(pend?pend+" en curs · ":"")+'Seguiu-ne l’estat</span></span><span class="chev">'+ico("chev")+'</span></button>':'')+'<div class="grid2">'+T.map(function(t){return'<button class="tile sq" type="button" data-what="'+t[0]+'"><span class="bigic soft">'+ico(t[1],28)+'</span><b>'+t[2]+'</b><span>'+t[3]+'</span></button>'}).join("")+'</div>';
+}
+function trackSteps(m){
+  var p=S.patients[m.code],now=Date.now(),hm=function(t){return new Date(t).toLocaleTimeString("ca",{hour:"2-digit",minute:"2-digit"})},seen=m.ack||m.status==="atès",done=m.status==="atès";
+  var who=m.ack?m.ack.by:destName(m.to,p.uba),eta=m.prio==="alta"?"avui, en menys de 2 h":"en un màxim de 48 h";
+  var S2=[["ok","Rebuda","A les "+hm(m.t)+" · "+destName(m.to,p.uba)],[seen?"ok":"now",seen?"Vista per "+who:"Pendent de veure",seen?(m.ack?"Ho ha assumit "+ago(m.ack.t,now):"Revisada"):(m.prio==="alta"?"Si la infermera no hi és, la veu la UBA mirall":"La veurà el vostre equip")],[done?"ok":seen?"now":"wait",done?"Resposta":"Us trucaran o respondran",done?m.log[m.log.length-1]:eta],[done?"ok":"wait","Resolta",done?"Tancada":""]];
+  return'<ol class="trk">'+S2.map(function(x){return'<li class="'+x[0]+'"><i>'+(x[0]==="ok"?ico("check",14):"")+'</i><div><b>'+esc(x[1])+'</b>'+(x[2]?'<span>'+esc(x[2])+'</span>':'')+'</div></li>'}).join("")+'</ol>';
+}
+function careHTML(id){var c=(id&&CARE[id])||CARE_GEN;return'<div class="care"><b>'+ico("leaf",18)+' Mentre espereu</b><ul>'+c[0].map(function(x){return'<li>'+esc(x)+'</li>'}).join("")+'</ul><p class="cback">'+ico("alert",16)+' Torneu a avisar o truqueu al 112 si: '+c[1].map(esc).join(" · ").toLowerCase()+'</p></div>'}
+function sTrack(){
+  var L=S.msgs.filter(function(m){return m.code===PROFILE[ui.inn.prof]}).sort(function(a,b){return b.t-a.t});
+  return wizHead("Les meves peticions","Aquí veieu en quin punt és cada petició.")+patBar()+L.map(function(m){return'<div class="card trcard"><div class="trh"><b>'+esc(m.title)+'</b><span class="pill '+(m.status==="atès"?"ok":m.prio==="alta"?"alta":"normal")+'">'+(m.status==="atès"?"Resolta":m.ack?"Assumida":"En curs")+'</span></div>'+trackSteps(m)+'</div>'}).join("");
 }
 function catOf(id){return CATS.concat([{id:"nous",n:"Motius nous",ic:"sparkle"}]).filter(function(c){return c.id===id})[0]}
 function suggHTML(){
@@ -721,12 +836,12 @@ function sReview(){
 function sDone(){
   var I=ui.inn,r=I.result,O=OUT[r.lvl];
   return '<div class="done-wrap"><div class="bigstat '+O.c+'">'+ico(O.ic,54)+'</div><h2>'+O.t+'</h2><p>'+O.d+'</p>'+(r.why&&r.why.length?'<div class="signs" style="justify-content:center">'+r.why.map(function(s){return'<span>'+esc(s)+'</span>'}).join("")+'</div>':'')+
-    '<div class="route2"><span class="node">'+ico("home",18)+'Família</span><span class="arrow"></span><span class="node off">'+ico("x",16)+'Centraleta</span><span class="arrow"></span><span class="node to">'+ico(DICON[r.to],18)+esc(r.dest)+'</span></div>'+
-    '<div class="tiles1" style="width:100%"><button class="send" type="button" data-new="1">Fer una altra notificació</button><button class="tile row slim" type="button" data-go="mun"><span class="tt"><b>Veure com ho rep l’equip</b><span>Obre MuntApp, la vista professional</span></span><span class="chev">'+ico("chev")+'</span></button></div></div>';
+    '<div class="route2"><span class="node">'+ico("home",18)+'Família</span><span class="arrow"></span><span class="node off">'+ico("x",16)+'Centraleta</span><span class="arrow"></span><span class="node to">'+ico(DICON[r.to],18)+esc(r.dest)+'</span></div>'+(r.mid?'<div class="card trcard" style="width:100%;text-align:left"><div class="trh"><b>Seguiment de la petició</b><span class="note">s’actualitza sol</span></div>'+trackSteps(S.msgs.filter(function(m){return m.id===r.mid})[0])+'</div>':'')+(r.lvl!=="urgent"&&r.what==="prob"?careHTML(r.pid):'')+
+    ((r.lvl==="alta"||r.lvl==="urgent")&&(r.to==="inf"||r.to==="med")?'<p class="note escn">'+ico("bell",14)+' '+(r.lvl==="urgent"?"Ho rep a l’instant tot el microequip.":"Si el vostre professional no està disponible, ho rep també el de la UBA mirall i, si ningú ho assumeix en 30 minuts, tot el microequip.")+'</p>':'')+'<div class="tiles1" style="width:100%"><button class="send" type="button" data-new="1">Fer una altra notificació</button><button class="tile row slim" type="button" data-go="mun"><span class="tt"><b>Veure com ho rep l’equip</b><span>Obre MuntApp, la vista professional</span></span><span class="chev">'+ico("chev")+'</span></button></div></div>';
 }
 function vInn(){
   var I=ui.inn,st=I.step;
-  var h=st==="user"?sUser():st==="what"?sWhat():st==="cat"?sCat():st==="list"?sList():st==="prob"?sProb():st==="const"?sConst():st==="med"?sMed():st==="tram"?sTram():st==="dest"?sDest():st==="review"?sReview():sDone();
+  var h=st==="user"?sUser():st==="what"?sWhat():st==="cat"?sCat():st==="list"?sList():st==="prob"?sProb():st==="const"?sConst():st==="med"?sMed():st==="tram"?sTram():st==="dest"?sDest():st==="review"?sReview():st==="track"?sTrack():sDone();
   return '<div class="phone-col">'+h+'<p class="note foot112">Si hi ha dolor al pit, molta dificultat per respirar o pèrdua de consciència, truqueu al 112.</p></div>';
 }
 function innSend(){
@@ -743,15 +858,16 @@ function innSend(){
     m={id:"m"+now,t:now,code:code,kind:I.what,title:title,signs:o.why,crit:!!o.crit,prio:o.lvl==="urgent"||o.lvl==="alta"?"alta":"normal",to:to,note:I.what==="prob"&&I.pid==="free"?I.q+(I.note?" · "+I.note:""):I.note,photo:I.photo,status:"nou",ai:ai,log:(ai?["Text lliure interpretat per l’assistent"]:[]).concat(["Enviat per la família a "+destName(to,p.uba)])};
   }
   S.msgs.unshift(m);
-  I.result={lvl:o.lvl,why:o.why,to:to,dest:destName(to,p.uba)};I.hist=[];I.step="done";render();window.scrollTo(0,0);
+  I.result={lvl:o.lvl,why:o.why,to:to,dest:destName(to,p.uba),mid:m.status==="nou"?m.id:null,what:I.what,pid:I.what==="prob"?curItem().id:null};I.hist=[];I.step="done";render();window.scrollTo(0,0);
 }
 var DD=["Dl","Dt","Dc","Dj","Dv"],DN=["Dilluns","Dimarts","Dimecres","Dijous","Divendres"],IDX=[1.24,0.96,1.06,1.07,0.67],REAL=[1.27,0.93,1.09,1.04,0.67];
 var SHIFT=["Matí","Matí","Matí","Tarda","Tarda","Matí","Matí","Tarda","Tarda","Tarda"],RELIEF=[3,4,3,0,1,7,8,5,6,5],MFC=24,INC=14;
 var UB=[[8,10,5,6,2],[7,10,6,5,2],[9,11,5,7,2],[8,9,5,6,2],[7,10,6,6,2],[8,10,6,5,2],[9,11,5,6,3],[7,9,5,6,2],[8,10,6,6,2],[7,10,5,6,2]];
 function dnoise(i,d){return((i*37+d*11)%13-6)/100}
-function demCompute(){
-  var dm=ui.dm,d=dm.day,grip=dm.scen===1,u=[];
-  for(var i=0;i<10;i++){var b=UB[i],f=dm.cut?REAL[d]*(1+dnoise(i,d)):IDX[d],gm=grip?1.28:1;
+function adjOf(i,d,noAdj){if(noAdj)return 0;var dm=ui.dm;return(dm.adj[i+"-"+d]||0)+(dm.tpl[d]||0)}
+function demCompute(dd,noAdj){
+  var dm=ui.dm,d=dd==null?dm.day:dd,grip=dm.scen===1,u=[];
+  for(var i=0;i<10;i++){var a0=adjOf(i,d,noAdj),b=UB[i].slice();b[0]=Math.max(0,b[0]+a0/2);b[2]=Math.max(0,b[2]+a0/2);var f=dm.cut?REAL[d]*(1+dnoise(i,d)):IDX[d],gm=grip?1.28:1;
     u.push({i:i,sp:(b[1]+b[4])*f*gm,pr:b[0]+b[2],sh:b[3]*(grip?0.3:1),sup:0,mf:b[0]+b[1]*f*gm,inf:b[2]+b[3]*(grip?0.3:1)+b[4]*f*gm,absent:i===dm.abs})}
   if(dm.abs>=0){var a=u[dm.abs],mt=Math.floor(dm.abs/5),ms=u.filter(function(x){return Math.floor(x.i/5)===mt&&!x.absent}),k=ms.length;ms.forEach(function(m){m.sup=(a.mf+a.inf)/k;m.mf+=a.mf/k;m.inf+=a.inf/k});a.sp=a.pr=a.sh=a.mf=a.inf=0}
   u.forEach(function(x){x.mfFree=Math.round(MFC-x.mf);x.inFree=Math.round(INC-x.inf);x.min=Math.max(0,x.mfFree)*10+Math.max(0,x.inFree)*15;x.forced=Math.max(0,-x.mfFree)+Math.max(0,-x.inFree);x.occ=x.absent?0:Math.round((x.mf+x.inf)/(MFC+INC)*100);x.st=x.absent?"off":(x.forced>0||x.occ>100)?"bad":x.occ>=85?"warn":"ok"});
@@ -779,13 +895,7 @@ function vDem(){
       h+='</button>'});
     h+='</div>'});
   h+='<p class="note">Blau: espontània · fosc: programades · clar: visites curtes · ratllat: suport. Línia contínua 100%, discontínua 85%. Toqueu una UBA per veure l’ordre de suport.</p></div><div style="display:flex;flex-direction:column;gap:12px">';
-  var t=dm.cut?"19:45":"14:00",o=[];
-  if(dm.scen===1){o.push(["info","SIVIC per sobre del llindar: més forats del mateix dia per microequip i contacte amb IC i MPOC d’alt risc."]);o.push(["info","Reforç PIUC: alarma i visites curtes; revisa el PAPPS i retorna el pacient a la seva infermera."])}
-  if(dm.abs>=0)o.push(["warn","UBA "+(dm.abs+1)+" absent: la seva demanda es reparteix al microequip."]);
-  u.filter(function(x){return x.st==="bad"}).forEach(function(x){var mt=Math.floor(x.i/5),r=u[RELIEF[x.i]],c=u.filter(function(y){return Math.floor(y.i/5)===mt&&y.i!==x.i&&!y.absent}).sort(function(a,b){return a.occ-b.occ})[0];
-    o.push(["bad","UBA "+(x.i+1)+" al "+x.occ+"% → suport: "+((!r.absent&&r.occ<100)?"UBA de relleu "+(r.i+1):(c&&c.occ<100)?"UBA "+(c.i+1):"PIUC")+"."])});
-  if(!o.length)o.push(["ok","Tot l’equip dins de capacitat."]);
-  h+='<div class="card"><h3 style="font-size:15.5px">Avisos</h3><p class="note">'+DN[dm.day]+' · tall de les '+t+'</p><ul class="alerts">'+o.map(function(a){return'<li class="'+a[0]+'">'+esc(a[1])+'</li>'}).join("")+'</ul></div>';
+  h+=vRecs(u)+vTrend();
   var W=460,Hh=200,Lf=40,Rr=10,T=26,B=28,pw=W-Lf-Rr,ph=Hh-T-B,mx=1.4,y=function(v){return T+ph-(v/mx)*ph},g="",bw=pw/5,pts=[];
   [0,0.5,1,1.4].forEach(function(v){g+='<line x1="'+Lf+'" x2="'+(W-Rr)+'" y1="'+y(v)+'" y2="'+y(v)+'" stroke="var(--line)"/><text x="'+(Lf-6)+'" y="'+(y(v)+4)+'" text-anchor="end" font-size="11" fill="var(--muted)">'+Math.round(v*100)+'%</text>'});
   g+='<line x1="'+Lf+'" x2="'+(W-Rr)+'" y1="'+y(1.1)+'" y2="'+y(1.1)+'" stroke="var(--warm)" stroke-dasharray="5 4"/><text x="'+(W-Rr)+'" y="'+(y(1.1)-5)+'" text-anchor="end" font-size="11" fill="var(--warm)" font-weight="600">pic ≥ 110%</text>';
@@ -796,6 +906,65 @@ function vDem(){
   return h+'</div></div>';
 }
 
+
+/* ---- feedback loop: cut → week → 2 weeks → month ---- */
+var GR=[0.032,0.004,0.012,0.02,-0.03];
+function histIdx(w,d){var g=GR[d]+(ui.dm.scen===1?0.03:0);return REAL[d]*(1-g*w)+(((w*7+d*3)%5)-2)/200}
+function chg(d,a,b){var x=0,y=0;for(var w=0;w<a;w++)x+=histIdx(w,d);for(var w=a;w<a+b;w++)y+=histIdx(w,d);return Math.round(((x/a)/(y/b)-1)*100)}
+function teamChg(a){var x=0,y=0;for(var d=0;d<5;d++)for(var w=0;w<2*a;w++){if(w<a)x+=histIdx(w,d);else y+=histIdx(w,d)}return Math.round((x/y-1)*100)}
+function occAt(i,d,noAdj){var u=demCompute(d,noAdj);return u[i].occ}
+function teamOcc(d){var u=demCompute(d).filter(function(x){return!x.absent});return u.reduce(function(s,x){return s+x.occ},0)/u.length}
+function lowDay(ex){var lo=-1,lv=999;for(var d=0;d<5;d++){if(d===ex)continue;var v=teamOcc(d);if(v<lv){lv=v;lo=d}}return lo}
+function rItem(lvl,txt,btn){return'<li class="'+lvl+'"><span>'+txt+'</span>'+(btn||'')+'</li>'}
+function vRecs(u){
+  var dm=ui.dm,d=dm.day,h='<div class="card recs"><div class="sech"><h3>Indicacions de MuntApp</h3><span class="note">es recalculen a cada tall</span></div>';
+  var worst=u.filter(function(x){return!x.absent}).sort(function(a,b){return b.occ-a.occ})[0],g1=Math.round((REAL[d]/histIdx(1,d)-1)*100);
+  /* 1 · cut */
+  var L=[];
+  if(!dm.cut){
+    u.filter(function(x){return x.st==="bad"}).forEach(function(x){var r=u[RELIEF[x.i]];L.push(rItem("bad","<b>UBA "+(x.i+1)+" al "+x.occ+"%</b>: la UBA de relleu "+(r.i+1)+(r.absent?" és absent: suport del microequip o PIUC":" obre 2 forats aquesta tarda")+"."))});
+    u.filter(function(x){return x.st==="warn"}).slice(0,2).forEach(function(x){L.push(rItem("warn","<b>UBA "+(x.i+1)+" en ambre ("+x.occ+"%)</b>: reservar els forats de tarda per a la seva demanda."))});
+    if(g1>4)L.push(rItem("bad","La demanda d’avui creix <b>+"+g1+"%</b> respecte al "+DN[d].toLowerCase()+" passat: vigilar la tarda."));
+  }else{
+    var red=u.filter(function(x){return x.st==="bad"}).length,amb=u.filter(function(x){return x.st==="warn"}).length;
+    L.push(rItem(red?"bad":amb?"warn":"ok","Tancament del dia: <b>"+red+" UBA en vermell</b> i "+amb+" en ambre."+(g1?" Demanda "+(g1>0?"+":"")+g1+"% vs "+DN[d].toLowerCase()+" passat.":"")));
+    if(worst&&worst.occ>=85){var lo=lowDay(d),key=worst.i+"-"+d,done=dm.adj[key];
+      L.push(rItem("warn",done?"✓ Aplicat: <b>UBA "+(worst.i+1)+"</b> mou 3 controls de crònics del "+DN[d].toLowerCase()+" al "+DN[lo].toLowerCase()+".":"Setmana vinent: moure <b>3 controls de crònics estables</b> de la UBA "+(worst.i+1)+" del "+DN[d].toLowerCase()+" al "+DN[lo].toLowerCase()+", el dia amb menys càrrega.",done?'':'<button type="button" class="rbtn" data-adj="'+worst.i+'|'+d+'|'+lo+'">Aplicar</button>'));
+    }else L.push(rItem("ok","Agendes ajustades: es poden <b>avançar controls de crònics</b> pendents."));
+  }
+  if(!L.length)L.push(rItem("ok","Tot l’equip dins de capacitat."));
+  if(dm.scen===1)L.push(rItem("info","SIVIC per sobre del llindar: reforç PIUC per a l’alarma i les visites curtes, i contacte amb IC i MPOC d’alt risc."));
+  if(dm.abs>=0)L.push(rItem("warn","UBA "+(dm.abs+1)+" absent: la seva demanda es reparteix al microequip."));
+  h+='<div class="rsec"><div class="rh"><span class="rk">1</span><b>'+(dm.cut?"Final del dia · 19:45":"Mig tall · 14:00")+'</b><em>'+DN[d]+'</em></div><ul class="rl">'+L.join("")+'</ul></div>';
+  /* 2 · two weeks */
+  var B=[];for(var x=0;x<5;x++){var c=chg(x,2,2),tp=dm.tpl[x]||0;
+    if(c>=5)B.push(rItem("warn","<b>"+DN[x]+" +"+c+"%</b> en 2 setmanes → plantilla: <b>−2 crònics i +2 forats del mateix dia</b> per UBA."+(tp?" ✓ Recalibrada.":""),tp?'':'<button type="button" class="rbtn" data-tpl="'+x+'|-2">Recalibrar</button>'));
+    else if(c<=-4)B.push(rItem("ok","<b>"+DN[x]+" "+c+"%</b> en 2 setmanes → recuperar <b>+2 controls de crònics</b> per UBA."+(tp?" ✓ Recalibrada.":""),tp?'':'<button type="button" class="rbtn" data-tpl="'+x+'|2">Recalibrar</button>'))}
+  if(!B.length)B.push(rItem("ok","Cap dia canvia més d’un 5%: es manté la plantilla."));
+  h+='<div class="rsec"><div class="rh"><span class="rk">2</span><b>Cada 2 setmanes · plantilla per dia</b></div><ul class="rl">'+B.join("")+'</ul></div>';
+  /* 3 · month */
+  var m=teamChg(4),M=[];
+  M.push(rItem(m>3?"warn":m<-3?"ok":"info","Demanda de l’equip en 4 setmanes: <b>"+(m>0?"+":"")+m+"%</b>. "+(m>3?"Consolidar els ajustos a la plantilla i revisar-ho a la reunió d’equip (PDCA).":m<-3?"Hi ha marge: recuperar la programació de crònics i activitats preventives.":"Estable: es mantenen les plantilles.")));
+  M.push(rItem("info","Error de previsió del mes (MAPE): <b>"+fmt((IDX.reduce(function(s,v,i){return s+Math.abs(REAL[i]-v)/REAL[i]},0)/5*100).toFixed(1))+"%</b> · meta ≤ 10%."));
+  h+='<div class="rsec"><div class="rh"><span class="rk">3</span><b>Cada mes · revisió amb l’equip</b></div><ul class="rl">'+M.join("")+'</ul></div>';
+  if(dm.log.length)h+='<div class="rsec"><div class="rh"><span class="rk">✓</span><b>Ajustos aplicats i efecte</b></div><ul class="rl">'+dm.log.map(function(x){return rItem("ok",x,'<button type="button" class="rbtn sec" data-undo="'+dm.log.indexOf(x)+'">Desfer</button>')}).join("")+'</ul></div>';
+  return h+'<p class="note">El tall següent mesura l’efecte de cada ajust i el bucle torna a començar.</p></div>';
+}
+function demAdj(i,d,lo){var dm=ui.dm,b=occAt(i,d),b2=occAt(i,lo);dm.adj[i+"-"+d]=(dm.adj[i+"-"+d]||0)-3;dm.adj[i+"-"+lo]=(dm.adj[i+"-"+lo]||0)+3;
+  dm.log.push("UBA "+(i+1)+": 3 crònics del "+DN[d].toLowerCase()+" al "+DN[lo].toLowerCase()+" · "+DN[d].toLowerCase()+" "+b+"% → "+occAt(i,d)+"%, "+DN[lo].toLowerCase()+" "+b2+"% → "+occAt(i,lo)+"%");
+  dm.undo.push(function(){dm.adj[i+"-"+d]+=3;dm.adj[i+"-"+lo]-=3});toast("Agenda de la setmana vinent ajustada");render()}
+function demTpl(d,k){var dm=ui.dm,b=Math.round(teamOcc(d));dm.tpl[d]=(dm.tpl[d]||0)+k;
+  dm.log.push("Plantilla del "+DN[d].toLowerCase()+": "+(k<0?k+" crònics":"+"+k+" crònics")+" per UBA · càrrega de l’equip "+b+"% → "+Math.round(teamOcc(d))+"%");
+  dm.undo.push(function(){dm.tpl[d]-=k});toast("Plantilla recalibrada");render()}
+function demUndo(n){var dm=ui.dm;dm.undo[n]();dm.undo.splice(n,1);dm.log.splice(n,1);render()}
+function vTrend(){
+  var dm=ui.dm,d=dm.day,W=460,Hh=190,Lf=40,Rr=10,T=24,Bt=26,pw=W-Lf-Rr,ph=Hh-T-Bt,vals=[];for(var w=7;w>=0;w--)vals.push(histIdx(w,d));
+  var mn=Math.min.apply(null,vals)-.05,mx=Math.max.apply(null,vals)+.05,y=function(v){return T+ph-(v-mn)/(mx-mn)*ph},bw=pw/8,g="";
+  [mn,(mn+mx)/2,mx].forEach(function(v){g+='<line x1="'+Lf+'" x2="'+(W-Rr)+'" y1="'+y(v)+'" y2="'+y(v)+'" stroke="var(--line)"/><text x="'+(Lf-6)+'" y="'+(y(v)+4)+'" text-anchor="end" font-size="11" fill="var(--muted)">'+Math.round(v*100)+'%</text>'});
+  vals.forEach(function(v,k){var x=Lf+k*bw+bw*.2;g+='<rect x="'+x+'" y="'+y(v)+'" width="'+(bw*.6)+'" height="'+(T+ph-y(v))+'" rx="3" fill="'+(k>=6?"var(--accent)":k>=4?"var(--short)":"var(--sunk)")+'"/><text x="'+(x+bw*.3)+'" y="'+(Hh-8)+'" text-anchor="middle" font-size="11" fill="var(--muted)">'+(k===7?"ara":"-"+(7-k)+"s")+'</text>'});
+  var c2=chg(d,2,2),c4=chg(d,4,4);
+  return'<div class="card"><div class="sech"><h3>Tendència · '+DN[d].toLowerCase()+'</h3><span class="note">8 setmanes · índex diari</span></div><svg viewBox="0 0 '+W+' '+Hh+'" style="width:100%;height:auto;display:block" role="img" aria-label="Tendència de 8 setmanes">'+g+'</svg><div class="mini2" style="margin-top:8px"><div><b class="'+(c2>4?"tb":"")+'">'+(c2>0?"+":"")+c2+'%</b><span>últimes 2 setmanes vs 2 anteriors</span></div><div><b>'+(c4>0?"+":"")+c4+'%</b><span>últimes 4 setmanes vs 4 anteriors</span></div></div></div>';
+}
 /* ---------- MuntApp: professional panel ---------- */
 var LBL={bad:"Alerta",silence:"Sense registre",warn:"Vigilar",ok:"Estable"},COL={bad:"var(--bad)",silence:"var(--sil)",warn:"var(--warn)",ok:"var(--ok)"};
 var KIND={"const":"Constants",prob:"Problema de salut",med:"Medicació",tram:"Tràmit"};
@@ -826,16 +995,30 @@ function todayLists(now){
   return{R:R,pm:pm,al:al,sil:sil,ok:ok};
 }
 function tRow(o){
-  return'<div class="trow '+o.c+'"><button type="button" class="tmain" data-pat="'+o.code+'"><span class="tdot"></span><span class="tt"><span class="tl1"><b class="mono">'+o.code+'</b>'+pchip(o.prog)+(o.badge?'<span class="pill alta">'+o.badge+'</span>':'')+'</span><span class="tl2">'+esc(o.what)+'</span><span class="tl3">'+esc(o.meta)+'</span></span></button>'+o.act+'</div>';
+  return'<div class="trow '+o.c+(o.mine?" mine":"")+'"><button type="button" class="tmain" data-pat="'+o.code+'"><span class="tdot"></span><span class="tt"><span class="tl1"><b class="mono">'+o.code+'</b>'+pchip(o.prog)+(o.badge?'<span class="pill alta">'+o.badge+'</span>':'')+(o.mine?'<span class="pill mine">'+ico("bell",12)+' Et toca</span>':'')+'</span><span class="tl2">'+esc(o.what)+'</span><span class="tl3">'+esc(o.meta)+'</span>'+(o.esc||'')+'</span></button>'+o.act+'</div>';
 }
+function escLine(m,now){
+  var e=escInfo(m,now);if(!e)return'';
+  if(e.ack)return'<span class="esc"><span class="en ok">'+ico("check",12)+' Assumit per '+esc(e.ack.by)+' '+ago(e.ack.t,now)+'</span></span>';
+  var why=e.refOk?'':' '+esc(AVAIL[e.u].split(/ \(| fins/)[0].toLowerCase());
+  var a='<span class="en '+(e.refOk?"on":"off")+'">'+ico(e.refOk?"check":"x",11)+(e.role==="Medicina"?"Med.":"Inf.")+' UBA '+e.u+why+'</span>';
+  var b='<span class="en '+(e.mirN?(e.mirOk?"on":"off"):"idle")+'">'+(e.mirN?ico(e.mirOk?"bell":"x",11):'')+'Mirall UBA '+e.mir+'</span>';
+  var c='<span class="en '+(e.microN?"on":"idle")+'">'+(e.microN?ico("bell",11):'')+'Microequip '+e.mt+(e.microN?'':' · '+ESC_MIN+' min')+'</span>';
+  return'<span class="esc">'+a+'<i>›</i>'+b+'<i>›</i>'+c+'</span>';
+}
+function meSel(){var me=ui.mun.me;return'<label class="mesel">'+ico("users",16)+'<span>Veure com a</span><select id="meSel"><option value="0"'+(!me?" selected":"")+'>Tot l’equip</option>'+[1,2,3,4,5,6,7,8,9,10].map(function(u){return'<option value="'+u+'"'+(me===u?" selected":"")+'>Infermeria UBA '+u+(avail(u)?'':' (no disponible)')+'</option>'}).join("")+'</select></label>'}
 function vIni(){
   var now=Date.now(),M=ui.mun,T=todayLists(now),f=M.f||"tot";
   function tile(k,n,l,c,ic){return'<button type="button" class="ttile '+c+'" data-tf="'+k+'" aria-pressed="'+(f===k)+'"><span class="tic">'+ico(ic,22)+'</span><b>'+n+'</b><span>'+l+'</span></button>'}
-  var h='<div class="ttiles">'+tile("pet",T.pm.length,T.pm.length===1?"petició nova":"peticions noves","t-acc","doc")+tile("al",T.al.length,T.al.length===1?"alerta de constants":"alertes de constants","t-bad","alert")+tile("sil",T.sil.length,"sense seguiment","t-sil","phone")+'</div>';
+  var me=M.me,sup=me?T.pm.filter(function(m){var e=escInfo(m,now);return e&&!e.ack&&e.u!==me&&forMe(m,me,now)}):[],unack=T.pm.filter(function(m){var e=escInfo(m,now);return e&&!e.ack});
+  var h='<div class="ttop">'+meSel()+'<span class="note">Disponibles ara: '+[1,2,3,4,5,6,7,8,9,10].filter(avail).length+' de 10 infermeres</span></div>';
+  if(sup.length)h+='<button type="button" class="sban" data-tf="pet"><span class="sbi">'+ico("bell",22)+'</span><span><b>'+sup.length+(sup.length>1?" peticions":" petició")+' amb signes d’alarma de companyes no disponibles</b><br>Et toca com a '+(sup.some(function(m){return escInfo(m,now).mir===me})?"UBA mirall":"microequip")+'. Assumeix-la perquè no quedi sense atendre.</span>'+ico("chev",18)+'</button>';
+  else if(!me&&unack.length)h+='<button type="button" class="sban" data-tf="pet"><span class="sbi">'+ico("bell",22)+'</span><span><b>'+unack.length+(unack.length>1?" peticions":" petició")+' amb signes d’alarma encara sense assumir</b><br>Avisades la infermera referent, la UBA mirall i, passats '+ESC_MIN+' min, el microequip.</span>'+ico("chev",18)+'</button>';
+  h+='<div class="ttiles">'+tile("pet",T.pm.length,T.pm.length===1?"petició nova":"peticions noves","t-acc","doc")+tile("al",T.al.length,T.al.length===1?"alerta de constants":"alertes de constants","t-bad","alert")+tile("sil",T.sil.length,"sense seguiment","t-sil","phone")+'</div>';
   if(f!=="tot")h+='<button type="button" class="link" data-tf="tot">'+ico("back",16)+' Veure-ho tot</button>';
   var cols='';
   if(f==="tot"||f==="pet"){
-    var L=T.pm.map(function(m){var p=S.patients[m.code];return tRow({c:m.crit?"bad":m.prio==="alta"?"bad":"acc",code:m.code,prog:p.prog,badge:m.crit?"Urgent":m.prio==="alta"?"Alta":"",what:m.title+(m.signs&&m.signs.length?" · "+m.signs.length+(m.signs.length>1?" signes":" signe")+" d’alarma":""),meta:KIND[m.kind]+" · "+ago(m.t,now)+" · per a "+destName(m.to,p.uba),act:'<button type="button" class="tact" data-ma="done" data-id="'+m.id+'">'+ico("check",16)+'<span>Resolt</span></button>'})}).join("");
+    var L=T.pm.map(function(m){var p=S.patients[m.code];return tRow({c:m.crit?"bad":m.prio==="alta"?"bad":"acc",code:m.code,prog:p.prog,badge:m.crit?"Urgent":m.prio==="alta"?"Alta":"",what:m.title+(m.signs&&m.signs.length?" · "+m.signs.length+(m.signs.length>1?" signes":" signe")+" d’alarma":""),meta:KIND[m.kind]+" · "+ago(m.t,now)+" · per a "+destName(m.to,p.uba),mine:forMe(m,ui.mun.me,now),esc:escLine(m,now),act:(function(){var e=escInfo(m,now);return e&&!e.ack?'<button type="button" class="tact hot" data-ack="'+m.id+'">'+ico("bell",16)+'<span>Assumir</span></button>':'<button type="button" class="tact" data-ma="done" data-id="'+m.id+'">'+ico("check",16)+'<span>Resolt</span></button>'})()})}).join("");
     cols+='<section class="tcol"><header><span class="th acc">'+ico("doc",16)+'</span><h3>Peticions de les famílies</h3><em>'+T.pm.length+'</em></header>'+(L||'<p class="tempty">'+ico("check",16)+' Cap petició pendent</p>')+'</section>';
   }
   if(f==="tot"||f==="al"){
@@ -846,6 +1029,8 @@ function vIni(){
     var L3=T.sil.map(function(r){var g=PROG[r.p.prog],rem=r.s.last.t+g.freq*1.5*D,late=now-rem>24*H;return tRow({c:"sil",code:r.p.code,prog:r.p.prog,badge:"",what:"Fa "+r.s.silentDays+" dies que no registra (cada "+(g.freq===1?"dia":g.freq+" dies")+")",meta:"Recordatori automàtic enviat "+ago(rem,now)+(late?" · sense resposta: cal trucar":"")+" · "+r.p.carer,act:'<button type="button" class="tact" data-rev="'+r.p.code+'" data-note="Trucada a la família">'+ico("phone",16)+'<span>He trucat</span></button>'})}).join("");
     cols+='<section class="tcol"><header><span class="th sil">'+ico("phone",16)+'</span><h3>Sense seguiment</h3><em>'+T.sil.length+'</em></header>'+(L3||'<p class="tempty">'+ico("check",16)+' Totes les famílies registren</p>')+'</section>';
   }
+  if(f==="tot"){var RK=T.R.filter(function(r){return!r.s.pending&&r.s.st!=="silence"}).map(function(r){return{r:r,k:riskOf(r.p,r.it,now)}}).filter(function(x){return x.k.score>=2}).sort(function(a,b){return b.k.score-a.k.score});
+    if(RK.length)h+='<section class="risk"><header><span class="th rk2">'+ico("sparkle",16)+'</span><div><h3>Abans de l’alerta · risc creixent</h3><p class="note">Tendència recent: encara dins de rang, però s’hi acosta</p></div></header>'+RK.map(function(x){var r=x.r,sc=Math.min(5,x.k.score);return'<div class="trow"><button type="button" class="tmain" data-pat="'+r.p.code+'"><span class="rbar"><i style="height:'+(sc*20)+'%"></i></span><span class="tt"><span class="tl1"><b class="mono">'+r.p.code+'</b>'+pchip(r.p.prog)+'<span class="pill warn">Risc '+sc+'/5</span></span><span class="tl2">'+esc(x.k.why.join(" · "))+'</span><span class="tl3">Trucada preventiva abans que descompensi · Infermeria UBA '+r.p.uba+'</span></span></button><button type="button" class="tact" data-rev="'+r.p.code+'" data-note="Trucada preventiva programada">'+ico("phone",16)+'<span>Programar trucada</span></button></div>'}).join("")+'</section>';}
   h+='<div class="tcols'+(f!=="tot"?" one":"")+'">'+cols+'</div>';
   var done=S.msgs.filter(function(m){return m.status==="atès"}).sort(function(a,b){return b.t-a.t});
   h+='<div class="tfoot"><span>'+ico("check",16)+' <b>'+T.ok+'</b> de '+T.R.length+' pacients sense res pendent</span><button type="button" class="link" data-hist="1">'+(M.hist?"Amagar":"Veure")+' peticions ateses ('+done.length+')</button></div>';
@@ -926,11 +1111,12 @@ function msgCard(m,now,compact){
   var h='<div class="msg '+(m.status==="atès"?"done":m.prio)+(compact?" cmp":"")+'"><div class="mh"><div class="mhl">'+(compact?'':'<span class="pic sm" style="background:'+g.c+'">'+ico(PICON[p.prog],15)+'</span>')+'<div><b class="mt">'+esc(m.title)+'</b><div class="note">'+(compact?'':codeBtn(m.code)+' · ')+KIND[m.kind]+' · '+ago(m.t,now)+' · → '+esc(destName(m.to,p.uba))+'</div></div></div>'+(m.status==="atès"?'<span class="pill ok">Atès</span>':'<span class="pill '+m.prio+'">'+(m.crit?"Urgent":m.prio==="alta"?"Alta":"Normal")+'</span>')+'</div>';
   if(m.signs&&m.signs.length)h+='<div class="signs">'+m.signs.map(function(s){return'<span>'+esc(s)+'</span>'}).join("")+'</div>';
   if(m.vals)h+='<div class="vals">'+Object.keys(m.vals).map(function(k){return'<span>'+esc(LABEL[k]||k)+' '+esc(fmt(m.vals[k]))+'</span>'}).join("")+'</div>';
+  h+=escLine(m,now);
   if(m.ai)h+='<span class="aitag">'+ico("sparkle",13)+' Assistent · '+esc(m.ai.label)+(m.ai.conf!=="—"?' · confiança '+esc(m.ai.conf):'')+'</span>';
   if(m.note)h+='<p class="mnote">«'+esc(m.note)+'»</p>';
   if(m.photo)h+='<img src="'+m.photo+'" alt="Foto enviada per la família" class="mph">';
   if(m.status!=="atès"){var other=m.to==="inf"?["med","A Medicina"]:["inf","A Infermeria"];
-    h+='<div class="acts"><button type="button" data-ma="call" data-id="'+m.id+'">'+ico("phone",15)+' He trucat</button><button type="button" data-ma="done" data-id="'+m.id+'">'+ico("check",15)+' Resolt</button><button type="button" class="sec" data-ma="mv" data-to="'+other[0]+'" data-id="'+m.id+'">'+other[1]+'</button></div>'}
+    var ee=escInfo(m,now);h+='<div class="acts">'+(ee&&!ee.ack?'<button type="button" class="hot" data-ack="'+m.id+'">'+ico("bell",15)+' Assumir</button>':'')+'<button type="button" data-ma="call" data-id="'+m.id+'">'+ico("phone",15)+' He trucat</button><button type="button" data-ma="done" data-id="'+m.id+'">'+ico("check",15)+' Resolt</button><button type="button" class="sec" data-ma="mv" data-to="'+other[0]+'" data-id="'+m.id+'">'+other[1]+'</button></div>'}
   else h+='<p class="note">✓ '+esc(m.log[m.log.length-1])+'</p>';
   return h+'</div>';
 }
@@ -948,6 +1134,7 @@ function msgAct(id,a,to){
   else{var from=destName(m.to,p.uba);m.to=to;m.log.push(from+" → "+destName(to,p.uba)+" · passat directament");toast("Passat a "+destName(to,p.uba))}
   render();
 }
+function ackMsg(id){var m=S.msgs.filter(function(x){return x.id===id})[0];if(!m)return;var me=ui.mun.me,p=S.patients[m.code],by="Infermeria UBA "+(me||p.uba);m.ack={by:by,t:Date.now()};m.log.push(by+" l’ha assumit");toast("Assumit per "+by+": la resta de l’equip ja no rep l’avís");render()}
 function review(code,note){var p=S.patients[code];p.reviewedAt=Date.now();p.reviewedBy="Infermeria UBA "+p.uba;p.reviewNote=note;toast(code+": "+note.toLowerCase());render()}
 
 /* ---------- Motius IA ---------- */
@@ -1022,8 +1209,8 @@ function vMun(){
 /* ---------- state, render, events ---------- */
 var S=gen(Date.now()),HS=location.hash;S.dismissed=[];
 var ui={screen:HS==="#innovamunt"||HS==="#familia"?"inn":HS==="#muntapp"?"mun":"home",inn:null,
-  mun:{tab:"ini",pat:null,from:"pac",prog:"Tots",q:"",bs:"nou",bt:"all"},
-  dm:{day:0,cut:0,scen:0,abs:-1,open:-1}};
+  mun:{me:4,tab:"ini",pat:null,from:"pac",prog:"Tots",q:"",bs:"nou",bt:"all"},
+  dm:{day:0,cut:0,scen:0,abs:-1,open:-1,adj:{},tpl:{},log:[],undo:[]}};
 innReset(false);
 var app=document.getElementById("app");
 function vHome(){
@@ -1067,6 +1254,7 @@ app.addEventListener("click",function(e){
   if(d.pat){if(!M.pat)M.from=M.tab;M.pat=d.pat;render();window.scrollTo(0,0);return}
   if(d.tab){M.tab=d.tab;M.pat=null;render();window.scrollTo(0,0);return}
   if(d.prog){M.tab="pac";M.prog=d.prog;M.pat=null;render();window.scrollTo(0,0);return}
+  if(d.ack){ackMsg(d.ack);return}
   if(d.tf){M.f=d.tf;render();return}
   if(d.hist){M.hist=!M.hist;render();return}
   if(d.pf){M.prog=d.pf;render();return}
@@ -1075,12 +1263,16 @@ app.addEventListener("click",function(e){
   if(d.ma){msgAct(d.id,d.ma,d.to);return}
   if(d.rev){review(d.rev,d.note);return}
   if(d.pa){propAct(d.g,d.pa);return}
+  if(d.adj){var q=d.adj.split("|");demAdj(+q[0],+q[1],+q[2]);return}
+  if(d.tpl){var q2=d.tpl.split("|");demTpl(+q2[0],+q2[1]);return}
+  if(d.undo!=null){demUndo(+d.undo);return}
   if(d.dk){ui.dm[d.dk]=+d.di;if(d.dk==="day")ui.dm.open=-1;render();return}
   if(d.uba){var i=+d.uba;ui.dm.open=ui.dm.open===i?-1:i;render();return}
 });
 app.addEventListener("change",function(e){
   var t=e.target,I=ui.inn;
   if(t.id==="iPhoto"&&t.files&&t.files[0]){try{if(I.photo)URL.revokeObjectURL(I.photo)}catch(x){}I.photo=URL.createObjectURL(t.files[0]);render()}
+  else if(t.id==="meSel"){ui.mun.me=+t.value||0;render()}
   else if(t.id==="dAbs"){ui.dm.abs=+t.value;ui.dm.open=-1;render()}
 });
 app.addEventListener("input",function(e){
