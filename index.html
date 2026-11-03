@@ -182,10 +182,10 @@ textarea{min-height:76px;resize:vertical}
 /* ===== MuntApp (responsive: phone ↔ desktop) ===== */
 .pro{display:grid;grid-template-columns:200px minmax(0,1fr);gap:18px;align-items:start}
 .pnav{position:sticky;top:12px;display:flex;flex-direction:column;gap:4px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:8px}
-.pnav button{display:flex;gap:10px;align-items:center;border:0;background:transparent;color:var(--muted);font-weight:600;font-size:14px;padding:10px 12px;border-radius:10px;text-align:left}
-.pnav button span{flex:1}
-.pnav button[aria-current="page"]{background:var(--ink);color:var(--bg)}
-.pnav button:hover:not([aria-current="page"]){background:var(--sunk);color:var(--ink)}
+.pnav>button{display:flex;gap:10px;align-items:center;border:0;background:transparent;color:var(--muted);font-weight:600;font-size:14px;padding:10px 12px;border-radius:10px;text-align:left}
+.pnav>button span{flex:1}
+.pnav>button[aria-current="page"]{background:var(--ink);color:var(--bg)}
+.pnav>button:hover:not([aria-current="page"]){background:var(--sunk);color:var(--ink)}
 .cnt{font-style:normal;font-size:11px;font-weight:700;background:var(--bad);color:#fff;border-radius:999px;padding:0 6px;line-height:18px;min-width:18px;text-align:center}
 .pmain{display:flex;flex-direction:column;gap:14px;min-width:0}
 .ptitle{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
@@ -324,9 +324,9 @@ td.n,th.n{text-align:right}td.tb{color:var(--bad);font-weight:700}td.ts{color:va
   .pro{grid-template-columns:minmax(0,1fr);gap:12px}
   .pnav{position:sticky;top:0;z-index:5;flex-direction:row;overflow-x:auto;padding:5px;gap:2px;scrollbar-width:none;border-radius:14px}
   .pnav::-webkit-scrollbar{display:none}
-  .pnav button{flex:1 0 auto;flex-direction:column;gap:2px;font-size:11.5px;padding:7px 10px;position:relative;align-items:center}
-  .pnav button span{flex:none}
-  .pnav .cnt{position:absolute;top:2px;right:4px;font-size:10px;line-height:15px;min-width:15px;padding:0 4px}
+  .pnav>button{flex:1 0 auto;flex-direction:column;gap:2px;font-size:11.5px;padding:7px 10px;position:relative;align-items:center}
+  .pnav>button span{flex:none}
+  .pnav>button .cnt{position:absolute;top:2px;right:4px;font-size:10px;line-height:15px;min-width:15px;padding:0 4px}
   .igrid,.dgrid2,.dgrid{grid-template-columns:minmax(0,1fr)}
   .kpis5{grid-template-columns:repeat(3,minmax(0,1fr))}
 }
@@ -341,8 +341,8 @@ td.n,th.n{text-align:right}td.tb{color:var(--bad);font-weight:700}td.ts{color:va
   .mgrid{grid-template-columns:minmax(0,1fr)}
   .pfil .sin{flex:1 1 100%}
   .cal{grid-template-columns:repeat(14,minmax(0,1fr));gap:3px}
-  .pnav button{flex:1 1 0;min-width:0;padding:7px 2px;font-size:10.5px}
-  .pnav button span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+  .pnav>button{flex:1 1 0;min-width:0;padding:7px 2px;font-size:10.5px}
+  .pnav>button span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
   .ptitle h2{font-size:19px}
 }
 @media (max-width:380px){.grid3{grid-template-columns:repeat(2,minmax(0,1fr))}.tile.sq{min-height:132px;padding:13px}.prog em{display:none}}
@@ -444,6 +444,76 @@ b.tb{color:var(--bad)}
 .rbar{width:10px;height:38px;border-radius:5px;background:var(--sunk);display:flex;align-items:flex-end;overflow:hidden;flex:none;margin-top:2px}
 .rbar i{display:block;width:100%;background:var(--warn);border-radius:5px}
 @media (prefers-reduced-motion:reduce){.trk li.now i{animation:none}}
+/* modules */
+.pmods{display:flex;flex-direction:column;gap:6px;padding-bottom:8px;margin-bottom:6px;border-bottom:1px solid var(--line)}
+.pmod{display:flex;gap:10px;align-items:center;text-align:left;border:2px solid transparent;background:var(--sunk);border-radius:14px;padding:10px;font:inherit;position:relative}
+.pmod .pmi{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;color:#fff;flex:none}
+.m-dem .pmi{background:var(--accent)}.m-inn .pmi{background:var(--warm)}
+.pmod .pmt{display:flex;flex-direction:column;min-width:0}.pmod b{font-size:14px;line-height:1.2}.pmod small{font-size:11.5px;color:var(--muted)}
+.pmod[aria-current="true"]{background:var(--card);border-color:var(--ink)}
+.pmod .cnt{position:absolute;top:6px;right:8px}
+.ptabs{display:flex;flex-direction:column;gap:4px}
+.ptabs button{display:flex;gap:10px;align-items:center;border:0;background:transparent;color:var(--muted);font-weight:600;font-size:14px;padding:9px 12px;border-radius:10px;text-align:left}
+.ptabs button span{flex:1}
+.ptabs button[aria-current="page"]{background:var(--ink);color:var(--bg)}
+.ptabs button:hover:not([aria-current="page"]){background:var(--sunk);color:var(--ink)}
+.pro{grid-template-columns:230px minmax(0,1fr)}
+/* safata kanban */
+.onlyme{display:flex;gap:8px;align-items:center;font-size:13.5px;font-weight:600;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 12px}
+.onlyme input{width:18px;height:18px;accent-color:var(--accent)}
+.kflow{display:flex;height:16px;border-radius:9px;overflow:hidden;background:var(--sunk);gap:2px}
+.kf.new{background:var(--warm)}.kf.curs{background:var(--accent)}.kf.fet{background:var(--ok)}
+.kfl{display:flex;gap:6px 16px;flex-wrap:wrap;align-items:center;font-size:13px;color:var(--muted);font-weight:600}
+.kfl i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.kfl b{margin-left:auto;color:var(--ok);font-size:14px}
+.kchips{display:flex;gap:6px;flex-wrap:wrap}
+.kchip{display:inline-flex;gap:6px;align-items:center;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 12px 6px 8px;font-weight:600;font-size:13px}
+.kchip i{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:var(--kc);color:#fff}
+.kchip small{font-family:var(--mono);opacity:.7}
+.kchip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.kseg{display:none}
+.kboard{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:start}
+.kcol{background:var(--sunk);border-radius:18px;padding:10px;min-width:0;display:flex;flex-direction:column;gap:8px}
+.kcol header{display:flex;gap:8px;align-items:center;padding:4px 4px 2px}
+.kcol header h3{font-size:15px;flex:1}
+.kcol header em{font-style:normal;font-family:var(--mono);font-weight:700;font-size:15px}
+.kn{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:12px;font-weight:700}
+.k-new .kn{background:var(--warm)}.k-curs .kn{background:var(--accent)}.k-fet .kn{background:var(--ok)}
+.klist{display:flex;flex-direction:column;gap:8px}
+.kc{background:var(--card);border-radius:14px;border:1px solid var(--line);box-shadow:inset 5px 0 0 var(--kc);display:flex;flex-direction:column;overflow:hidden}
+.kc.mine{border:2px solid var(--warm);box-shadow:inset 5px 0 0 var(--kc),0 0 0 3px var(--warm-soft)}
+.kc.fet{opacity:.75}
+.kmain{display:flex;gap:10px;align-items:flex-start;border:0;background:none;text-align:left;font:inherit;padding:11px 11px 8px 15px;width:100%}
+.kmain:hover{background:var(--sunk)}
+.kic{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:#fff;background:var(--kc);flex:none}
+.kt{display:flex;flex-direction:column;gap:2px;min-width:0}
+.kl1{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.kti{font-size:14.5px;line-height:1.25}
+.ksub{font-size:12.5px;color:var(--muted);line-height:1.3}
+.kwho{font-size:12px;font-weight:600;color:var(--ok);display:flex;gap:4px;align-items:center}
+.kbtn{margin:0 11px 11px 15px;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:9px;font-weight:700;font-size:13.5px;display:flex;gap:6px;align-items:center;justify-content:center}
+.kbtn.hot{background:var(--warm);border-color:var(--warm);color:#fff}
+.kbtn:not(.hot):hover{border-color:var(--accent);color:var(--accent)}
+@media (max-width:980px){
+  .pro{grid-template-columns:minmax(0,1fr)}
+  .pnav{flex-direction:column}
+  .pmods{flex-direction:row;padding-bottom:6px;margin-bottom:4px}
+  .pmod{flex:1;padding:8px}.pmod .pmi{width:30px;height:30px}.pmod small{display:none}.pmod b{font-size:12.5px}
+  .ptabs{flex-direction:row;overflow-x:auto;scrollbar-width:none}
+  .ptabs button{flex:1 0 auto;flex-direction:column;gap:2px;font-size:11.5px;padding:7px 10px;position:relative;align-items:center}
+  .ptabs button span{flex:none}
+  .ptabs .cnt{position:absolute;top:2px;right:4px;font-size:10px;line-height:15px;min-width:15px;padding:0 4px}
+  .kboard{grid-template-columns:minmax(0,1fr)}
+  .kcol:not(.on){display:none}
+  .kcol header{display:none}
+  .kseg{display:flex;gap:4px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px}
+  .kseg button{flex:1;border:0;background:transparent;border-radius:9px;padding:9px 4px;font-weight:700;font-size:13px;color:var(--muted)}
+  .kseg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+}
+@media (max-width:620px){.ptabs button{min-width:0;padding:7px 4px}.kfl b{margin-left:0;width:100%}}
+.kc{flex-direction:row;align-items:center}
+.kmain{flex:1;min-width:0}
+.kbtn{margin:8px 8px 8px 0;flex-direction:column;gap:2px;min-width:78px;font-size:12px;padding:8px 6px;align-self:center}
 </style>
 </head>
 <body>
@@ -879,6 +949,7 @@ function vDem(){
   function seg(labels,key){return'<div class="seg2">'+labels.map(function(t,i){return'<button type="button" data-dk="'+key+'" data-di="'+i+'" aria-pressed="'+(dm[key]===i)+'">'+t+'</button>'}).join("")+'</div>'}
   var h='<div class="ctrls"><div class="ctl"><span class="lbl">Dia</span>'+seg(DD,"day")+'</div><div class="ctl"><span class="lbl">Tall eCAP</span>'+seg(["14:00","19:45"],"cut")+'</div><div class="ctl"><span class="lbl">Escenari</span>'+seg(["Normal","Pic de grip"],"scen")+'</div>'+
     '<div class="ctl"><label class="lbl" for="dAbs">UBA absent</label><select id="dAbs"><option value="-1">Cap</option>'+[0,1,2,3,4,5,6,7,8,9].map(function(i){return'<option value="'+i+'"'+(dm.abs===i?" selected":"")+'>UBA '+(i+1)+'</option>'}).join("")+'</select></div></div>';
+  if(ui.mun.tab==="bucle")return h+'<div class="dgrid"><div style="display:flex;flex-direction:column;gap:12px">'+vRecs(u,"loop")+'</div><div style="display:flex;flex-direction:column;gap:12px">'+vTrend()+'</div></div>';
   var fv=act.reduce(function(s,x){return s+Math.max(0,x.mfFree)+Math.max(0,x.inFree)},0),mn=act.reduce(function(s,x){return s+x.min},0),red=u.filter(function(x){return x.st==="bad"}).length,forced=u.reduce(function(s,x){return s+x.forced},0);
   var mape=IDX.reduce(function(s,v,i){return s+Math.abs(REAL[i]-v)/REAL[i]},0)/5*100;
   h+='<div class="kpis"><div class="kpi"><b>'+fv+'</b><span>visites lliures a l’equip</span></div><div class="kpi"><b>'+mn+'</b><span>minuts d’agenda lliures</span></div><div class="kpi k-bad"><b>'+red+'/10</b><span>UBA en vermell · '+forced+(forced===1?" forçada":" forçades")+'</span></div><div class="kpi"><b>'+fmt(mape.toFixed(1))+'%</b><span>error de previsió (meta ≤ 10%)</span></div></div>';
@@ -895,7 +966,7 @@ function vDem(){
       h+='</button>'});
     h+='</div>'});
   h+='<p class="note">Blau: espontània · fosc: programades · clar: visites curtes · ratllat: suport. Línia contínua 100%, discontínua 85%. Toqueu una UBA per veure l’ordre de suport.</p></div><div style="display:flex;flex-direction:column;gap:12px">';
-  h+=vRecs(u)+vTrend();
+  h+=vRecs(u,"cut");
   var W=460,Hh=200,Lf=40,Rr=10,T=26,B=28,pw=W-Lf-Rr,ph=Hh-T-B,mx=1.4,y=function(v){return T+ph-(v/mx)*ph},g="",bw=pw/5,pts=[];
   [0,0.5,1,1.4].forEach(function(v){g+='<line x1="'+Lf+'" x2="'+(W-Rr)+'" y1="'+y(v)+'" y2="'+y(v)+'" stroke="var(--line)"/><text x="'+(Lf-6)+'" y="'+(y(v)+4)+'" text-anchor="end" font-size="11" fill="var(--muted)">'+Math.round(v*100)+'%</text>'});
   g+='<line x1="'+Lf+'" x2="'+(W-Rr)+'" y1="'+y(1.1)+'" y2="'+y(1.1)+'" stroke="var(--warm)" stroke-dasharray="5 4"/><text x="'+(W-Rr)+'" y="'+(y(1.1)-5)+'" text-anchor="end" font-size="11" fill="var(--warm)" font-weight="600">pic ≥ 110%</text>';
@@ -916,9 +987,10 @@ function occAt(i,d,noAdj){var u=demCompute(d,noAdj);return u[i].occ}
 function teamOcc(d){var u=demCompute(d).filter(function(x){return!x.absent});return u.reduce(function(s,x){return s+x.occ},0)/u.length}
 function lowDay(ex){var lo=-1,lv=999;for(var d=0;d<5;d++){if(d===ex)continue;var v=teamOcc(d);if(v<lv){lv=v;lo=d}}return lo}
 function rItem(lvl,txt,btn){return'<li class="'+lvl+'"><span>'+txt+'</span>'+(btn||'')+'</li>'}
-function vRecs(u){
-  var dm=ui.dm,d=dm.day,h='<div class="card recs"><div class="sech"><h3>Indicacions de MuntApp</h3><span class="note">es recalculen a cada tall</span></div>';
+function vRecs(u,mode){
+  var dm=ui.dm,d=dm.day,h='<div class="card recs"><div class="sech"><h3>'+(mode==="loop"?"Bucle d’ajust":"Indicacions del tall")+'</h3><span class="note">'+(mode==="loop"?"es retroalimenta amb cada tall":"es recalculen a cada tall")+'</span></div>';
   var worst=u.filter(function(x){return!x.absent}).sort(function(a,b){return b.occ-a.occ})[0],g1=Math.round((REAL[d]/histIdx(1,d)-1)*100);
+  if(mode!=="loop"){
   /* 1 · cut */
   var L=[];
   if(!dm.cut){
@@ -936,6 +1008,8 @@ function vRecs(u){
   if(dm.scen===1)L.push(rItem("info","SIVIC per sobre del llindar: reforç PIUC per a l’alarma i les visites curtes, i contacte amb IC i MPOC d’alt risc."));
   if(dm.abs>=0)L.push(rItem("warn","UBA "+(dm.abs+1)+" absent: la seva demanda es reparteix al microequip."));
   h+='<div class="rsec"><div class="rh"><span class="rk">1</span><b>'+(dm.cut?"Final del dia · 19:45":"Mig tall · 14:00")+'</b><em>'+DN[d]+'</em></div><ul class="rl">'+L.join("")+'</ul></div>';
+  }
+  if(mode!=="cut"){
   /* 2 · two weeks */
   var B=[];for(var x=0;x<5;x++){var c=chg(x,2,2),tp=dm.tpl[x]||0;
     if(c>=5)B.push(rItem("warn","<b>"+DN[x]+" +"+c+"%</b> en 2 setmanes → plantilla: <b>−2 crònics i +2 forats del mateix dia</b> per UBA."+(tp?" ✓ Recalibrada.":""),tp?'':'<button type="button" class="rbtn" data-tpl="'+x+'|-2">Recalibrar</button>'));
@@ -947,8 +1021,9 @@ function vRecs(u){
   M.push(rItem(m>3?"warn":m<-3?"ok":"info","Demanda de l’equip en 4 setmanes: <b>"+(m>0?"+":"")+m+"%</b>. "+(m>3?"Consolidar els ajustos a la plantilla i revisar-ho a la reunió d’equip (PDCA).":m<-3?"Hi ha marge: recuperar la programació de crònics i activitats preventives.":"Estable: es mantenen les plantilles.")));
   M.push(rItem("info","Error de previsió del mes (MAPE): <b>"+fmt((IDX.reduce(function(s,v,i){return s+Math.abs(REAL[i]-v)/REAL[i]},0)/5*100).toFixed(1))+"%</b> · meta ≤ 10%."));
   h+='<div class="rsec"><div class="rh"><span class="rk">3</span><b>Cada mes · revisió amb l’equip</b></div><ul class="rl">'+M.join("")+'</ul></div>';
+  }
   if(dm.log.length)h+='<div class="rsec"><div class="rh"><span class="rk">✓</span><b>Ajustos aplicats i efecte</b></div><ul class="rl">'+dm.log.map(function(x){return rItem("ok",x,'<button type="button" class="rbtn sec" data-undo="'+dm.log.indexOf(x)+'">Desfer</button>')}).join("")+'</ul></div>';
-  return h+'<p class="note">El tall següent mesura l’efecte de cada ajust i el bucle torna a començar.</p></div>';
+  return h+(mode==="cut"?'<button type="button" class="link" data-tab="bucle">Bucle d’ajust: plantilla cada 2 setmanes i revisió mensual →</button>':'<p class="note">El tall següent mesura l’efecte de cada ajust i el bucle torna a començar.</p>')+'</div>';
 }
 function demAdj(i,d,lo){var dm=ui.dm,b=occAt(i,d),b2=occAt(i,lo);dm.adj[i+"-"+d]=(dm.adj[i+"-"+d]||0)-3;dm.adj[i+"-"+lo]=(dm.adj[i+"-"+lo]||0)+3;
   dm.log.push("UBA "+(i+1)+": 3 crònics del "+DN[d].toLowerCase()+" al "+DN[lo].toLowerCase()+" · "+DN[d].toLowerCase()+" "+b+"% → "+occAt(i,d)+"%, "+DN[lo].toLowerCase()+" "+b2+"% → "+occAt(i,lo)+"%");
@@ -1007,36 +1082,48 @@ function escLine(m,now){
   return'<span class="esc">'+a+'<i>›</i>'+b+'<i>›</i>'+c+'</span>';
 }
 function meSel(){var me=ui.mun.me;return'<label class="mesel">'+ico("users",16)+'<span>Veure com a</span><select id="meSel"><option value="0"'+(!me?" selected":"")+'>Tot l’equip</option>'+[1,2,3,4,5,6,7,8,9,10].map(function(u){return'<option value="'+u+'"'+(me===u?" selected":"")+'>Infermeria UBA '+u+(avail(u)?'':' (no disponible)')+'</option>'}).join("")+'</select></label>'}
-function vIni(){
-  var now=Date.now(),M=ui.mun,T=todayLists(now),f=M.f||"tot";
-  function tile(k,n,l,c,ic){return'<button type="button" class="ttile '+c+'" data-tf="'+k+'" aria-pressed="'+(f===k)+'"><span class="tic">'+ico(ic,22)+'</span><b>'+n+'</b><span>'+l+'</span></button>'}
-  var me=M.me,sup=me?T.pm.filter(function(m){var e=escInfo(m,now);return e&&!e.ack&&e.u!==me&&forMe(m,me,now)}):[],unack=T.pm.filter(function(m){var e=escInfo(m,now);return e&&!e.ack});
-  var h='<div class="ttop">'+meSel()+'<span class="note">Disponibles ara: '+[1,2,3,4,5,6,7,8,9,10].filter(avail).length+' de 10 infermeres</span></div>';
-  if(sup.length)h+='<button type="button" class="sban" data-tf="pet"><span class="sbi">'+ico("bell",22)+'</span><span><b>'+sup.length+(sup.length>1?" peticions":" petició")+' amb signes d’alarma de companyes no disponibles</b><br>Et toca com a '+(sup.some(function(m){return escInfo(m,now).mir===me})?"UBA mirall":"microequip")+'. Assumeix-la perquè no quedi sense atendre.</span>'+ico("chev",18)+'</button>';
-  else if(!me&&unack.length)h+='<button type="button" class="sban" data-tf="pet"><span class="sbi">'+ico("bell",22)+'</span><span><b>'+unack.length+(unack.length>1?" peticions":" petició")+' amb signes d’alarma encara sense assumir</b><br>Avisades la infermera referent, la UBA mirall i, passats '+ESC_MIN+' min, el microequip.</span>'+ico("chev",18)+'</button>';
-  h+='<div class="ttiles">'+tile("pet",T.pm.length,T.pm.length===1?"petició nova":"peticions noves","t-acc","doc")+tile("al",T.al.length,T.al.length===1?"alerta de constants":"alertes de constants","t-bad","alert")+tile("sil",T.sil.length,"sense seguiment","t-sil","phone")+'</div>';
-  if(f!=="tot")h+='<button type="button" class="link" data-tf="tot">'+ico("back",16)+' Veure-ho tot</button>';
-  var cols='';
-  if(f==="tot"||f==="pet"){
-    var L=T.pm.map(function(m){var p=S.patients[m.code];return tRow({c:m.crit?"bad":m.prio==="alta"?"bad":"acc",code:m.code,prog:p.prog,badge:m.crit?"Urgent":m.prio==="alta"?"Alta":"",what:m.title+(m.signs&&m.signs.length?" · "+m.signs.length+(m.signs.length>1?" signes":" signe")+" d’alarma":""),meta:KIND[m.kind]+" · "+ago(m.t,now)+" · per a "+destName(m.to,p.uba),mine:forMe(m,ui.mun.me,now),esc:escLine(m,now),act:(function(){var e=escInfo(m,now);return e&&!e.ack?'<button type="button" class="tact hot" data-ack="'+m.id+'">'+ico("bell",16)+'<span>Assumir</span></button>':'<button type="button" class="tact" data-ma="done" data-id="'+m.id+'">'+ico("check",16)+'<span>Resolt</span></button>'})()})}).join("");
-    cols+='<section class="tcol"><header><span class="th acc">'+ico("doc",16)+'</span><h3>Peticions de les famílies</h3><em>'+T.pm.length+'</em></header>'+(L||'<p class="tempty">'+ico("check",16)+' Cap petició pendent</p>')+'</section>';
-  }
-  if(f==="tot"||f==="al"){
-    var L2=T.al.map(function(r){return tRow({c:r.s.st==="bad"?"bad":"warn",code:r.p.code,prog:r.p.prog,badge:"",what:r.s.ev.why.join(" · "),meta:"Registre "+ago(r.s.last.t,now)+" · Infermeria UBA "+r.p.uba,act:'<button type="button" class="tact" data-rev="'+r.p.code+'" data-note="Alerta revisada">'+ico("check",16)+'<span>Revisat</span></button>'})}).join("");
-    cols+='<section class="tcol"><header><span class="th bad">'+ico("alert",16)+'</span><h3>Alertes de constants</h3><em>'+T.al.length+'</em></header>'+(L2||'<p class="tempty">'+ico("check",16)+' Cap alerta pendent</p>')+'</section>';
-  }
-  if(f==="tot"||f==="sil"){
-    var L3=T.sil.map(function(r){var g=PROG[r.p.prog],rem=r.s.last.t+g.freq*1.5*D,late=now-rem>24*H;return tRow({c:"sil",code:r.p.code,prog:r.p.prog,badge:"",what:"Fa "+r.s.silentDays+" dies que no registra (cada "+(g.freq===1?"dia":g.freq+" dies")+")",meta:"Recordatori automàtic enviat "+ago(rem,now)+(late?" · sense resposta: cal trucar":"")+" · "+r.p.carer,act:'<button type="button" class="tact" data-rev="'+r.p.code+'" data-note="Trucada a la família">'+ico("phone",16)+'<span>He trucat</span></button>'})}).join("");
-    cols+='<section class="tcol"><header><span class="th sil">'+ico("phone",16)+'</span><h3>Sense seguiment</h3><em>'+T.sil.length+'</em></header>'+(L3||'<p class="tempty">'+ico("check",16)+' Totes les famílies registren</p>')+'</section>';
-  }
-  if(f==="tot"){var RK=T.R.filter(function(r){return!r.s.pending&&r.s.st!=="silence"}).map(function(r){return{r:r,k:riskOf(r.p,r.it,now)}}).filter(function(x){return x.k.score>=2}).sort(function(a,b){return b.k.score-a.k.score});
-    if(RK.length)h+='<section class="risk"><header><span class="th rk2">'+ico("sparkle",16)+'</span><div><h3>Abans de l’alerta · risc creixent</h3><p class="note">Tendència recent: encara dins de rang, però s’hi acosta</p></div></header>'+RK.map(function(x){var r=x.r,sc=Math.min(5,x.k.score);return'<div class="trow"><button type="button" class="tmain" data-pat="'+r.p.code+'"><span class="rbar"><i style="height:'+(sc*20)+'%"></i></span><span class="tt"><span class="tl1"><b class="mono">'+r.p.code+'</b>'+pchip(r.p.prog)+'<span class="pill warn">Risc '+sc+'/5</span></span><span class="tl2">'+esc(x.k.why.join(" · "))+'</span><span class="tl3">Trucada preventiva abans que descompensi · Infermeria UBA '+r.p.uba+'</span></span></button><button type="button" class="tact" data-rev="'+r.p.code+'" data-note="Trucada preventiva programada">'+ico("phone",16)+'<span>Programar trucada</span></button></div>'}).join("")+'</section>';}
-  h+='<div class="tcols'+(f!=="tot"?" one":"")+'">'+cols+'</div>';
-  var done=S.msgs.filter(function(m){return m.status==="atès"}).sort(function(a,b){return b.t-a.t});
-  h+='<div class="tfoot"><span>'+ico("check",16)+' <b>'+T.ok+'</b> de '+T.R.length+' pacients sense res pendent</span><button type="button" class="link" data-hist="1">'+(M.hist?"Amagar":"Veure")+' peticions ateses ('+done.length+')</button></div>';
-  if(M.hist)h+='<div class="clist">'+done.map(function(m){var p=S.patients[m.code];return'<button type="button" class="crow done" data-pat="'+m.code+'"><span class="pic sm" style="background:'+PROG[p.prog].c+'">'+ico(PICON[p.prog],15)+'</span><span class="tt"><b>'+esc(m.title)+'</b><span><span class="mono">'+m.code+'</span> · '+ago(m.t,now)+' · '+esc(m.log[m.log.length-1])+'</span></span></button>'}).join("")+'</div>';
+/* ---------- Safata: one visual flow  Per assumir → En curs → Fet ---------- */
+var TYP={alarma:{n:"Signes d’alarma",ic:"bell",c:"var(--bad)"},prob:{n:"Consultes",ic:"doc",c:"var(--accent)"},"const":{n:"Constants",ic:"gauge",c:"var(--warm)"},sil:{n:"Sense seguiment",ic:"phone",c:"var(--sil)"},risk:{n:"Risc creixent",ic:"sparkle",c:"var(--warn)"},tram:{n:"Tràmits i medicació",ic:"pill",c:"var(--muted)"}};
+function safItems(now){
+  var R=rows(now),out=[],day=24*H;
+  S.msgs.forEach(function(m){var p=S.patients[m.code],t=m.kind==="prob"&&m.signs&&m.signs.length?"alarma":m.kind==="const"?"const":m.kind==="prob"?"prob":"tram";
+    var st=m.status==="nou"?(m.ack?"curs":"new"):(m.doneT&&now-m.doneT<day?"fet":null);if(!st)return;
+    out.push({k:"m"+m.id,src:"msg",m:m,code:m.code,prog:p.prog,uba:p.uba,typ:t,st:st,t:m.t,urg:m.crit?0:m.prio==="alta"?1:2,
+      title:m.title,sub:(m.signs&&m.signs.length?m.signs.join(" · "):KIND[m.kind])+" · "+ago(m.t,now),
+      who:m.ack?m.ack.by:(m.status==="atès"?m.log[m.log.length-1]:"")})});
+  R.forEach(function(r){var p=r.p,s=r.s,tk=S.task[p.code];
+    if(s.pending&&(s.st==="bad"||s.st==="warn"))out.push({k:"a"+p.code,src:"pat",code:p.code,prog:p.prog,uba:p.uba,typ:"const",st:tk?"curs":"new",t:s.last.t,urg:s.st==="bad"?1:2,title:s.ev.why[0],sub:(s.ev.why.slice(1).join(" · ")||"Alerta de constants")+" · "+ago(s.last.t,now),note:"Alerta revisada",who:tk?tk.by:""});
+    else if(s.pending&&s.st==="silence"){var g=PROG[p.prog];out.push({k:"s"+p.code,src:"pat",code:p.code,prog:p.prog,uba:p.uba,typ:"sil",st:tk?"curs":"new",t:s.last.t,urg:2,title:"Fa "+s.silentDays+" dies que no registra",sub:"Recordatori enviat · "+(now-(s.last.t+g.freq*1.5*D)>day?"cal trucar":"esperant resposta")+" · "+p.carer,note:"Trucada a la família",who:tk?tk.by:""})}
+    else if(!s.pending&&s.st!=="silence"&&!(p.reviewedAt&&now-p.reviewedAt<day)){var rk=riskOf(p,r.it,now);if(rk.score>=2)out.push({k:"r"+p.code,src:"pat",code:p.code,prog:p.prog,uba:p.uba,typ:"risk",st:tk?"curs":"new",t:now,urg:3,title:"Risc "+Math.min(5,rk.score)+"/5 · abans de l’alerta",sub:rk.why.join(" · "),note:"Trucada preventiva programada",who:tk?tk.by:""})}
+    if(p.reviewedAt&&now-p.reviewedAt<day)out.push({k:"f"+p.code,src:"pat",code:p.code,prog:p.prog,uba:p.uba,typ:/Trucada a la/.test(p.reviewNote)?"sil":/preventiva/.test(p.reviewNote)?"risk":"const",st:"fet",t:p.reviewedAt,urg:3,title:p.reviewNote,sub:ago(p.reviewedAt,now),who:p.reviewedBy})});
+  return out;
+}
+function kCard(x,now){
+  var T=TYP[x.typ],me=ui.mun.me,mine=!ui.mun.onlyMe&&(x.src==="msg"?forMe(x.m,me,now):(me&&x.uba===me)),act="";
+  if(x.st==="new")act=x.src==="msg"?'<button type="button" class="kbtn hot" data-ack="'+x.m.id+'">'+ico("bell",16)+' Assumir</button>':'<button type="button" class="kbtn hot" data-take="'+x.code+'">'+ico(x.typ==="const"?"check":"phone",16)+' Assumir</button>';
+  else if(x.st==="curs")act=x.src==="msg"?'<button type="button" class="kbtn" data-ma="done" data-id="'+x.m.id+'">'+ico("check",16)+' Resolt</button>':'<button type="button" class="kbtn" data-rev="'+x.code+'" data-note="'+x.note+'">'+ico(x.typ==="const"?"check":"phone",16)+' '+(x.typ==="const"?"Revisat":"He trucat")+'</button>';
+  var chain=x.st==="new"&&x.src==="msg"?escLine(x.m,now):"";
+  return'<div class="kc '+x.st+(mine&&x.st!=="fet"?" mine":"")+'" style="--kc:'+T.c+'"><button type="button" class="kmain" data-pat="'+x.code+'"><span class="kic">'+ico(T.ic,20)+'</span><span class="kt"><span class="kl1"><b class="mono">'+x.code+'</b>'+pchip(x.prog)+(x.urg===0?'<span class="pill alta">Urgent</span>':'')+(mine&&x.st!=="fet"?'<span class="pill mine">Et toca</span>':'')+'</span><b class="kti">'+esc(x.title)+'</b><span class="ksub">'+esc(x.sub)+'</span>'+(x.who&&x.st!=="new"?'<span class="kwho">'+ico("check",12)+' '+esc(x.who)+'</span>':'')+chain+'</span></button>'+act+'</div>';
+}
+function vSaf(){
+  var now=Date.now(),M=ui.mun,me=M.me,all=safItems(now),f=M.kf||"tot",col=M.kcol||"new";
+  var mineF=function(x){return!me||(x.src==="msg"?forMe(x.m,me,now)||x.uba===me:x.uba===me)};
+  var B=all.filter(function(x){return M.onlyMe?mineF(x):true}),L=B.filter(function(x){return f==="tot"||x.typ===f});
+  var cnt=function(st){return L.filter(function(x){return x.st===st}).length};
+  var nN=cnt("new"),nC=cnt("curs"),nF=cnt("fet"),tot=nN+nC+nF||1;
+  var sup=me?all.filter(function(x){return x.src==="msg"&&x.st==="new"&&x.uba!==me&&forMe(x.m,me,now)}):[];
+  var h='<div class="ttop">'+meSel()+'<label class="onlyme"><input type="checkbox" id="onlyMe"'+(M.onlyMe?" checked":"")+'> Només el que em toca</label></div>';
+  if(sup.length)h+='<button type="button" class="sban" data-kcol="new"><span class="sbi">'+ico("bell",22)+'</span><span><b>'+sup.length+(sup.length>1?" peticions":" petició")+' amb signes d’alarma de companyes no disponibles</b><br>Et toca com a UBA mirall o microequip. Assumeix-la perquè no quedi sense atendre.</span>'+ico("chev",18)+'</button>';
+  h+='<div class="kflow" role="img" aria-label="'+nN+' per assumir, '+nC+' en curs, '+nF+' fets avui"><span class="kf new" style="flex:'+nN+'"></span><span class="kf curs" style="flex:'+nC+'"></span><span class="kf fet" style="flex:'+nF+'"></span></div>';
+  h+='<div class="kfl"><span><i class="kf new"></i>'+nN+' per assumir</span><span><i class="kf curs"></i>'+nC+' en curs</span><span><i class="kf fet"></i>'+nF+' fets avui</span><b>'+Math.round(nF/tot*100)+'% del dia resolt</b></div>';
+  h+='<div class="kchips">'+[["tot","Tot",""]].concat(Object.keys(TYP).map(function(k){return[k,TYP[k].n,TYP[k].ic]})).map(function(c){var n=c[0]==="tot"?B.filter(function(x){return x.st!=="fet"}).length:B.filter(function(x){return x.typ===c[0]&&x.st!=="fet"}).length;if(c[0]!=="tot"&&!n&&f!==c[0])return"";return'<button type="button" class="kchip" data-kf="'+c[0]+'" aria-pressed="'+(f===c[0])+'"'+(c[2]?' style="--kc:'+TYP[c[0]].c+'"':'')+'>'+(c[2]?'<i>'+ico(c[2],14)+'</i>':'')+c[1]+' <small>'+n+'</small></button>'}).join("")+'</div>';
+  var C=[["new","Per assumir",nN,"bell"],["curs","En curs",nC,"phone"],["fet","Fet avui",nF,"check"]];
+  h+='<div class="kseg">'+C.map(function(c){return'<button type="button" data-kcol="'+c[0]+'" aria-pressed="'+(col===c[0])+'">'+c[1]+' <b>'+c[2]+'</b></button>'}).join("")+'</div>';
+  h+='<div class="kboard">'+C.map(function(c,i){var items=L.filter(function(x){return x.st===c[0]}).sort(function(a,b){return(a.urg-b.urg)||(b.t-a.t)});
+    return'<section class="kcol k-'+c[0]+(col===c[0]?" on":"")+'"><header><span class="kn">'+(i+1)+'</span><h3>'+c[1]+'</h3><em>'+c[2]+'</em></header><div class="klist">'+(items.length?items.map(function(x){return kCard(x,now)}).join(""):'<p class="tempty">'+ico("check",16)+(c[0]==="new"?" Res per assumir":c[0]==="curs"?" Res en curs":" Encara res avui")+'</p>')+'</div></section>'}).join("")+'</div>';
   return h;
 }
+function takeTask(code){var me=ui.mun.me,p=S.patients[code];S.task[code]={by:"Infermeria UBA "+(me||p.uba),t:Date.now()};toast("Assumit: passa a «En curs»");render()}
 function vUBA(R,now){
   var Nn={};R.forEach(function(r){var k=r.p.uba;Nn[k]=Nn[k]||{n:0,al:0,sil:0,rev:0};var o=Nn[k];o.n++;if(r.s.pending&&r.s.st!=="silence")o.al++;if(r.s.pending&&r.s.st==="silence")o.sil++;if(r.p.reviewedAt&&now-r.p.reviewedAt<24*H)o.rev++});
   return'<div class="card"><div class="sech"><h3>Per infermera referent</h3></div><div style="overflow-x:auto"><table><thead><tr><th>UBA</th><th class="n">Pacients</th><th class="n">Alertes</th><th class="n">Silencis</th><th class="n">Revisats</th></tr></thead><tbody>'+
@@ -1129,13 +1216,13 @@ function vBus(){
 }
 function msgAct(id,a,to){
   var m=S.msgs.filter(function(x){return x.id===id})[0];if(!m)return;var p=S.patients[m.code],hh=new Date().toLocaleTimeString("ca",{hour:"2-digit",minute:"2-digit"});
-  if(a==="call"){m.status="atès";m.log.push(destName(m.to,p.uba)+" · trucada feta a les "+hh);toast("Trucada registrada")}
-  else if(a==="done"){m.status="atès";m.log.push(destName(m.to,p.uba)+" · resolt a les "+hh);toast("Marcat com a resolt")}
+  if(a==="call"){m.status="atès";m.doneT=Date.now();m.log.push(destName(m.to,p.uba)+" · trucada feta a les "+hh);toast("Trucada registrada")}
+  else if(a==="done"){m.status="atès";m.doneT=Date.now();m.log.push(destName(m.to,p.uba)+" · resolt a les "+hh);toast("Marcat com a resolt")}
   else{var from=destName(m.to,p.uba);m.to=to;m.log.push(from+" → "+destName(to,p.uba)+" · passat directament");toast("Passat a "+destName(to,p.uba))}
   render();
 }
 function ackMsg(id){var m=S.msgs.filter(function(x){return x.id===id})[0];if(!m)return;var me=ui.mun.me,p=S.patients[m.code],by="Infermeria UBA "+(me||p.uba);m.ack={by:by,t:Date.now()};m.log.push(by+" l’ha assumit");toast("Assumit per "+by+": la resta de l’equip ja no rep l’avís");render()}
-function review(code,note){var p=S.patients[code];p.reviewedAt=Date.now();p.reviewedBy="Infermeria UBA "+p.uba;p.reviewNote=note;toast(code+": "+note.toLowerCase());render()}
+function review(code,note){delete S.task[code];var p=S.patients[code];p.reviewedAt=Date.now();p.reviewedBy="Infermeria UBA "+p.uba;p.reviewNote=note;toast(code+": "+note.toLowerCase());render()}
 
 /* ---------- Motius IA ---------- */
 function freeStats(){
@@ -1198,18 +1285,19 @@ function vRec(){
 
 /* ---------- shell ---------- */
 function vMun(){
-  var M=ui.mun,pm=pendingMsgs().length,pr=proposals().length;
-  var td=todayLists(Date.now()),nt=td.pm.length+td.al.length+td.sil.length;var T=[["ini","Avui","alert",nt],["pac","Pacients","users",0],["dem","Previsió","bolt",0],["ia","Motius IA","sparkle",pr],["rec","Recerca","search",0]];
-  var cur=M.pat?"pac":M.tab;
-  var nav='<nav class="pnav" aria-label="Seccions">'+T.map(function(t){return'<button type="button" data-tab="'+t[0]+'" aria-current="'+(cur===t[0]?"page":"false")+'">'+ico(t[2],18)+'<span>'+t[1]+'</span>'+(t[3]?'<em class="cnt">'+t[3]+'</em>':'')+'</button>'}).join("")+'</nav>';
-  var title=M.pat?"Fitxa del pacient":{ini:"Què cal fer avui",pac:"Pacients en seguiment",bus:"Bústia de consultes",dem:"Previsió de la demanda",ia:"Motius detectats per l’assistent",rec:"Recerca de l’equip"}[M.tab];
-  var body=M.pat?vPat(M.pat):M.tab==="ini"?vIni():M.tab==="pac"?vPac():M.tab==="dem"?vDem():M.tab==="ia"?vIA():vRec();
-  return'<div class="pro">'+nav+'<section class="pmain"><div class="ptitle"><h2>'+title+'</h2><span class="note">Microequip A i B · '+new Date().toLocaleDateString("ca",{weekday:"long",day:"numeric",month:"long"})+'</span></div>'+body+'</section></div>';
+  var M=ui.mun,pr=proposals().length,now=Date.now(),open=safItems(now).filter(function(x){return x.st==="new"}).length;
+  var MODS={dem:{n:"Previsió de la demanda",d:"Eix principal · agendes",ic:"gauge",tabs:[["agd","Agendes del dia","gauge",0],["bucle","Bucle d’ajust","sparkle",0]]},
+    inn:{n:"Resposta InnovaMunt",d:"Peticions i seguiment",ic:"heart",tabs:[["saf","Safata","doc",open],["pac","Pacients","users",0],["ia","Motius IA","sparkle",pr],["rec","Recerca","search",0]]}};
+  var mod=M.mod,cur=M.pat?"pac":M.tab,md=MODS[mod];
+  var nav='<nav class="pnav" aria-label="Seccions"><div class="pmods">'+Object.keys(MODS).map(function(k){var o=MODS[k],n=k==="inn"?open:0;return'<button type="button" class="pmod m-'+k+'" data-mod="'+k+'" aria-current="'+(mod===k?"true":"false")+'"><span class="pmi">'+ico(o.ic,20)+'</span><span class="pmt"><b>'+o.n+'</b><small>'+o.d+'</small></span>'+(n?'<em class="cnt">'+n+'</em>':'')+'</button>'}).join("")+'</div><div class="ptabs">'+md.tabs.map(function(t){return'<button type="button" data-tab="'+t[0]+'" aria-current="'+(cur===t[0]?"page":"false")+'">'+ico(t[2],18)+'<span>'+t[1]+'</span>'+(t[3]?'<em class="cnt">'+t[3]+'</em>':'')+'</button>'}).join("")+'</div></nav>';
+  var title=M.pat?"Fitxa del pacient":{agd:"Agendes del dia",bucle:"Bucle d’ajust de les agendes",saf:"Safata de peticions i seguiment",pac:"Pacients en seguiment",ia:"Motius detectats per l’assistent",rec:"Recerca de l’equip"}[M.tab];
+  var body=M.pat?vPat(M.pat):M.tab==="saf"?vSaf():M.tab==="pac"?vPac():M.tab==="agd"||M.tab==="bucle"?vDem():M.tab==="ia"?vIA():vRec();
+  return'<div class="pro mod-'+mod+'">'+nav+'<section class="pmain"><div class="ptitle"><h2>'+title+'</h2><span class="note">'+md.n+' · '+new Date().toLocaleDateString("ca",{weekday:"long",day:"numeric",month:"long"})+'</span></div>'+body+'</section></div>';
 }
 /* ---------- state, render, events ---------- */
-var S=gen(Date.now()),HS=location.hash;S.dismissed=[];
+var S=gen(Date.now()),HS=location.hash;S.dismissed=[];S.task={};S.msgs.forEach(function(m){if(m.status==="atès"&&Date.now()-m.t<36*H)m.doneT=m.t+3*H});
 var ui={screen:HS==="#innovamunt"||HS==="#familia"?"inn":HS==="#muntapp"?"mun":"home",inn:null,
-  mun:{me:4,tab:"ini",pat:null,from:"pac",prog:"Tots",q:"",bs:"nou",bt:"all"},
+  mun:{me:4,mod:"dem",tab:"agd",kf:"tot",kcol:"new",onlyMe:true,pat:null,from:"pac",prog:"Tots",q:"",bs:"nou",bt:"all"},
   dm:{day:0,cut:0,scen:0,abs:-1,open:-1,adj:{},tpl:{},log:[],undo:[]}};
 innReset(false);
 var app=document.getElementById("app");
@@ -1218,7 +1306,7 @@ function vHome(){
   '<div class="hero"><h1>Dues portes, un mateix equip</h1><p>InnovaMunt dona als pacients i a les famílies un accés directe al professional que els cal. MuntApp és el tauler de l’equip: consultes, evolució de cada pacient i previsió de la demanda.</p></div>'+
   '<div class="doors">'+
    '<button class="door inn" type="button" data-go="inn"><span class="ic">'+ico("heart",26)+'</span><b>InnovaMunt</b><span>Per a pacients i famílies. Pensat per al mòbil: trieu el pacient, què passa i a qui ho envieu.</span><em>Entrar com a família '+ico("chev",16)+'</em></button>'+
-   '<button class="door mun" type="button" data-go="mun"><span class="ic">'+ico("gauge",26)+'</span><b>MuntApp</b><span>Per a professionals. Tauler per programa (ICC, DM2, PCC, MACA, ATDOM), fitxa de cada pacient i bústia.</span><em>Entrar com a professional '+ico("chev",16)+'</em></button>'+
+   '<button class="door mun" type="button" data-go="mun"><span class="ic">'+ico("gauge",26)+'</span><b>MuntApp</b><span>Per a professionals. Dos mòduls: la previsió de la demanda amb agendes dinàmiques, i la resposta a InnovaMunt en una safata visual.</span><em>Entrar com a professional '+ico("chev",16)+'</em></button>'+
   '</div>'+
   '<div class="how"><div><span class="hn">1</span><b>La família notifica</b><span>Constants, un problema nou, un dubte o un tràmit.</span></div><div><span class="hn">2</span><b>Arriba directe</b><span>A infermeria, medicina, treball social o la UAC, sense centraleta.</span></div><div><span class="hn">3</span><b>L’equip actua</b><span>Prioritat automàtica i evolució del pacient en una sola pantalla.</span></div></div>'+
   '<p class="note">Prototip amb dades fictícies. No introduïu dades reals de pacients.</p></div>';
@@ -1234,7 +1322,7 @@ function numVar(k){return VARS[ui.inn.prof].concat([CUID]).filter(function(x){re
 document.querySelector(".top").addEventListener("click",function(e){if(e.target.closest("[data-go]"))go("home")});
 app.addEventListener("click",function(e){
   var b=e.target.closest("button");if(!b)return;var d=b.dataset,I=ui.inn,M=ui.mun;
-  if(d.go){if(d.go==="mun"){M.tab=ui.screen==="inn"?"ini":M.tab;M.pat=null}go(d.go);return}
+  if(d.go){if(d.go==="mun"){if(ui.screen==="inn"){M.mod="inn";M.tab="saf"}M.pat=null}go(d.go);return}
   /* wizard */
   if(d.back){back();return}
   if(d.prof){I.prof=d.prof;I.vals=null;nav("what");return}
@@ -1251,9 +1339,13 @@ app.addEventListener("click",function(e){
   if(b.id==="iSend"){innSend();return}
   if(d["new"]){innReset(true);render();window.scrollTo(0,0);return}
   /* professional */
-  if(d.pat){if(!M.pat)M.from=M.tab;M.pat=d.pat;render();window.scrollTo(0,0);return}
-  if(d.tab){M.tab=d.tab;M.pat=null;render();window.scrollTo(0,0);return}
-  if(d.prog){M.tab="pac";M.prog=d.prog;M.pat=null;render();window.scrollTo(0,0);return}
+  if(d.mod){M.mod=d.mod;M.tab=d.mod==="dem"?"agd":"saf";M.pat=null;render();window.scrollTo(0,0);return}
+  if(d.take){takeTask(d.take);return}
+  if(d.kf){M.kf=d.kf;render();return}
+  if(d.kcol){M.kcol=d.kcol;render();return}
+  if(d.pat){if(!M.pat)M.from=M.tab;M.mod="inn";M.pat=d.pat;render();window.scrollTo(0,0);return}
+  if(d.tab){M.tab=d.tab;M.mod=(d.tab==="agd"||d.tab==="bucle")?"dem":"inn";M.pat=null;render();window.scrollTo(0,0);return}
+  if(d.prog){M.tab="pac";M.mod="inn";M.prog=d.prog;M.pat=null;render();window.scrollTo(0,0);return}
   if(d.ack){ackMsg(d.ack);return}
   if(d.tf){M.f=d.tf;render();return}
   if(d.hist){M.hist=!M.hist;render();return}
@@ -1272,6 +1364,7 @@ app.addEventListener("click",function(e){
 app.addEventListener("change",function(e){
   var t=e.target,I=ui.inn;
   if(t.id==="iPhoto"&&t.files&&t.files[0]){try{if(I.photo)URL.revokeObjectURL(I.photo)}catch(x){}I.photo=URL.createObjectURL(t.files[0]);render()}
+  else if(t.id==="onlyMe"){ui.mun.onlyMe=t.checked;render()}
   else if(t.id==="meSel"){ui.mun.me=+t.value||0;render()}
   else if(t.id==="dAbs"){ui.dm.abs=+t.value;ui.dm.open=-1;render()}
 });

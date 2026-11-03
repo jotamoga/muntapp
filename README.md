@@ -14,9 +14,9 @@ Prototip web per a l’**EAP Adults La Muntanyeta** (Castelldefels): previsió d
 
 **MuntApp (web i mòbil)**
 
-| Avui | Fitxa del pacient | Previsió |
+| Previsió de la demanda | Safata InnovaMunt | Fitxa del pacient |
 | --- | --- | --- |
-| ![Avui](docs/muntapp-avui.png) | ![Pacient](docs/muntapp-pacient.png) | ![Previsió](docs/muntapp-previsio.png) |
+| ![Previsió](docs/muntapp-previsio.png) | ![Safata](docs/muntapp-safata.png) | ![Pacient](docs/muntapp-pacient.png) |
 
 ## Què és
 
@@ -38,22 +38,23 @@ Un assistent pas a pas, amb una pantalla per decisió i barra de progrés:
 
 ### MuntApp · equip (web i mòbil)
 
-- **Avui:** una sola pantalla per saber què passa. Tres blocs, cadascun amb el seu comptador i una sola acció per fila:
-  - **Peticions de les famílies** (consultes noves, ordenades per urgència) → «Resolt».
-  - **Alertes de constants** (valors fora de rang) → «Revisat».
-  - **Sense seguiment:** famílies que han deixat de registrar. L’app els envia un recordatori automàtic i, si en 24 h no responen, avisa l’equip que cal trucar → «He trucat».
-  - **Escalat dels signes d’alarma:** si la infermera referent no està disponible (domicilis, absència…), la petició arriba també a la seva **UBA mirall**; si ningú la «Assumeix» en 30 minuts, avisa tot el **microequip**. Els signes urgents avisen el microequip a l’instant. Quan algú l’assumeix, la resta deixa de rebre l’avís. El selector «Veure com a» mostra què li toca a cada infermera.
-  - **Abans de l’alerta:** pacients encara dins de rang però amb una tendència que s’hi acosta (glucosa que puja, freqüència cardíaca que puja, menja menys…), per fer una trucada preventiva.
-  - Tocar una fila obre la fitxa del pacient. Al peu, els pacients sense res pendent i l’historial de peticions ateses.
-- **Pacients:** filtre per programa i cerca. Cada fila mostra l’estat, el motiu, la tendència i l’adherència.
-- **Fitxa del pacient:** consultes pendents amb accions, gràfiques d’evolució de 28 dies amb els llindars d’alerta, calendari de registres, últims valors i cronologia d’incidències i consultes.
-- **Previsió (agendes dinàmiques):** visites i minuts lliures per UBA i microequip, semàfor de càrrega, escenaris i ordre de suport. A cada tall, MuntApp dona indicacions que es retroalimenten:
-  1. **Mig tall (14 h):** quina UBA de relleu obre forats i si la demanda creix respecte a la setmana anterior.
-  2. **Final del dia (19.45 h):** proposta per a la setmana vinent (moure controls de crònics estables al dia amb menys càrrega), amb el botó «Aplicar».
-  3. **Cada 2 setmanes:** recalibrar la plantilla de cada dia segons la tendència (menys crònics i més forats del mateix dia si creix; recuperar crònics si baixa).
-  4. **Cada mes:** tendència de 4 setmanes i error de previsió, per revisar-ho amb l’equip (PDCA).
-  Cada ajust aplicat mostra el seu efecte en la previsió i es pot desfer.
-- **Motius IA:** textos lliures de les famílies. Si un motiu es repeteix 3 vegades o més en 30 dies, l’assistent proposa afegir-lo com a opció o crear-ne una de nova. L’equip decideix.
+Dos mòduls separats:
+
+**1. Previsió de la demanda (eix principal del projecte)**
+
+- **Agendes del dia:** visites i minuts lliures per UBA i microequip, semàfor de càrrega, escenaris (pic de grip, UBA absent) i ordre de suport. Indicacions de cada tall:
+  - **Mig tall (14 h):** quina UBA de relleu obre forats i si la demanda creix respecte a la setmana anterior.
+  - **Final del dia (19.45 h):** proposta per a la setmana vinent (moure controls de crònics estables al dia amb menys càrrega), amb el botó «Aplicar».
+- **Bucle d’ajust:** cada 2 setmanes, recalibrar la plantilla de cada dia segons la tendència; cada mes, tendència de 4 setmanes i error de previsió per revisar-ho amb l’equip (PDCA). Cada ajust aplicat mostra el seu efecte i es pot desfer.
+
+**2. Resposta InnovaMunt**
+
+- **Safata:** totes les peticions i alertes en un sol flux visual de tres columnes, **Per assumir → En curs → Fet avui**, amb una barra de progrés del dia. Cada targeta té un color i una icona segons el tipus (signes d’alarma, consultes, constants, sense seguiment, risc creixent, tràmits) i un sol botó: «Assumir» i després «Resolt», «Revisat» o «He trucat». Per defecte, cada infermera veu només el que li toca.
+  - **Escalat dels signes d’alarma:** si la infermera referent no està disponible, la petició arriba també a la seva **UBA mirall**; si ningú l’assumeix en 30 minuts, avisa tot el **microequip**. Els signes urgents avisen el microequip a l’instant.
+  - **Sense seguiment:** l’app envia un recordatori automàtic a la família i, si en 24 h no respon, avisa que cal trucar.
+  - **Abans de l’alerta:** pacients encara dins de rang però amb una tendència que s’hi acosta, per fer una trucada preventiva.
+- **Pacients** i **fitxa del pacient:** evolució de 28 dies amb els llindars d’alerta, calendari de registres i cronologia d’incidències i consultes.
+- **Motius IA:** si un motiu escrit amb text lliure es repeteix 3 vegades o més en 30 dies, l’assistent proposa afegir-lo com a opció. L’equip decideix.
 - **Recerca:** indicadors dels estudis de l’equip i seguiment per infermera referent.
 
 ## InnovaMunt, La Meva Salut i eOSS
