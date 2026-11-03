@@ -523,6 +523,17 @@ b.tb{color:var(--bad)}
 .aiemerg div{display:flex;flex-direction:column;flex:1;min-width:0}.aiemerg b{font-size:15px}.aiemerg span{font-size:12.5px;opacity:.92}
 .aiemerg .call{background:#fff;color:var(--bad);font-weight:800;border-radius:999px;padding:8px 14px;text-decoration:none;font-size:15px;flex:none}
 .aipre{display:flex;gap:6px;align-items:center;font-size:12.5px;color:var(--accent);background:var(--accent-soft);border-radius:10px;padding:8px 10px;margin:0 0 8px}
+.sban.on{background:var(--warm);color:#fff}.sban.on .sbi{background:rgba(255,255,255,.2);color:#fff}
+.kc.sup{box-shadow:inset 5px 0 0 var(--kc),0 0 0 2px var(--warm)}
+/* comptadors: mai a sobre del text */
+.pmod .cnt{position:static;margin-left:auto;flex:none;align-self:center}
+.pmod .pmt{flex:1;min-width:0}
+.cnt{white-space:nowrap;flex:none}
+@media (max-width:980px){
+  .pmod{gap:8px}
+  .ptabs .cnt,.pnav>button .cnt{top:0;right:auto;left:calc(50% + 7px)}
+}
+@media (max-width:420px){.pmod{padding:7px;gap:6px}.pmod .pmi{width:26px;height:26px;border-radius:8px}.pmod .pmi svg{width:16px;height:16px}.pmod b{font-size:12px}}
 /* ===== Versió Apple: materials, tipografia del sistema, colors de sistema i moviment amb molla ===== */
 :root{
   --bg:#F5F5F7; --surface:#FBFBFD; --card:#FFFFFF; --sunk:#EEEEF0; --ink:#1D1D1F; --muted:#6E6E73; --line:rgba(60,60,67,.14);
@@ -623,6 +634,7 @@ button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-vis
   button:active:not(:disabled),.door:active,.tile:active,.sug:active,.sig:active{transform:none}
 }
 @media (prefers-reduced-transparency:reduce){.top,.pnav,.toast{background:var(--card);-webkit-backdrop-filter:none;backdrop-filter:none}}
+@media (max-width:900px){.top{position:relative;top:0}.pnav{background:color-mix(in srgb,var(--card) 94%,transparent);-webkit-backdrop-filter:blur(30px) saturate(180%);backdrop-filter:blur(30px) saturate(180%)}}
 </style>
 </head>
 <body data-anim="1">
@@ -1454,17 +1466,17 @@ function kCard(x,now){
   if(x.st==="new")act=x.src==="msg"?'<button type="button" class="kbtn hot" data-ack="'+x.m.id+'">'+ico("bell",16)+' Assumir</button>':'<button type="button" class="kbtn hot" data-take="'+x.code+'">'+ico(x.typ==="const"?"check":"phone",16)+' Assumir</button>';
   else if(x.st==="curs")act=x.src==="msg"?'<button type="button" class="kbtn" data-ma="done" data-id="'+x.m.id+'">'+ico("check",16)+' Resolt</button>':'<button type="button" class="kbtn" data-rev="'+x.code+'" data-note="'+x.note+'">'+ico(x.typ==="const"?"check":"phone",16)+' '+(x.typ==="const"?"Revisat":"He trucat")+'</button>';
   var chain=x.st==="new"&&x.src==="msg"?escLine(x.m,now):"";
-  return'<div class="kc '+x.st+(mine&&x.st!=="fet"?" mine":"")+'" style="--kc:'+T.c+'"><button type="button" class="kmain" data-pat="'+x.code+'"><span class="kic">'+ico(T.ic,20)+'</span><span class="kt"><span class="kl1"><b class="mono">'+x.code+'</b>'+pchip(x.prog)+(x.urg===0?'<span class="pill alta">Urgent</span>':'')+(mine&&x.st!=="fet"?'<span class="pill mine">Et toca</span>':'')+'</span><b class="kti">'+esc(x.title)+'</b><span class="ksub">'+esc(x.sub)+'</span>'+(x.who&&x.st!=="new"?'<span class="kwho">'+ico("check",12)+' '+esc(x.who)+'</span>':'')+chain+'</span></button>'+act+'</div>';
+  var isSup=ui.mun.supOnly&&x.st==="new";return'<div class="kc '+x.st+(mine&&x.st!=="fet"?" mine":"")+(isSup?" sup":"")+'" style="--kc:'+T.c+'"><button type="button" class="kmain" data-pat="'+x.code+'"><span class="kic">'+ico(T.ic,20)+'</span><span class="kt"><span class="kl1"><b class="mono">'+x.code+'</b>'+pchip(x.prog)+(x.urg===0?'<span class="pill alta">Urgent</span>':'')+(mine&&x.st!=="fet"?'<span class="pill mine">Et toca</span>':'')+(isSup?'<span class="pill alta">Suport al microequip</span>':'')+'</span><b class="kti">'+esc(x.title)+'</b><span class="ksub">'+esc(x.sub)+'</span>'+(x.who&&x.st!=="new"?'<span class="kwho">'+ico("check",12)+' '+esc(x.who)+'</span>':'')+chain+'</span></button>'+act+'</div>';
 }
 function vSaf(){
   var now=Date.now(),M=ui.mun,me=M.me,all=safItems(now),f=M.kf||"tot",col=M.kcol||"new";
   var mineF=function(x){return!me||(x.src==="msg"?forMe(x.m,me,now)||x.uba===me:x.uba===me)};
-  var B=all.filter(function(x){return M.onlyMe?mineF(x):true}),L=B.filter(function(x){return f==="tot"||x.typ===f});
+  var sup=me?all.filter(function(x){return x.src==="msg"&&x.st==="new"&&x.uba!==me&&forMe(x.m,me,now)}):[],supK={};sup.forEach(function(x){supK[x.k]=1});if(!sup.length)M.supOnly=false;
+  var B=all.filter(function(x){return M.onlyMe?mineF(x):true}),L=M.supOnly?all.filter(function(x){return supK[x.k]}):B.filter(function(x){return f==="tot"||x.typ===f});
   var cnt=function(st){return L.filter(function(x){return x.st===st}).length};
   var nN=cnt("new"),nC=cnt("curs"),nF=cnt("fet"),tot=nN+nC+nF||1;
-  var sup=me?all.filter(function(x){return x.src==="msg"&&x.st==="new"&&x.uba!==me&&forMe(x.m,me,now)}):[];
   var h='<div class="ttop">'+meSel()+'<label class="onlyme"><input type="checkbox" id="onlyMe"'+(M.onlyMe?" checked":"")+'> Només el que em toca</label></div>';
-  if(sup.length)h+='<button type="button" class="sban" data-kcol="new"><span class="sbi">'+ico("bell",22)+'</span><span><b>'+sup.length+(sup.length>1?" peticions":" petició")+' amb signes d’alarma de companyes no disponibles</b><br>Et toca com a UBA mirall o microequip. Assumeix-la perquè no quedi sense atendre.</span>'+ico("chev",18)+'</button>';
+  if(sup.length)h+='<button type="button" class="sban'+(M.supOnly?' on':'')+'" data-sup="1" aria-pressed="'+(!!M.supOnly)+'"><span class="sbi">'+ico("bell",22)+'</span><span><b>'+sup.length+(sup.length>1?" peticions":" petició")+' amb signes d’alarma de companyes no disponibles</b><br>'+(M.supOnly?'Mostrant només aquestes peticions. Toca per tornar a veure-ho tot.':'Et toca com a UBA mirall o microequip. Toca per veure-les i assumir-les.')+'</span>'+ico(M.supOnly?"x":"chev",18)+'</button>';
   h+='<div class="kflow" role="img" aria-label="'+nN+' per assumir, '+nC+' en curs, '+nF+' fets avui"><span class="kf new" style="flex:'+nN+'"></span><span class="kf curs" style="flex:'+nC+'"></span><span class="kf fet" style="flex:'+nF+'"></span></div>';
   h+='<div class="kfl"><span><i class="kf new"></i>'+nN+' per assumir</span><span><i class="kf curs"></i>'+nC+' en curs</span><span><i class="kf fet"></i>'+nF+' fets avui</span><b>'+Math.round(nF/tot*100)+'% del dia resolt</b></div>';
   h+='<div class="kchips">'+[["tot","Tot",""]].concat(Object.keys(TYP).map(function(k){return[k,TYP[k].n,TYP[k].ic]})).map(function(c){var n=c[0]==="tot"?B.filter(function(x){return x.st!=="fet"}).length:B.filter(function(x){return x.typ===c[0]&&x.st!=="fet"}).length;if(c[0]!=="tot"&&!n&&f!==c[0])return"";return'<button type="button" class="kchip" data-kf="'+c[0]+'" aria-pressed="'+(f===c[0])+'"'+(c[2]?' style="--kc:'+TYP[c[0]].c+'"':'')+'>'+(c[2]?'<i>'+ico(c[2],14)+'</i>':'')+c[1]+' <small>'+n+'</small></button>'}).join("")+'</div>';
@@ -1697,9 +1709,10 @@ app.addEventListener("click",function(e){
   if(b.id==="iSend"){innSend();return}
   if(d["new"]){innReset(true);render();window.scrollTo(0,0);return}
   /* professional */
-  if(d.mod){M.mod=d.mod;M.tab=d.mod==="dem"?"agd":"saf";M.pat=null;render();window.scrollTo(0,0);return}
+  if(d.mod){M.supOnly=false;M.mod=d.mod;M.tab=d.mod==="dem"?"agd":"saf";M.pat=null;render();window.scrollTo(0,0);return}
   if(d.take){takeTask(d.take);return}
-  if(d.kf){M.kf=d.kf;render();return}
+  if(d.sup){M.supOnly=!M.supOnly;M.kf="tot";M.kcol="new";render();if(M.supOnly){var kb=document.querySelector(".kboard");if(kb)kb.scrollIntoView({behavior:"smooth",block:"start"})}return}
+  if(d.kf){M.kf=d.kf;M.supOnly=false;render();return}
   if(d.kcol){M.kcol=d.kcol;render();return}
   if(d.pat){if(!M.pat)M.from=M.tab;M.mod="inn";M.pat=d.pat;render();window.scrollTo(0,0);return}
   if(d.tab){M.tab=d.tab;M.mod=(d.tab==="agd"||d.tab==="bucle")?"dem":"inn";M.pat=null;render();window.scrollTo(0,0);return}
@@ -1722,7 +1735,7 @@ app.addEventListener("click",function(e){
 app.addEventListener("change",function(e){
   var t=e.target,I=ui.inn;
   if(t.id==="iPhoto"&&t.files&&t.files[0]){try{if(I.photo)URL.revokeObjectURL(I.photo)}catch(x){}I.photo=URL.createObjectURL(t.files[0]);render()}
-  else if(t.id==="onlyMe"){ui.mun.onlyMe=t.checked;render()}
+  else if(t.id==="onlyMe"){ui.mun.onlyMe=t.checked;ui.mun.supOnly=false;render()}
   else if(t.id==="meSel"){ui.mun.me=+t.value||0;render()}
   else if(t.id==="dAbs"){ui.dm.abs=+t.value;ui.dm.open=-1;render()}
 });
