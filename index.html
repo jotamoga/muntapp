@@ -514,6 +514,15 @@ b.tb{color:var(--bad)}
 .kc{flex-direction:row;align-items:center}
 .kmain{flex:1;min-width:0}
 .kbtn{margin:8px 8px 8px 0;flex-direction:column;gap:2px;min-width:78px;font-size:12px;padding:8px 6px;align-self:center}
+/* assistent */
+.aifacts{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:6px 0 2px}
+.aifacts .ail{font-size:11px;font-weight:700;color:var(--muted);margin-right:2px}
+.aifacts span:not(.ail){font-size:12px;font-weight:600;background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:3px 9px}
+.aifacts span.neg{background:var(--sunk);color:var(--muted);text-decoration:line-through}
+.aiemerg{display:flex;gap:10px;align-items:center;background:var(--bad);color:#fff;border-radius:14px;padding:12px;margin:6px 0}
+.aiemerg div{display:flex;flex-direction:column;flex:1;min-width:0}.aiemerg b{font-size:15px}.aiemerg span{font-size:12.5px;opacity:.92}
+.aiemerg .call{background:#fff;color:var(--bad);font-weight:800;border-radius:999px;padding:8px 14px;text-decoration:none;font-size:15px;flex:none}
+.aipre{display:flex;gap:6px;align-items:center;font-size:12.5px;color:var(--accent);background:var(--accent-soft);border-radius:10px;padding:8px 10px;margin:0 0 8px}
 </style>
 </head>
 <body>
@@ -577,7 +586,7 @@ var CATS=[
 ];
 var LIB=[];
 function P(id,cat,n,to,kw,signs){LIB.push({id:id,cat:cat,n:n,to:to,kw:kw,s:signs.map(function(x){return x.charAt(0)==="!"?sg(x.slice(1),1):sg(x)})})}
-P("ferida","pell","Nova ferida o úlcera","inf",["ferida","nafra","ulcera","llaga","herida","talls","tall","rascada"],["Vermellor que s’estén","Supuració o mal olor","Febre","Ferida profunda o més gran de 2 cm"]);
+P("ferida","pell","Nova ferida o úlcera","inf",["ferida","ulcera","llaga","herida","talls","tall","rascada"],["Vermellor que s’estén","Supuració o mal olor","Febre","Ferida profunda o més gran de 2 cm"]);
 P("ferida_no","pell","Ferida que no millora","inf",["no cicatritza","no cura","no se cura","no millora la ferida","cura","aposit","venda"],["Fa pudor","Ha crescut","Dolor que augmenta","Febre"]);
 P("nafra","pell","Nafra per pressió","inf",["nafra","escara","talo","sacre","culet","llaga por presion","vermell al cul"],["La pell s’ha obert","Zona negra o morada","Supura"]);
 P("picor","pell","Picor o erupció","inf",["picor","pica","erupcio","granets","taques","picazon","urticaria","sarpullido","rojeces","vermellor a la pell"],["!Inflor de cara o llavis","S’estén ràpid","Febre"]);
@@ -796,6 +805,246 @@ function riskOf(p,items,now){
   var L=lastOf(items);if(L&&L.v.ingesta==="Menys"){out.score+=1;out.why.push("Menja menys")}
   return out;
 }
+/* ---------- assistent: biblioteca ampliada + motor de llenguatge natural ---------- */
+IC.eye="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8zM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z";
+CATS.push({id:"orl",n:"Ulls, oïda i boca",ic:"eye"},{id:"medi",n:"Medicació i efectes",ic:"pill"});
+
+/* --- més motius (paraules clau en català, castellà i formes col·loquials) --- */
+P("herpes","pell","Herpes o zòster","inf",["herpes","zoster","culebrilla","bufetes en franja","vesicules","calentura al llavi","pupa al llavi"],["A la cara o a prop de l’ull","Dolor molt fort","Febre"]);
+P("fongs","pell","Fongs o irritació als plecs","inf",["fongs","hongos","micosi","plecs","engonal","ingle","candidiasi","pell irritada","sota el pit","escocedura","escaldat"],["S’estén","Supura","Febre"]);
+P("picada","pell","Picada d’insecte","inf",["picada","picadura","mosquit","mosquito","vespa","avispa","abella","abeja","paparra","garrapata","aranya"],["!Inflor de cara o llengua","!Dificultat per respirar","Vermellor que creix"]);
+P("alergia","pell","Reacció al·lèrgica","med",["hinchado la cara","lengua hinchada","llengua inflada","alergia","al lergia","alergico","reaccio alergica","urticaria","habons","ronchas","hinchazon de cara","cara hinchada","cara inflada","llavis inflats"],["!Inflor de llengua o gola","!Dificultat per respirar","!Mareig o desmai","Per un medicament nou"]);
+P("ardor","dig","Acidesa o cremor d’estómac","inf",["cremor d estomac","ardor de estomago","acidesa","acidez","cremor","ardor","reflux","reflujo","pirosi","rebots","eructes","indigestio","pesadez"],["!Dolor al pit que no marxa","!Vòmits amb sang","Femta negra"]);
+P("hemorroides","dig","Hemorroides o molèsties a l’anus","inf",["hemorroides","almorranes","almorranas","anus","ano","sang al paper","picor anal","fissura"],["Sang abundant","Dolor molt fort","Bony dur i morat"]);
+P("estoma","dig","Problema amb l’estoma","inf",["estoma=","estomes","colostomia","ileostomia","urostomia","ostomia","bossa de l estoma","bolsa de colostomia"],["Pell irritada al voltant","No hi surt res en 24 h","Estoma de color fosc o morat"]);
+P("peg","dig","Sonda d’alimentació (PEG o nasogàstrica)","inf",["peg","gastrostomia","sonda nasogastrica","sng","alimentacio per sonda","nutricio enteral","boto gastric","sonda de alimentacion"],["S’ha sortit la sonda","No passa l’alimentació","!Tos o ofec mentre s’alimenta"]);
+P("groc","dig","Pell o ulls grocs","med",["groc","groga","ictericia","ojos amarillos","piel amarilla","ulls grocs"],["Orina fosca","Febre","Dolor a la panxa"]);
+P("deshidrat","dig","Beu poc o està deshidratat","inf",["no beu","beu poc","deshidrat","boca seca","llengua seca","no bebe","bebe poco","molta set"],["Orina molt poca o fosca","!Molt adormit o confús","Febre"]);
+P("covid","resp","Grip o COVID","inf",["grip","gripe","covid","coronavirus","test positiu","antigen positiu","virus","dolor de cos","malestar general"],["Febre més de 3 dies","Ofec","Saturació per sota de 92%"]);
+P("asma","resp","Crisi d’asma o de MPOC","inf",["asma","mpoc","epoc","xiula","xiulet","pitos","sibilancies","inhalador","bronquitis","esputs verds","moc verd"],["!No pot parlar per l’ofec","L’inhalador de rescat no fa efecte","Esput verd o groc","Febre"]);
+P("hemoptisi","resp","Sang en tossir","med",["sang en tossir","escup sang","hemoptisi","tos amb sang","tos con sangre","esput amb sang","escupe sangre"],["!Molta quantitat","Ofec","Pren anticoagulants"]);
+P("nas","resp","Sang pel nas","inf",["sang pel nas","epistaxi","sangra por la nariz","sangre por la nariz","hemorragia nasal","li raja sang del nas"],["No para en 20 minuts","Pren anticoagulants","!Molta sang i mareig"]);
+P("tvp","cor","Una cama inflada i dolorosa","med",["una cama","una sola cama","cama dreta","cama esquerra","pierna derecha","pierna izquierda","bessó","pantorrilla","panxell","trombosi","trombo"],["!Amb ofec sobtat","Vermella i calenta","Dolor en caminar"]);
+P("sincope","cor","Desmai","med",["desmai","desmaiat","desmaia","perdut el coneixement","desmayo","desmayado","sincope","perdio el conocimiento","s ha marejat i ha caigut"],["!No es recupera del tot","!Dolor al pit o palpitacions","Cop al cap"]);
+P("cervical","dolor","Mal de coll o cervicals","inf",["cervicals","cervical","clatell","nuca","torticoli","tortícolis","dolor de cuello","coll encarcarat"],["!Febre i coll rígid","Formigueig als braços"]);
+P("esguinc","dolor","Torçada o cop a una articulació","inf",["torcat","torçada","esguinc","esguince","torcedura","s ha torcat","me he torcido","turmell inflat","dit inflat"],["No hi pot recolzar pes","Molt inflat o deformat","Pell morada"]);
+P("rampes","dolor","Rampes musculars","inf",["rampes","rampa","calambres","calambre","contractura","enrampada"],["Molt freqüents","Debilitat"]);
+P("sangorina","uri","Sang a l’orina","med",["orina surt vermella","orina de color vermell","orina roja","sang a l orina","orina vermella","hematuria","sangre en la orina","pipi vermell","orina amb sang"],["Coàguls","No pot orinar","Febre"]);
+P("retencio","uri","No pot orinar","inf",["no pot orinar","no puc fer pipi","no pot fer pipi","retencio","globus vesical","prostata","no puede orinar","no puede mear"],["!Panxa inflada i dolor fort","Fa més de 8 hores","Febre"]);
+P("genital","uri","Molèsties genitals o flux","inf",["flux","flujo","picor vaginal","vagina","vulva","genital","testicle","testiculo","escrot","penis"],["Febre","Dolor fort","Sagnat"]);
+P("sagnatvag","uri","Sagnat vaginal","med",["menopausa","sagnat vaginal","sangrado vaginal","sang per la vagina","metrorragia","taca de sang"],["Després de la menopausa","!Molt abundant","Dolor fort"]);
+P("convulsio","neuro","Convulsió","med",["convulsio","convulsiona","convulsion","epilepsia","atac epileptic","sacsejades","espasmes"],["!Dura més de 5 minuts","!No es desperta després","És la primera vegada"]);
+P("formigueig","neuro","Formigueig o adormiment","inf",["formigueig","formigueix","hormigueo","adormida la ma","se li adormen","entumecido","dormida la mano","pessigolleig"],["!Una sola banda del cos","!Amb dificultat per parlar","Ha començat avui"]);
+P("tremolor","neuro","Tremolor","inf",["tremola","tremolor","temblor","tiembla","tremolors"],["És nou","Amb febre","Amb suor i glucosa baixa"]);
+P("memoria","neuro","Oblits o memòria","inf",["memoria","oblida","s oblida","olvida","olvidos","demencia","alzheimer","despistat","desorientat a casa"],["Ha empitjorat en pocs dies","Es perd fora de casa","No es pren bé la medicació"]);
+P("calor","febre","Cop de calor","inf",["cop de calor","insolacio","golpe de calor","massa sol","molta calor","calor"],["!Confusió o molt adormit","Febre alta","No orina"]);
+P("vacuna","febre","Reacció a una vacuna","inf",["vacuna","vacunat","vacunacio","vacunado","reaccio a la vacuna","braç inflat"],["Febre més de 48 hores","!Inflor de cara o dificultat per respirar","Braç molt inflat"]);
+P("insulina","diab","Dubte amb la insulina o el glucòmetre","inf",["insulina","glucometre","glucometro","sensor","freestyle","ploma","boligraf","tires","lancetes","punxar","pinchazo"],["Glucosa alta o baixa repetida","S’ha oblidat una dosi","S’ha punxat dues vegades"]);
+P("suicidi","anim","Pensa a fer-se mal","med",["vol morir","no vull viure","no vol viure","suicid","matar se","fer se mal","quitarme la vida","quiere morir","acabar amb tot","no vale la pena vivir"],["!Ho ha dit avui","!Té un pla o mitjans","Viu sol"]);
+P("alcohol","anim","Alcohol o altres consums","inf",["alcohol","beu massa","borratxo","borracho","begudes","drogues","porros","cocaina","consum"],["!No respon o vomita adormit","Ho barreja amb medicació","Vol deixar-ho"]);
+P("panic","anim","Atac d’angoixa","inf",["atac d ansietat","atac de panic","crisi d ansietat","crisis de ansiedad","ataque de panico","hiperventila","li falta l aire de nervis"],["!Dolor al pit","És la primera vegada","No passa en 30 minuts"]);
+P("soledat","cuid","Viu sol o sense suport","ts",["viu sol","viu sola","sol a casa","sola a casa","soledat","ningu l ajuda","vive solo","vive sola","esta solo"],["No menja bé","No es pren la medicació","Risc de caigudes"]);
+P("ull","orl","Ull vermell o que supura","inf",["ull vermell","ulls vermells","conjuntivitis","lleganyes","legañas","ojo rojo","ojos rojos","ull","ulls","li plora l ull"],["!Pèrdua de visió","Molt dolor","Cop o cos estrany a l’ull"]);
+P("visio","orl","Veu malament de cop","med",["veu borros","no hi veu","vision borrosa","no ve","veu doble","ve doble","taca a la vista","perdua de visio","perdida de vision"],["!Ha començat de cop","!Amb mal de cap fort o boca torta","Només un ull"]);
+P("orella","orl","Mal d’orella o no hi sent","inf",["orella","orelles","oida","otitis","oido","oreja","tap de cera","cerumen","no hi sent","sordesa","tapon","xiulet a l orella","acufens"],["Supura","Febre","!Ha perdut l’oïda de cop"]);
+P("boca","orl","Mal de queixal, boca o pròtesi","inf",["mal de queixal","dolor de muelas","flemo","flemon","absces","queixal","dent","dents","muela","diente","genives","encias","boca","protesi dental","dentadura","afta","llagas en la boca","llengua"],["Cara inflada","Febre","No pot menjar"]);
+P("efecte","medi","Efecte secundari d’un medicament","med",["efecte secundari","li ha sentat malament","li sent malament","medicament nou","pastilla nova","efecto secundario","le sienta mal","reaccio al medicament","des que pren"],["!Inflor de cara o dificultat per respirar","Erupció a la pell","Vòmits o diarrea"]);
+P("oblit","medi","S’ha oblidat o equivocat de dosi","inf",["s ha oblidat","oblidat la pastilla","ha pres doble","doble dosi","s ha equivocat","se olvido","se ha olvidado","tomo dos","pastilles equivocades","ha pres massa"],["!Ha pres molta quantitat","És anticoagulant o insulina","Està adormit o confús"]);
+P("anticoag","medi","Anticoagulants i sagnat","inf",["sintrom","anticoagulant","inr","xarelto","eliquis","apixaban","rivaroxaban","edoxaban","heparina","clexane","dabigatran","pradaxa"],["!Sagnat que no para","Blaus nous","INR fora de rang"]);
+P("dosi","medi","Dubte de com prendre un medicament","inf",["com s ha de prendre","quantes pastilles","dosi","dosis","pauta","posologia","puc prendre","puede tomar","se puede tomar","barrejar"],["Pren molts medicaments","És un medicament nou"]);
+
+/* més formes col·loquials als motius existents */
+(function(){var add={restrenyiment:["restrenimiento","estrenimiento","estrenido","estrenyit","estreñido","estreñimiento","no caga","no ha cagat"],vomits:["vomitant","vomitado","ha tret","devuelve"],ofec:["ofegant","sense aire","sin aire","jadea","respira fatal","respira rapid"],febre:["febra","fiebre alta","calentor","febril","tiritona","tremolors de fred","escalofrios","esgarrifances"],caiguda:["s ha caigut","s ha caiguda","l hem trobat a terra","caido","tropezado","ensopegat"],dolornc:["dolor fort","molt dolor","dolor insoportable","dolor insuportable"],cuidador:["estem desbordats","no podemos mas","necessito ajuda"],mareig:["mareado","mareada","se marea"],confusio:["no coneix","no reconeix","desvaria","desvaria","esta raro"],pes:["he pesat","ha pujat de pes","ha engordado","bascula"],ferida:["s ha fet un tall","corte","cortado","raspada"],orinar:["escozor al orinar","molestias al orinar","orina amb mala olor","pixa sovint","orina sovint"],tos:["tus","tus molt","tos seca","tossint","tose","tosiendo","congestio","nas tapat"],cames:["peus inflats","pies hinchados","sabates estretes"],hipo:["tremolos i suor","suda frio"],sonda:["sonda tapada","sonda obstruida"],nafra:["culo","nalga","nalgas","glutis","llaga en el culo"],articular:["genoll inflat","rodilla hinchada","fa mal el genoll","dolor de rodilla"]};
+ Object.keys(add).forEach(function(id){var p=libItem(id);if(p)p.kw=p.kw.concat(add[id])})})();
+
+
+(function(){var M={"restrenyiment": ["sin ir al bano", "no va al bano", "no ha ido al bano", "no hace de vientre", "sin hacer caca"], "cames": ["se le hinchan", "hinchan los pies", "hinchazon de piernas", "pies hinchados", "piernas hinchadas"], "ferida_no": ["no millora", "no mejora", "no se cura", "no cicatriza", "no se cierra", "ulcera"], "picor": ["ronchas", "granos", "manchas en la piel", "le pica"], "palpit": ["corazon muy rapido", "corazon rapido", "late muy rapido", "el cor li va rapid", "cor accelerat", "va accelerat"], "peg": ["gastrostomia tapada", "sonda tapada", "no pasa la alimentacion"], "esguinc": ["torcido", "torcida", "torcido el tobillo", "tobillo torcido", "esguince de tobillo"], "visio": ["borroso", "borrosa", "borros", "ve borroso", "ve mal", "no veo", "no ve bien"], "orella": ["le duele el oido", "dolor de oido", "supura el oido", "oido supura", "duele la oreja"], "fongs": ["debajo del pecho", "sota el pit", "sota els pits"], "vomits": ["vomitos", "esta vomitando", "devuelve todo"], "diarrea": ["heces liquidas", "va mucho al bano", "cagarrinas"], "ofec": ["le falta el aire", "falta de aire", "respira mal", "se cansa al respirar", "ahogo"], "tos": ["tiene tos", "mocos", "flemas", "tose"], "febre": ["tiene fiebre", "fiebre de", "escalofrios", "esta caliente"], "confusio": ["desorientada", "no sabe donde esta", "dice cosas raras", "no reconoce"], "caiguda": ["se ha caido", "se cayo", "resbalado"], "mareig": ["mareada", "mareos", "vertigo", "todo le da vueltas"], "cap": ["dolor de cabeza", "migrana"], "esquena": ["dolor de espalda", "lumbalgia"], "panxa": ["dolor de barriga", "dolor de estomago", "dolor abdominal"], "orinar": ["escuece", "al hacer pipi", "infeccion de orina"], "ansietat": ["llora", "deprimida", "deprimido", "triste", "ansiosa"], "son": ["no duerme", "insomnio", "no puede dormir"], "gana": ["no quiere comer", "sin hambre", "come poco"], "cuidador": ["agotada", "agotado", "no puedo mas", "estoy desbordada"], "sincope": ["se ha desmayado", "se desmayo"], "blau": ["moratones", "moraton", "morado"]};Object.keys(M).forEach(function(id){var p=libItem(id);if(p)p.kw=p.kw.concat(M[id])})})();
+(function(){var M={"ofec": ["llavis morats", "labios morados", "no respira be", "respira malament", "li costa respirar"], "nas": ["sang del nas", "sangra el nas", "li sagna el nas", "sagna pel nas", "nas sagna"], "menysorina": ["no fa pipi", "no ha fet pipi", "no orina", "no mea"], "son": ["no ha dormit", "no ha pogut dormir", "no duerme", "no ha dormido", "dorm poc", "no descansa"], "palpit": ["de pressa", "va de pressa", "cor li va", "accelerat", "acelerado"], "herpes": ["butllofes", "franja", "ampollas"], "tremolor": ["tremolen", "tiemblan", "tremolors"], "hiper": ["sucres alts", "glucoses altes", "azucares altos"], "insulina": ["agulla", "aguja", "punxada", "ploma d insulina"]};Object.keys(M).forEach(function(id){var p=libItem(id);if(p)p.kw=p.kw.concat(M[id])})})();
+(function(){var M={"tvp": ["pantorrilla hinchada", "pantorrilla izquierda", "pantorrilla derecha", "bessó inflat"], "memoria": ["se olvida de", "olvida las cosas", "s oblida de", "perd la memoria"]};Object.keys(M).forEach(function(id){var p=libItem(id);if(p)p.kw=p.kw.concat(M[id])})})();
+(function(){var M={"restrenyiment": ["sense fer de ventre", "sense anar de ventre", "sin hacer de vientre", "sin ir de vientre", "sense fer caca", "sin hacer caca"], "vacuna": ["despres de la vacuna", "despues de la vacuna", "per la vacuna", "desde la vacuna"]};Object.keys(M).forEach(function(id){var p=libItem(id);if(p)p.kw=p.kw.concat(M[id])})})();
+(function(){var M={"tos": ["tossir", "tosse", "tusses", "no para de tossir"], "cames": ["com botes", "como botas", "cames com"], "retencio": ["costa fer pipi", "costa orinar", "li costa orinar", "le cuesta orinar", "cuesta hacer pipi"], "confusio": ["confos", "confosa", "confusa", "confundida", "despistada", "desorientada"], "gana": ["no vol menjar", "no quiere comer", "no vol res", "rebutja el menjar"], "cuidador": ["no puc amb", "no puedo con", "feina de cuidar", "cansada de cuidar", "cuidar la"], "palpit": ["ritme del cor", "irregular", "va a salts", "fibril"]};Object.keys(M).forEach(function(id){var p=libItem(id);if(p)p.kw=p.kw.concat(M[id])})})();
+(function(){var M={"cames": ["edemes", "edema", "edemas"], "caiguda": ["caure", "en caure", "al caer", "caiga"]};Object.keys(M).forEach(function(id){var p=libItem(id);if(p)p.kw=p.kw.concat(M[id])})})();
+(function(){var M={"oblit": ["no era seva", "no era suya", "pastilla equivocada", "s ha pres una pastilla", "se ha tomado una pastilla"], "sonda": ["tapat la sonda", "s ha tapat la sonda", "sonda obstruida", "sonda vesical tapada"]};Object.keys(M).forEach(function(id){var p=libItem(id);if(p)p.kw=p.kw.concat(M[id])})})();
+/* --- consells mentre s’espera, per als motius nous --- */
+(function(){var C={
+ herpes:[["Mantingueu les lesions netes i seques","No rebenteu les bufetes","Rentat de mans després de tocar-les"],["Lesions a prop de l’ull","Febre o dolor que no deixa dormir"]],
+ picada:[["Renteu amb aigua i sabó","Fred local 10 minuts","No rasqueu"],["Inflor de cara, llengua o gola: 112","La vermellor creix molt"]],
+ alergia:[["No prengueu més el producte o medicament sospitós","Anoteu què ha pres i a quina hora","Si teniu antihistamínic pautat, preneu-lo"],["Inflor de llengua, ofec o mareig: 112"]],
+ ardor:[["Sopars lleugers i 2 hores abans d’estirar-se","Eleveu el capçal del llit","Eviteu cafè, alcohol i greixos"],["Dolor al pit que no marxa: 112","Vòmits amb sang o femta negra"]],
+ estoma:[["Netegeu la pell amb aigua tèbia i assequeu-la bé","Ajusteu el retall de la bossa a la mida de l’estoma","Beveu líquids"],["Estoma fosc o morat","No hi surt res en 24 h i té vòmits"]],
+ peg:[["No forceu l’alimentació","Renteu la sonda amb aigua abans i després","Mantingueu-lo incorporat durant i després d’alimentar"],["S’ha sortit la sonda: aviseu avui","Tos o ofec mentre s’alimenta"]],
+ deshidrat:[["Oferiu líquid sovint, a glops petits","Gelatina, sopes i fruita aquosa ajuden","Vigileu quant orina"],["Molt adormit o confús","No orina en 12 hores"]],
+ covid:[["Repòs, líquids i paracetamol si cal","Mascareta amb els convivents","Ventileu l’habitació"],["Ofec o saturació per sota de 92%","Febre més de 3 dies"]],
+ asma:[["Feu servir l’inhalador de rescat com està pautat","Seieu-lo incorporat i tranquil","Comproveu la tècnica de l’inhalador"],["No pot parlar per l’ofec: 112","El rescat no fa efecte"]],
+ nas:[["Assegut i amb el cap una mica endavant","Pressioneu el nas 10–15 minuts seguits","Fred al front i al nas"],["No para en 20 minuts","Molta sang o mareig"]],
+ sincope:[["Estireu-lo amb les cames enlaire","No el feu aixecar de cop","Anoteu quant ha durat"],["No es recupera del tot: 112","Dolor al pit o palpitacions"]],
+ esguinc:[["Repòs i fred 15 minuts cada 2–3 hores","Eleveu l’extremitat","Embenat suau si no fa mal"],["No hi pot recolzar pes","Molt deformat o morat"]],
+ retencio:[["No forceu","Aigua tèbia a la zona baixa de la panxa","Anoteu l’última vegada que va orinar"],["Panxa inflada i dolor fort","Més de 8 hores sense orinar"]],
+ convulsio:[["Estireu-lo de costat i aparteu objectes","No li poseu res a la boca","Mireu quant dura"],["Dura més de 5 minuts o no es desperta: 112"]],
+ calor:[["Porteu-lo a un lloc fresc","Roba lleugera i draps humits","Aigua a glops"],["Confusió o molt adormit: 112","No orina"]],
+ suicidi:[["No el deixeu sol","Retireu medicaments i objectes perillosos","Parleu-ne amb calma; també podeu trucar al 024"],["Té un pla o ho ha intentat: 112 ara"]],
+ panic:[["Respireu a poc a poc: 4 segons entrar, 6 sortir","Lloc tranquil i acompanyat","Recordeu que passa en uns minuts"],["Dolor al pit o no passa en 30 minuts"]],
+ ull:[["Netegeu amb sèrum fisiològic de dins cap a fora","Gasa diferent per a cada ull","No us fregueu els ulls"],["Pèrdua de visió o molt dolor"]],
+ orella:[["No hi poseu bastonets ni gotes sense consultar","Calor sec local si fa mal","Paracetamol si cal"],["Supura o febre","Ha perdut l’oïda de cop"]],
+ boca:[["Glops d’aigua amb sal després dels àpats","Raspall suau","Traieu la pròtesi si fa ferida"],["Cara inflada o febre","No pot menjar"]],
+ efecte:[["No deixeu cap medicament sense consultar, excepte si hi ha reacció greu","Anoteu el nom i quan el va començar","Tingueu la caixa a mà quan us truquin"],["Inflor de cara o ofec: 112"]],
+ oblit:[["No dupliqueu la dosi següent","Anoteu què ha pres i a quina hora","Tingueu la caixa a mà"],["Ha pres molta quantitat o està adormit: 112"]],
+ anticoag:[["Pressioneu 10 minuts qualsevol sagnat","No prengueu antiinflamatoris pel vostre compte","Anoteu el darrer INR"],["Sagnat que no para o femta negra"]],
+ soledat:[["Truqueu a un familiar o veí per avui","Deixeu el telèfon a l’abast","Treball social us trucarà"],["No menja o no es pren la medicació"]],
+ tvp:[["Repòs amb la cama elevada","No feu massatges a la cama","Aviseu si té ofec"],["Ofec sobtat o dolor al pit: 112"]]
+};Object.keys(C).forEach(function(k){CARE[k]=C[k]})})();
+
+/* --- índexs --- */
+LIB.forEach(function(p){p.kw=p.kw.filter(function(k,i,a){return a.indexOf(k)===i});p.kwn=p.kw.map(function(k){return norm(k).replace(/[^a-z0-9 =]/g," ").replace(/\s+/g," ").trim()});p.tok=[];(p.kw.filter(function(k){return k.indexOf(" ")<0}).join(" ")+" "+p.n).split(/\s+/).forEach(function(w){w=norm(w).replace(/[^a-z0-9]/g,"");if(w.length>=4&&STOP.indexOf(w)<0&&p.tok.indexOf(w)<0)p.tok.push(w)})});
+var WEAK=["dolor","fa mal","duele","mal","molt mal","no se li passa","boca","dent","ull","ulls","calor","virus","consum","pes","pesa","cap","pit","coll","set","tires","ploma","sensor","material","dubte","cures","pecho","corazon","cor","cuerpo","cos","cop","golpe","no se com","com faig","como hago","como se","no se","morat","pie","peu","dit","dedo"];
+var NEG=["no","sense","sin","ni","cap","tampoc","tampoco","nada","gens","nunca","mai"];
+var NUMW={un:1,una:1,dos:2,dues:2,tres:3,quatre:4,cuatro:4,cinc:5,cinco:5,sis:6,seis:6,set:7,siete:7,vuit:8,ocho:8,deu:10,diez:10};
+var PRIOR={ICC:["cor","resp"],DM2:["diab"],PCC:["febre","neuro","resp"],MACA:["dolor","anim","cuid","dig"],ATDOM:["pell","mob","dig","uri"]};
+function lev(a,b){if(Math.abs(a.length-b.length)>2)return 9;var d=[],i,j;for(i=0;i<=a.length;i++)d[i]=[i];for(j=0;j<=b.length;j++)d[0][j]=j;
+  for(i=1;i<=a.length;i++)for(j=1;j<=b.length;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return d[a.length][b.length]}
+function words(t){return norm(t).replace(/[^a-z0-9,.\/%]/g," ").split(/\s+/).filter(Boolean)}
+var BRK=["pero","i","y","perque","porque","nomes","solo","sols","tambe","tambien","mes","ademas","a mes"];
+function negBefore(W,i){for(var k=i-1;k>=Math.max(0,i-3);k--){var w=W[k];if(/[,.;]$/.test(w))return false;w=w.replace(/[^a-z0-9]/g,"");if(BRK.indexOf(w)>=0)return false;if(NEG.indexOf(w)>=0){var nx=(W[k+1]||"").replace(/[^a-z]/g,"");if(/^(para|parar|deixa|deja|acaba)$/.test(nx))return false;return true}}return false}
+/* troba una frase (prefix de paraula) dins la llista de paraules; retorna l’índex o -1 */
+var lastSub=false;
+function findPhrase(W,ph){var P2=ph.split(" "),n=P2.length;lastSub=false;
+  for(var i=0;i+n<=W.length;i++){var ok=true;for(var j=0;j<n;j++){var w=W[i+j].replace(/[^a-z0-9]/g,""),k=P2[j];var ex=k.charAt(k.length-1)==="=";if(ex)k=k.slice(0,-1);var stm=k.replace(/[aeios]$/,"");if(!(ex?w===k:k.length<5?(w===k||w===k+"s"||w===k+"es"):(w.indexOf(k)===0||(stm.length>=5&&w.indexOf(stm)===0)||(k.length>=7&&w.indexOf(k)>0)))){ok=false;break}if(k.length>=5&&w.indexOf(k)>0)lastSub=true}if(ok)return i}return -1}
+
+/* --- signes d’alarma globals: si apareixen, s’aconsella el 112 --- */
+var RED=[
+ {t:"Ofec greu",ph:["llavis morats","labios morados","s ofega","se ahoga","no pot respirar","no puede respirar"]},
+ {t:"No respon o no respira",ph:["no respon","no respira gens","ha deixat de respirar","inconscient","no es desperta","no despierta","no responde","inconsciente"]},
+ {t:"Dolor al pit",ph:["dolor al pit","dolor de pit","dolor en el pecho","opressio al pit","oprecion en el pecho","opresion en el pecho"]},
+ {t:"Possible ictus",ph:["boca torta","boca torcida","no pot parlar","no puede hablar","parla estrany","habla raro","no mou el brac","no mou la cama","no mueve el brazo","paralisi"]},
+ {t:"Convulsió",ph:["convulsio","convulsion","convulsiona"]},
+ {t:"Sagnat important",ph:["molta sang","mucha sangre","vomita sang","vomits amb sang","vomita sangre","femta negra","heces negras","caca negra","no para de sagnar"]},
+ {t:"Risc de fer-se mal",ph:["vol morir","no vull viure","no vol viure","suicid","matar se","quitarme la vida","quiere morir","acabar amb tot"]},
+ {t:"Reacció al·lèrgica greu",ph:["inflor de llengua","llengua inflada","lengua hinchada","se le hincha la cara","anafilaxi","gola tancada","se le hincha la lengua","hincha la lengua","se hincha la lengua","inflada la llengua","se li infla la llengua","no puede tragar ni respirar"]}
+];
+var EMAP={"No respon o no respira":["somnolent","sincope"],"Dolor al pit":["pit"],"Possible ictus":["ictus"],"Convulsió":["convulsio"],"Ofec greu":["ofec","asma"],"Sagnat important":["sangfemta","vomits","hemoptisi","nas"],"Risc de fer-se mal":["suicidi"],"Reacció al·lèrgica greu":["alergia"],"Saturació molt baixa":["ofec"],"Glucosa molt baixa":["hipo"]};
+/* --- extracció de dades del text --- */
+function facts(q){
+  var t=" "+norm(q).replace(/[’']/g," ")+" ",F={list:[]},m;
+  function add(k,v,l){F[k]=v;F.list.push({k:k,l:l})}
+  if((m=t.match(/(3[5-9]|4[0-2])(?:[.,](\d))?\s*(?:graus|grados|º|°|de febre|de fiebre|de temperatura)/))||(m=t.match(/\b(3[7-9]|4[01])[.,](\d)\b/))||(/febr|fiebr|temperatur/.test(t)&&(m=t.match(/\b(3[7-9]|4[0-1])(?:[.,](\d))?\b/)))){var v=+(m[1]+"."+(m[2]||0));add("temp",v,"Febre "+String(v).replace(".",",")+" °C")}
+  if((m=t.match(/(?:gluc\w*|sucre|azucar|dextro\w*)\D{0,30}?(\d{2,3})/))||(m=t.match(/(\d{2,3})\s*(?:mg\s*)?de\s*(?:glucosa|sucre|azucar)/))){add("glu",+m[1],"Glucosa "+m[1])}
+  if((m=t.match(/(?:sat\w*|oxigen\w*|pulsiox\w*)\D{0,12}(\d{2})\s*%?/))&&+m[1]>=60){add("sat",+m[1],"Saturació "+m[1]+"%")}
+  if((m=t.match(/\b(\d{1,2})\s*\/\s*(\d{1,2})\b/))&&/tensi|pressi|presion/.test(t)&&+m[1]>=7&&+m[1]<=26&&+m[2]<+m[1]){add("ta",+m[1]*10,"Tensió "+m[1]+"/"+m[2])}
+  else if((m=t.match(/\b(\d{2,3})\s*[\/-]\s*(\d{2,3})\b/))&&+m[1]>=70&&+m[1]<=260&&+m[2]>=40&&+m[2]<=150&&+m[1]>+m[2]){add("ta",+m[1],"Tensió "+m[1]+"/"+m[2])}
+  else if((m=t.match(/(?:tensio|tension|pressio|presion)\D{0,10}(\d{2,3})/))){var s=+m[1];if(s<30)s*=10;add("ta",s,"Tensió màxima "+s)}
+  if((m=t.match(/(\d{2,3})\s*(?:pulsacions|pulsaciones|ppm|batecs|latidos|lpm)/))){add("fc",+m[1],m[1]+" pulsacions/min")}
+  if((m=t.match(/dolor\D{0,12}\b(\d{1,2})\b(?:\s*(?:\/|sobre|de)\s*10)?/))&&+m[1]<=10){add("eva",+m[1],"Dolor "+m[1]+"/10")}
+  if((m=t.match(/(\d(?:[.,]\d)?)\s*(?:kg|quilos|kilos)/))&&/puj|engreix|engord|mes|ha guanyat|aumentad|subid/.test(t)){add("kg",+m[1].replace(",","."),"Pes +"+m[1]+" kg")}
+  if((m=t.match(/(?:fa|hace|ace|hase|des de fa|desde hace|desde ace|porta|lleva|ja fa|ya hace)\s+(\d+|un|una|dos|dues|tres|quatre|cuatro|cinc|cinco|sis|seis|set|siete|vuit|ocho|deu|diez)\s+(dies|dias|dia|setmanes|setmana|semanas|semana|hores|horas|hora|mesos|meses|mes)/))){var n=isNaN(+m[1])?NUMW[m[1]]:+m[1],u=m[2],d=/^(set|sem)/.test(u)?n*7:/^(hor)/.test(u)?n/24:/^mes/.test(u)?n*30:n;add("dies",d,"Fa "+n+" "+u)}
+  else if(/des d ahir|desde ayer|ahir|ayer/.test(t))add("dies",1,"Des d’ahir");
+  else if(/des de dissabte|desde el sabado|des del cap de setmana|desde el fin de semana/.test(t))add("dies",3,"Des del cap de setmana");
+  if(/de cop|sobtat|de sobte|de repente|de golpe|subitament/.test(t))add("cop",1,"Inici sobtat");
+  if(/sintrom|anticoagul|xarelto|eliquis|apixaban|rivaroxaban|edoxaban|pradaxa|dabigatran|heparina|clexane/.test(t))add("aco",1,"Pren anticoagulants");
+  if(/empitjora|va a pitjor|cada vegada pitjor|empeora|va a peor/.test(t))add("pitjor",1,"Empitjora");
+  var W=words(q),negs=[];["febre","fiebre","dolor","ofec","vomits","sang"].forEach(function(k){var i=findPhrase(W,k);if(i>=0&&negBefore(W,i))negs.push(k==="fiebre"?"febre":k)});
+  negs.forEach(function(k){F.list.push({k:"neg",l:"Sense "+k,neg:true})});F.negs=negs;
+  return F;
+}
+
+/* --- capa de conceptes: part del cos + símptoma (generalitza a frases noves) --- */
+var CON={
+ b_cap:["cap=","cabeza","testa","front="],b_ull:["ull=","ulls=","ojo=","ojos=","vista","visio","parpell","parpado"],b_orella:["orella","oreja","oida","oido"],b_nas:["nas=","nariz"],
+ b_boca:["boca","queixal","dent=","dents","muela","diente","geniva","encia","llengua","lengua","llavi","labio"],b_gola:["gola","garganta","coll=","faring"],b_cervical:["clatell","nuca","cervical","cuello"],
+ b_pit:["pit=","pecho","torax"],b_cor:["cor=","corazon","batec","latido","pulsac"],b_panxa:["panxa","barriga","abdomen","estomac","estomag","tripa","ventre"],
+ b_esquena:["esquena","espalda","lumbar","ronyo","rinon","cintura"],b_cul:["cul=","culet","culo","natja","nalga","glutis","sacre","sacro","anus","ano="],
+ b_art:["genoll","rodilla","maluc","cadera","espatlla","hombro","colze","codo","canell","muneca","articula"],b_cama:["cama=","cames","pierna","bess","pantorr","panxell","cuixa","muslo","turmell","tobillo"],
+ b_talo:["talo=","talon","taló"],b_peu:["peu=","peus","pie=","pies=","dit=","dits=","dedo","ungla","talo=","talon"],b_bras:["bras","brazo","ma=","mans=","mano"],b_pell:["pell","piel","cutis"],
+ b_orina:["orina","pipi","pixa","mear","bufeta","vejiga"],b_caca:["caca","femta","heces","deposic","ventre="],
+ s_dolor:["dolor","mal=","molest","duele","duel","fa mal","punxada","pinchazo"],s_inflat:["inflat","inflad","inflor","hinch","inflam","bony","bulto"],s_vermell:["vermell","roja","rojo","enrojec","morad","morat"],
+ s_calent:["calent","caliente","calor"],s_obert:["obert","oberta","abierta","ferida","llaga","nafra","herida","pelad"],s_pus:["pus=","supur","pudor","olor","huele"],s_sang:["sang=","sangr","sagn"],
+ s_picor:["pic","pica","picor","picazon","prurit"],s_febre:["febr","fiebr","temperatura","calentor"],s_ofec:["ofeg","ofec","ahog","respir","aire="],
+ s_vomit:["vomit","nause","arcad"],s_liquid:["liquid","diarre","descompos"],s_costa:["costa","cuesta","dur=","dura=","dures","estren","no fa","no ha fet","no hace"],
+ s_veu:["veu=","hi veu","ve=","veo","borros","doble","taca"],s_parla:["parla","habla","enten","entiende","paraules","palabras"],s_mareig:["marej","mareo","marea=","vertig","gira="],
+ s_suat:["suat","suor","sudor","suda","sudoros","blanc=","palid"],s_pressa:["pressa","rapid","acceler","taquic","fort="],s_sent:["sent=","oigo","oye","sord"],s_cou:["cou=","coure","escoz","crema","ardor"],
+ s_lat:["izquierd","derech","dreta=","esquerr","una sola","un sol="],s_formig:["formig","hormig","adormida","adormides","se li adorm","entumec"],s_fred:["fred=","frio=","freds","frias"]
+};
+var RULES=[
+ ["ull",["b_ull","s_dolor"],3],["ull",["b_ull","s_vermell"],4],["ull",["b_ull","s_pus"],4],["visio",["b_ull","s_veu"],5],["visio",["s_veu"],2],
+ ["orella",["b_orella"],3],["orella",["b_orella","s_sent"],2],["boca",["b_boca","s_dolor"],4],["boca",["b_boca","s_inflat"],3],["nas",["b_nas","s_sang"],5],
+ ["coll",["b_gola","s_dolor"],3],["cervical",["b_cervical"],3],["cap",["b_cap","s_dolor"],4],
+ ["pit",["b_pit","s_dolor"],5],["palpit",["b_cor","s_pressa"],5],["panxa",["b_panxa","s_dolor"],3],["esquena",["b_esquena","s_dolor"],4],
+ ["nafra",["b_cul","s_vermell"],4],["nafra",["b_cul","s_obert"],5],["hemorroides",["b_cul","s_sang"],4],["hemorroides",["b_cul","s_dolor"],2],
+ ["articular",["b_art"],3],["articular",["b_art","s_inflat"],2],["articular",["b_art","s_calent"],2],["tvp",["b_cama","s_inflat","s_dolor"],2],["tvp",["b_cama","s_inflat","s_lat"],5],["cames",["b_cama","s_inflat"],3],["cames",["b_peu","s_inflat"],2],
+ ["retencio",["b_orina","s_costa"],4],["peu",["b_peu","s_obert"],4],["infeccioferida",["s_obert","s_pus"],5],["nafra",["b_talo","s_obert"],4],["peu",["b_peu","s_vermell"],2],["celulitis",["s_vermell","s_calent"],3],["picor",["b_pell","s_picor"],3],["picor",["b_pell","s_vermell"],2],
+ ["orinar",["b_orina","s_cou"],5],["orinar",["b_orina","s_pus"],4],["sangorina",["b_orina","s_sang"],6],["restrenyiment",["b_caca","s_costa"],5],["diarrea",["b_caca","s_liquid"],5],["sangfemta",["b_caca","s_sang"],5],
+ ["ictus",["s_parla"],3],["ofec",["s_ofec"],2],["mareig",["s_mareig"],2],["formigueig",["s_formig"],3],["febre",["s_febre"],2],["vomits",["s_vomit"],2]
+];
+var CONN={};Object.keys(CON).forEach(function(c){CON[c]=CON[c].map(function(x){return norm(x)})});
+function conceptsOf(W){var Wc=W.map(function(w){return w.replace(/[^a-z0-9]/g,"")}),j=" "+Wc.join(" ")+" ",out={};
+  Object.keys(CON).forEach(function(c){CON[c].some(function(st){var ex=st.charAt(st.length-1)==="=",k=ex?st.slice(0,-1):st,i=-1;
+    if(k.indexOf(" ")>0){var p=j.indexOf(" "+k);if(p>=0)i=j.slice(0,p).split(" ").length-1}
+    else Wc.some(function(w,n){if(ex?w===k:w.indexOf(k)===0){i=n;return true}});
+    if(i>=0&&!negBefore(W,i)){out[c]=1;return true}})});return out}
+/* --- anàlisi principal --- */
+function analyze(q,prof){
+  var W=words(q),Wc=W.map(function(w){return w.replace(/[^a-z0-9]/g,"")}),F=facts(q),emerg=null,CC=conceptsOf(W);
+  RED.some(function(r){return r.ph.some(function(ph){var i=findPhrase(W,ph);if(i>=0&&!(ph.indexOf("no ")!==0&&negBefore(W,i))){emerg={t:r.t};return true}})});
+  if(!emerg&&CC.b_pit&&CC.s_dolor&&(CC.s_suat||CC.s_ofec))emerg={t:"Dolor al pit"};
+  if(!emerg&&CC.s_parla&&/no se li ent|no s entén|no s enten|no se le entiende|parla malament|habla mal|parla rar|arrastra/.test(W.join(" ")))emerg={t:"Possible ictus"};
+  if(!emerg&&F.sat&&F.sat<88)emerg={t:"Saturació molt baixa"};
+  if(!emerg&&F.glu&&F.glu<54)emerg={t:"Glucosa molt baixa"};
+  var RB={};RULES.forEach(function(r){if(r[1].every(function(c){return CC[c]}))RB[r[0]]=(RB[r[0]]||0)+r[2]});
+  var toks=Wc.filter(function(w){return w.length>=4&&STOP.indexOf(w)<0&&NEG.indexOf(w)<0});
+  var res=LIB.map(function(p){var sc=0,why=[],usedT={};
+    p.kwn.forEach(function(k){if(!k)return;var i=findPhrase(W,k),sub=lastSub,nw=k.split(" ").length,fz=false;
+      if(i<0&&nw===1&&k.length>=6){Wc.some(function(w,j){if(w.length>=5&&lev(w,k)<=(k.length>=9?2:1)){i=j;return true}});fz=i>=0}
+      if(i<0)return;var startsNeg=NEG.indexOf(k.split(" ")[0])>=0;if(!startsNeg&&negBefore(W,i))return;
+      sc+=WEAK.indexOf(k)>=0||sub?1:nw>1?2+nw:2;if(why.length<3)why.push(fz?Wc[i]:k);k.split(" ").forEach(function(x){usedT[x]=1});if(fz)usedT[Wc[i]]=1});
+    var extra=0;toks.forEach(function(w){if(usedT[w])return;var st=w.slice(0,Math.min(5,w.length)),hit=p.tok.some(function(k){return k.indexOf(st)===0});
+      if(hit){var i=Wc.indexOf(w);if(!negBefore(W,i)){extra+=1;if(why.length<3)why.push(w)}}});
+    sc+=Math.min(extra,3);
+    if(RB[p.id]){sc+=RB[p.id];if(why.length<3)why.push("context")}
+    if(sc>0&&prof&&PRIOR[prof]&&PRIOR[prof].indexOf(p.cat)>=0)sc+=1;
+    if(sc>0&&prof&&TOP[prof]&&TOP[prof].indexOf(p.id)>=0)sc+=.5;
+    /* les dades del text també orienten */
+    if(F.glu!=null){if(p.id==="hipo"&&F.glu<70)sc+=6;if(p.id==="hiper"&&F.glu>=250)sc+=6}
+    if(F.temp!=null&&p.id==="febre"&&F.temp>=37.8)sc+=4;
+    if(F.sat!=null&&p.id==="ofec")sc+=F.sat<92?5:2;
+    if(F.ta!=null){if(p.id==="tensioa"&&F.ta>=150)sc+=5;if(p.id==="tensiob"&&F.ta<100)sc+=5}
+    if(F.fc!=null&&p.id==="palpit"&&F.fc>100)sc+=4;
+    if(F.kg!=null&&p.id==="pes")sc+=4;
+    if(F.eva!=null&&p.id==="dolornc"&&F.eva>=6)sc+=5;
+    if(F.aco&&p.id==="anticoag")sc+=3;
+    if(emerg&&EMAP[emerg.t]&&EMAP[emerg.t].indexOf(p.id)>=0)sc+=5;
+    return{p:p,sc:sc,why:why}}).filter(function(x){return x.sc>=2}).sort(function(a,b){return b.sc-a.sc});
+  /* si cap motiu concret supera el llindar però hi ha febre/dolor, proposa el genèric de la categoria */
+  var top=res.slice(0,3).map(function(x,i){var conf=x.sc>=6?"alta":x.sc>=4?"mitjana":"baixa";if(i===0&&res[1]&&res[1].sc>=x.sc-.5&&conf==="alta")conf="mitjana";return{p:x.p,conf:conf,sc:x.sc,why:x.why}});
+  var multi=top.length>1&&top[1].sc>=4&&top[1].p.cat!==top[0].p.cat;
+  return{res:top,emerg:emerg,facts:F,multi:multi};
+}
+/* compatibilitat amb el cercador antic */
+function search(q){return analyze(q,ui&&ui.inn?ui.inn.prof:null).res}
+/* --- signes que el text ja respon (es marquen, la família els revisa) --- */
+function preSigns(it,q){
+  var o={};if(!it||!q)return o;var A=analyze(q,ui.inn.prof),F=A.facts,W=words(q),Wc=W.map(function(w){return w.replace(/[^a-z0-9]/g,"")});
+  var GEN=["molt","dolor","dies","hores","menys","sobre","quantitat","vegades","setmana","amb","sense"];
+  it.s.forEach(function(s,i){var st=norm(s.t),hit=false;
+    if(F.temp!=null&&/febre|38|39/.test(st)&&F.temp>=(/39/.test(st)?39:/38/.test(st)?38.5:37.8))hit=true;
+    if(F.dies!=null&&/3 dies|mes de 3/.test(st)&&F.dies>3)hit=true;
+    if(F.dies!=null&&/48 hores/.test(st)&&F.dies>=2)hit=true;
+    if(F.glu!=null&&((/70/.test(st)&&F.glu<70)||(/300/.test(st)&&F.glu>=300)))hit=true;
+    if(F.sat!=null&&/saturaci/.test(st)&&F.sat<(+((st.match(/(\d{2})/)||[0,92])[1])))hit=true;
+    if(F.eva!=null&&/7 o mes/.test(st)&&F.eva>=7)hit=true;
+    if(F.kg!=null&&/2 kg/.test(st)&&F.kg>=2)hit=true;
+    if(F.ta!=null&&/180/.test(st)&&F.ta>=180)hit=true;
+    if(F.fc!=null&&/120/.test(st)&&F.fc>120)hit=true;
+    if(F.cop&&/de cop|sobtat/.test(st))hit=true;
+    if(F.aco&&/anticoagul/.test(st))hit=true;
+    var stc=st.replace(/[^a-z ]/g," ").replace(/\s+/g," ").trim();
+    if(!hit&&stc.split(" ").length<=4){var fi=findPhrase(W,stc);if(fi>=0&&!negBefore(W,fi))hit=true}
+    if(!hit)stc.split(" ").filter(function(w){return w.length>=4&&GEN.indexOf(w)<0&&STOP.indexOf(w)<0}).some(function(w){var sw=w.replace(/s$/,""),stm=sw.slice(0,Math.max(4,Math.min(6,sw.length)));
+      var i=-1;Wc.some(function(x,j){if(x.length>=4&&(x.indexOf(stm)===0||(stm.length>=5&&lev(x.slice(0,stm.length),stm)<=1))){i=j;return true}});if(i>=0&&!negBefore(W,i)){hit=true;return true}});
+    if(hit&&F.negs.some(function(n){return st.indexOf(n)>=0}))hit=false;
+    if(hit)o[i]=true});
+  return o;
+}
+function factChips(F){return F.list.length?'<div class="aifacts"><span class="ail">He entès</span>'+F.list.map(function(f){return'<span class="'+(f.neg?"neg":"")+'">'+esc(f.l)+'</span>'}).join("")+'</div>':''}
+function emergHTML(e){return e?'<div class="aiemerg" role="alert">'+ico("alert",22)+'<div><b>Pot ser urgent: '+esc(e.t.toLowerCase())+'</b><span>Truqueu ara al 112. Si continueu, l’equip també ho rebrà.</span></div><a class="call" href="tel:112">112</a></div>':''}
 /* ---------- InnovaMunt: patient & family wizard ---------- */
 var STEPN={track:1,user:0,what:1,cat:2,list:2,prob:2,"const":2,med:2,tram:2,dest:3,review:4,done:4};
 function innReset(keepProf){var p=keepProf?ui.inn.prof:null;ui.inn={step:keepProf?"what":"user",hist:keepProf?["user"]:[],prof:p,what:null,cat:null,pid:null,q:"",via:null,signs:{},note:"",photo:null,vals:null,med:"",tram:null,to:null,result:null}}
@@ -807,7 +1056,7 @@ function initVals(){var code=PROFILE[ui.inn.prof],L=lastOf(S.readings[code].item
 function outcome(){
   var I=ui.inn,p=S.patients[PROFILE[I.prof]];
   if(I.what==="const"){var v={};Object.keys(I.vals||{}).forEach(function(k){if(I.vals[k]!==""&&I.vals[k]!=null)v[k]=I.vals[k]});var ev=evaluate(p,S.readings[p.code].items.concat([{t:Date.now(),v:v}]));return{lvl:ev.lvl==="bad"?"alta":ev.lvl==="warn"?"revisar":"ok",why:ev.why,vals:v}}
-  if(I.what==="prob"){var it=curItem(),signs=[],crit=false;it.s.forEach(function(s,i){if(I.signs[i]){signs.push(s.t);if(s.c)crit=true}});return{lvl:crit?"urgent":signs.length?"alta":"normal",why:signs,crit:crit}}
+  if(I.what==="prob"){var it=curItem(),signs=[],crit=false;it.s.forEach(function(s,i){if(I.signs[i]){signs.push(s.t);if(s.c)crit=true}});if(I.emerg){signs.unshift(I.emerg);crit=true}return{lvl:crit?"urgent":signs.length?"alta":"normal",why:signs,crit:crit}}
   return{lvl:"normal",why:[]};
 }
 var OUT={urgent:{c:"bad",ic:"alert",t:"Urgent: truqueu al 112",d:"L’equip també ho rep, però ara cal trucar al 112."},
@@ -848,16 +1097,16 @@ function sTrack(){
 function catOf(id){return CATS.concat([{id:"nous",n:"Motius nous",ic:"sparkle"}]).filter(function(c){return c.id===id})[0]}
 function suggHTML(){
   var I=ui.inn,q=I.q.trim();if(q.length<3)return'';
-  var r=search(q),h='';
-  if(r.length){h+='<p class="lbl" style="margin:4px 0">L’assistent creu que pot ser…</p>';
-    r.forEach(function(x,i){var c=catOf(x.p.cat);h+='<button class="sug'+(i===0?" first":"")+'" type="button" data-pick="'+x.p.id+'" data-conf="'+x.conf+'"><span class="sic">'+ico(c.ic,20)+'</span><span class="tt"><b>'+esc(x.p.n)+'</b><span>'+c.n+'</span></span><span class="conf c-'+x.conf+'">'+(x.conf==="alta"?"Molt probable":x.conf==="mitjana"?"Probable":"Possible")+'</span></button>'})}
-  else h+='<p class="note" style="margin:4px 0">No trobem cap opció que encaixi.</p>';
+  var A=analyze(q,I.prof),r=A.res,h=emergHTML(A.emerg)+factChips(A.facts);
+  if(r.length){h+='<p class="lbl" style="margin:4px 0">'+(A.multi?'Hi veig més d’un problema. Trieu el principal:':'L’assistent creu que pot ser…')+'</p>';
+    r.forEach(function(x,i){var c=catOf(x.p.cat);h+='<button class="sug'+(i===0?" first":"")+'" type="button" data-pick="'+x.p.id+'" data-conf="'+x.conf+'"><span class="sic">'+ico(c.ic,20)+'</span><span class="tt"><b>'+esc(x.p.n)+'</b><span>'+c.n+(function(){var w=x.why.filter(function(v,i,a){return v!=="context"&&a.indexOf(v)===i}).slice(0,2);return w.length?' · per «'+esc(w.join("», «"))+'»':''})()+'</span></span><span class="conf c-'+x.conf+'">'+(x.conf==="alta"?"Molt probable":x.conf==="mitjana"?"Probable":"Possible")+'</span></button>'})}
+  else h+='<p class="note" style="margin:4px 0">No trobem cap opció que encaixi. Podeu enviar-ho tal com ho heu escrit: ho classificarà la infermera.</p>';
   if(q.length>=8)h+='<button class="link" type="button" data-free="1">Cap d’aquestes: enviar-ho tal com ho he escrit →</button>';
   return h;
 }
 function sCat(){
   var I=ui.inn,h=wizHead("Quin problema hi ha?")+patBar();
-  h+='<div class="searchbox"><label for="iQ" class="lbl">'+ico("sparkle",16)+' Expliqueu-ho amb les vostres paraules</label><div class="sin">'+ico("search",20)+'<input id="iQ" type="text" autocomplete="off" placeholder="Ex.: fa 4 dies que no fa caca" value="'+esc(I.q)+'"></div><div id="sugg" aria-live="polite">'+suggHTML()+'</div><p class="note">Assistent en català i castellà. Sempre ho revisa un professional.</p></div>';
+  h+='<div class="searchbox"><label for="iQ" class="lbl">'+ico("sparkle",16)+' Expliqueu-ho amb les vostres paraules</label><div class="sin">'+ico("search",20)+'<input id="iQ" type="text" autocomplete="off" placeholder="Ex.: fa 3 dies que té febre de 38,5 i tos" value="'+esc(I.q)+'"></div><div id="sugg" aria-live="polite">'+suggHTML()+'</div><p class="note">Entén català i castellà, faltes d’ortografia, xifres (febre, glucosa, saturació, tensió) i quant fa que dura. Sempre ho revisa un professional.</p></div>';
   h+='<p class="lbl" style="margin-top:6px">Els més habituals per a '+PROG[I.prof].n+'</p><div class="chips2">'+TOP[I.prof].map(function(id){var p=libItem(id);return'<button type="button" class="pchip" data-pick="'+id+'">'+esc(p.n)+'</button>'}).join("")+'</div>';
   var cats=CATS.slice();if(LIB.some(function(p){return p.cat==="nous"}))cats.push({id:"nous",n:"Motius nous",ic:"sparkle"});
   h+='<p class="lbl" style="margin-top:6px">O busqueu per tipus</p><div class="grid3">'+cats.map(function(c){return'<button class="tile cat" type="button" data-cat="'+c.id+'"><span class="bigic soft">'+ico(c.ic,24)+'</span><b>'+c.n+'</b></button>'}).join("")+'</div>';
@@ -870,6 +1119,7 @@ function sList(){
 function sProb(){
   var I=ui.inn,it=curItem(),photo=it.id&&/ferida|nafra|cremada|peu|picor|celulitis|blau|infeccioferida/.test(it.id)||I.pid==="free";
   var h=wizHead(esc(it.n),I.via?'L’assistent ho ha classificat ('+(I.via==="alta"?"molt probable":I.via==="mitjana"?"probable":"possible")+'). Si no és correcte, torneu enrere.':(I.pid==="free"?"No hem trobat una opció exacta: ho classificarà la infermera.":""))+patBar();
+  if(I.emerg)h+=emergHTML({t:I.emerg});if(I.auto)h+='<p class="aipre">'+ico("sparkle",14)+' He marcat '+I.auto+' '+(I.auto===1?'signe':'signes')+' a partir del que heu escrit. Reviseu-ho.</p>';
   h+='<p class="lbl">Marqueu el que passi ara</p><div class="signs2">'+it.s.map(function(s,i){return'<button type="button" class="sig'+(s.c?" crit":"")+'" data-sig="'+i+'" aria-pressed="'+(!!I.signs[i])+'"><span class="box">'+ico("check",18)+'</span><span>'+esc(s.t)+'</span>'+(s.c?'<em>Urgent</em>':'')+'</button>'}).join("")+'</div>';
   if(photo)h+='<div class="photo"><label for="iPhoto">'+ico("plus",18)+' Afegir una foto</label><input type="file" id="iPhoto" accept="image/*" capture="environment">'+(I.photo?'<img src="'+I.photo+'" alt="Foto adjunta">':'<span class="note">Opcional</span>')+'</div>';
   h+='<label class="lbl" for="iNote">Voleu afegir alguna cosa?</label><textarea id="iNote" maxlength="400" placeholder="Opcional">'+esc(I.note)+'</textarea>';
@@ -924,6 +1174,7 @@ function innSend(){
     if(I.what==="prob"&&(I.via||I.pid==="free")){
       if(I.pid==="free"){var key=keyOf(I.q);S.free.unshift({t:now,prof:I.prof,text:I.q,id:null,key:key});ai={label:"Sense classificar · «"+key+"»",conf:"—"}}
       else{S.free.unshift({t:now,prof:I.prof,text:I.q,id:it.id});ai={label:it.n,conf:I.via}}
+      var FF=facts(I.q).list.map(function(f){return f.l});if(ai&&FF.length)ai.facts=FF;
     }
     m={id:"m"+now,t:now,code:code,kind:I.what,title:title,signs:o.why,crit:!!o.crit,prio:o.lvl==="urgent"||o.lvl==="alta"?"alta":"normal",to:to,note:I.what==="prob"&&I.pid==="free"?I.q+(I.note?" · "+I.note:""):I.note,photo:I.photo,status:"nou",ai:ai,log:(ai?["Text lliure interpretat per l’assistent"]:[]).concat(["Enviat per la família a "+destName(to,p.uba)])};
   }
@@ -1199,7 +1450,7 @@ function msgCard(m,now,compact){
   if(m.signs&&m.signs.length)h+='<div class="signs">'+m.signs.map(function(s){return'<span>'+esc(s)+'</span>'}).join("")+'</div>';
   if(m.vals)h+='<div class="vals">'+Object.keys(m.vals).map(function(k){return'<span>'+esc(LABEL[k]||k)+' '+esc(fmt(m.vals[k]))+'</span>'}).join("")+'</div>';
   h+=escLine(m,now);
-  if(m.ai)h+='<span class="aitag">'+ico("sparkle",13)+' Assistent · '+esc(m.ai.label)+(m.ai.conf!=="—"?' · confiança '+esc(m.ai.conf):'')+'</span>';
+  if(m.ai)h+='<span class="aitag">'+ico("sparkle",13)+' Assistent · '+esc(m.ai.label)+(m.ai.conf!=="—"?' · confiança '+esc(m.ai.conf):'')+(m.ai.facts?' · '+esc(m.ai.facts.join(', ')):'')+'</span>';
   if(m.note)h+='<p class="mnote">«'+esc(m.note)+'»</p>';
   if(m.photo)h+='<img src="'+m.photo+'" alt="Foto enviada per la família" class="mph">';
   if(m.status!=="atès"){var other=m.to==="inf"?["med","A Medicina"]:["inf","A Infermeria"];
@@ -1249,7 +1500,7 @@ function vIA(){
   h+='</div><div class="col"><div class="card"><div class="sech"><h3>Motius escrits (30 dies)</h3></div><div class="bars">';
   var mx=st.length?st[0].n:1;
   h+=st.map(function(g){var m=g.id?libItem(g.id):null,nm=m?m.n:"«"+g.key+"»";return'<div class="br"><span class="bn">'+esc(nm)+'<small>'+Object.keys(g.profs).join(", ")+'</small></span><span class="bt"><span style="width:'+(g.n/mx*100)+'%;background:'+(m?"var(--accent)":"var(--sil)")+'"></span></span><b class="mono">'+g.n+'</b></div>'}).join("")+'</div><div class="legend" style="margin-top:8px"><i style="background:var(--accent)"></i>Classificat<i style="background:var(--sil)"></i>Sense classificar</div></div>';
-  h+='<p class="note">L’assistent d’aquesta maqueta és un classificador de paraules clau que simula un model d’IA. En la versió real caldria un model validat clínicament, i cada classificació la confirma un professional.</p></div></div>';
+  h+='<p class="note">L’assistent reconeix '+LIB.length+' motius en '+CATS.length+' categories. Entén català i castellà, sinònims, faltes d’ortografia i negacions («no té febre»), llegeix xifres (febre, glucosa, saturació, tensió, pulsacions, pes i dolor) i quant fa que dura, i detecta signes d’alarma per aconsellar el 112. Funciona al mateix dispositiu, sense enviar el text enlloc. En la versió real caldria un model validat clínicament, i cada classificació la confirma un professional.</p></div></div>';
   return h;
 }
 function propAct(k,a){
@@ -1326,10 +1577,10 @@ app.addEventListener("click",function(e){
   /* wizard */
   if(d.back){back();return}
   if(d.prof){I.prof=d.prof;I.vals=null;nav("what");return}
-  if(d.what){I.what=d.what;I.signs={};I.note="";I.photo=null;I.to=null;I.pid=null;I.q="";I.via=null;I.tram=null;I.med="";if(d.what==="const")I.vals=null;nav(d.what==="prob"?"cat":d.what);return}
+  if(d.what){I.what=d.what;I.signs={};I.auto=0;I.emerg=null;I.note="";I.photo=null;I.to=null;I.pid=null;I.q="";I.via=null;I.tram=null;I.med="";if(d.what==="const")I.vals=null;nav(d.what==="prob"?"cat":d.what);return}
   if(d.cat){I.cat=d.cat;nav("list");return}
-  if(d.pick){I.pid=d.pick;I.via=d.conf||null;I.signs={};nav("prob");return}
-  if(d.free){I.pid="free";I.via=null;I.signs={};nav("prob");return}
+  if(d.pick){I.pid=d.pick;I.via=d.conf||null;I.signs={};I.auto=0;I.emerg=null;if(I.via&&I.q){var A=analyze(I.q,I.prof);I.signs=preSigns(libItem(d.pick),I.q);I.auto=Object.keys(I.signs).length;I.emerg=A.emerg?A.emerg.t:null}nav("prob");return}
+  if(d.free){I.pid="free";I.via=null;I.signs={};I.auto=0;var A2=analyze(I.q,I.prof);I.emerg=A2.emerg?A2.emerg.t:null;nav("prob");return}
   if(d.sig!=null){I.signs[d.sig]=!I.signs[d.sig];b.setAttribute("aria-pressed",!!I.signs[d.sig]);return}
   if(d.opt){I.vals[d.opt]=d.val;b.parentNode.querySelectorAll("button").forEach(function(x){x.setAttribute("aria-pressed",x===b)});return}
   var k=d.inc||d.dec;if(k){var v=numVar(k),inp=document.getElementById("in_"+k),n=parseFloat(String(inp.value).replace(",","."))||0;n=+(n+(d.inc?v.s:-v.s)).toFixed(v.s<1?1:0);if(k==="dolor")n=Math.max(0,Math.min(10,n));I.vals[k]=n;inp.value=fmt(n);return}

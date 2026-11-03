@@ -29,7 +29,10 @@ Un assistent pas a pas, amb una pantalla per decisió i barra de progrés:
 1. **Usuari:** ICC, DM2, PCC, MACA o ATDOM.
 2. **Motiu:** constants, problema de salut, medicació o tràmits.
 3. **Detall:**
-   - **Problema de salut:** l’assistent entén el text lliure («fa 5 dies que no fa caca») i proposa fins a 3 opcions amb el grau de confiança. També hi ha els problemes més habituals de cada perfil i 12 categories amb més de 45 problemes. Cada problema pregunta els seus signes d’alarma, amb foto opcional.
+   - **Problema de salut:** l’assistent entén el text lliure («fa 3 dies que té febre de 39 i està confós») i proposa fins a 3 opcions amb el grau de confiança i el motiu. Cobreix 92 problemes en 14 categories (pell, digestiu, respiració, cor, dolor, orina i sondes, neurologia, febre, diabetis, mobilitat, ànim, cuidador, ulls-oïda-boca i medicació). Cada problema pregunta els seus signes d’alarma, amb foto opcional.
+   - **Què entén l’assistent:** català i castellà, sinònims i expressions col·loquials, faltes d’ortografia, negacions («no té febre») i combinacions de part del cos i símptoma («el genoll calent i inflat»). Llegeix xifres (febre, glucosa, saturació, tensió, pulsacions, pes i dolor de 0 a 10) i quant fa que dura, i ho mostra a «He entès».
+   - **Signes marcats automàticament:** si el text ja respon una pregunta (per exemple, febre de 39 o pren Sintrom), el signe surt marcat perquè la família el revisi.
+   - **Avís d’urgència:** si el text descriu un signe greu (dolor al pit amb suor, boca torta, convulsió, llavis morats, sagnat important, reacció al·lèrgica greu, saturació o glucosa molt baixes, idees de fer-se mal), mostra «Truqueu ara al 112» abans de continuar.
    - **Constants:** amb els últims valors ja posats i botons + i −.
    - **Medicació** i **tràmits:** pantalles pròpies.
 4. **Destinatari:** infermeria, medicina, treball social o UAC, amb l’opció recomanada marcada.
@@ -72,7 +75,7 @@ InnovaMunt no vol ser una altra app. La eConsulta de La Meva Salut és la porta 
 ## Limitacions d’aquesta demo
 
 - Totes les dades són fictícies i es generen en obrir la pàgina; es perden en recarregar-la.
-- L’assistent de text lliure és un classificador de paraules clau (català i castellà) que simula el comportament d’un model d’IA. En una versió real caldria un model validat clínicament i la confirmació d’un professional.
+- L’assistent de text lliure funciona al mateix dispositiu, sense enviar el text enlloc: combina un diccionari clínic (català i castellà), una capa de parts del cos i símptomes, la lectura de xifres i la detecció de signes d’alarma. S’ha provat amb 311 frases escrites com les escriuria una família. No és un producte sanitari: en una versió real caldria un model validat clínicament, i cada classificació la confirma un professional.
 - Els llindars d’alerta, els signes d’alarma i els destinataris són exemples a validar amb els protocols de l’equip.
 - Les fotos no surten del dispositiu.
 
