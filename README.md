@@ -48,6 +48,7 @@ Dos mòduls separats:
 - **Agendes del dia:** visites i minuts lliures per UBA i microequip, semàfor de càrrega, escenaris (pic de grip, UBA absent) i ordre de suport. Indicacions de cada tall:
   - **Mig tall (14 h):** quina UBA de relleu obre forats i si la demanda creix respecte a la setmana anterior.
   - **Final del dia (19.45 h):** proposta per a la setmana vinent (moure controls de crònics estables al dia amb menys càrrega), amb el botó «Aplicar».
+- **Rols diaris en binomi (domicili i alarma):** cada dia un binomi metge + infermera fa domicilis, sense espontànies, i un altre fa l’alarma, amb l’agenda només per a visites del dia. L’alarma rep les urgències no demorables segons la programació per motius (PxM) de tot l’equip, incloses les del binomi de domicili; les demorables tornen al propi professional en ≤ 48 h per protegir la longitudinalitat. El percentatge de no demorables és ajustable (valor fictici per defecte: 15%) i el real sortirà de la codificació de motius de la UAC. La plantilla no reserva controls a qui té rol aquell dia.
 - **Bucle d’ajust:** cada 2 setmanes, recalibrar la plantilla de cada dia segons la tendència; cada mes, tendència de 4 setmanes i error de previsió per revisar-ho amb l’equip (PDCA). Cada ajust aplicat mostra el seu efecte i es pot desfer.
 
 **2. Resposta InnovaMunt**
@@ -57,6 +58,7 @@ Dos mòduls separats:
   - **Sense seguiment:** l’app envia un recordatori automàtic a la família i, si en 24 h no respon, avisa que cal trucar.
   - **Abans de l’alerta:** pacients encara dins de rang però amb una tendència que s’hi acosta, per fer una trucada preventiva.
 - **Pacients** i **fitxa del pacient:** evolució de 28 dies amb els llindars d’alerta, calendari de registres i cronologia d’incidències i consultes.
+- **Entrada:** MuntApp s’obre sempre a «Previsió de la demanda», l’eix del projecte. Només quan s’hi arriba des d’InnovaMunt («Veure com ho rep l’equip») s’obre la resposta a InnovaMunt.
 - **Motius IA:** si un motiu escrit amb text lliure es repeteix 3 vegades o més en 30 dies, l’assistent proposa afegir-lo com a opció. L’equip decideix.
 - **Recerca:** indicadors dels estudis de l’equip i seguiment per infermera referent.
 
@@ -100,7 +102,17 @@ docs/        Captures de pantalla
 
 No necessita cap instal·lació ni servidor: només un navegador. Les fonts tipogràfiques es carreguen de Google Fonts; sense connexió, es fa servir la font del sistema.
 
+## Versió amb disseny Apple
+
+A `apple/` hi ha la mateixa app amb una capa de disseny inspirada en les guies d’Apple: tipografia del sistema amb títols compactes, colors de sistema, mode clar i fosc automàtic, barra superior i menú laterals amb material translúcid, ombres per capes (més profundes com més gran és la superfície), controls segmentats i interruptor estil iOS, resposta en prémer (escala 0,97) amb moviment de molla interrompible, transicions suaus entre pantalles i respecte per «reduir moviment» i «reduir transparència». Es publica a `jotamoga.github.io/muntapp/apple/`.
+
 ## Autoria
 
 Joan Mora García · Infermer d’atenció primària, CASAP Castelldefels.
 Projecte de co-direcció de l’EAP Adults La Muntanyeta, 2026.
+
+## Vídeo de la demostració
+
+[▶ Agendes dinàmiques: el semàfor de cada dia (MP4, 52 s)](docs/demo-agendes.mp4): càrrega per UBA als talls de les 14 h i les 19.45 h i què canviar la setmana vinent, amb dades fictícies.
+
+[▶ Demostració d’InnovaMunt (MP4, 27 s)](docs/demo-innovamunt.mp4): del mòbil de la família a la infermera, amb dades fictícies.

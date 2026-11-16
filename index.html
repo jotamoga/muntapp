@@ -523,6 +523,39 @@ b.tb{color:var(--bad)}
 .aiemerg div{display:flex;flex-direction:column;flex:1;min-width:0}.aiemerg b{font-size:15px}.aiemerg span{font-size:12.5px;opacity:.92}
 .aiemerg .call{background:#fff;color:var(--bad);font-weight:800;border-radius:999px;padding:8px 14px;text-decoration:none;font-size:15px;flex:none}
 .aipre{display:flex;gap:6px;align-items:center;font-size:12.5px;color:var(--accent);background:var(--accent-soft);border-radius:10px;padding:8px 10px;margin:0 0 8px}
+.sban.on{background:var(--warm);color:#fff}.sban.on .sbi{background:rgba(255,255,255,.2);color:#fff}
+.kc.sup{box-shadow:inset 5px 0 0 var(--kc),0 0 0 2px var(--warm)}
+/* comptadors: mai a sobre del text */
+.pmod .cnt{position:static;margin-left:auto;flex:none;align-self:center}
+.pmod .pmt{flex:1;min-width:0}
+.cnt{white-space:nowrap;flex:none}
+@media (max-width:980px){
+  .pmod{gap:8px}
+  .ptabs .cnt,.pnav>button .cnt{top:0;right:auto;left:calc(50% + 7px)}
+}
+@media (max-width:420px){.pmod{padding:7px;gap:6px}.pmod .pmi{width:26px;height:26px;border-radius:8px}.pmod .pmi svg{width:16px;height:16px}.pmod b{font-size:12px}}
+
+/* rols diaris: domicili i alarma */
+.rtag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.01em;border-radius:999px;padding:1px 7px;margin-top:3px;white-space:nowrap}
+.rtag.dom{background:color-mix(in srgb,var(--atdom) 16%,transparent);color:var(--atdom)}
+.rtag.ala{background:var(--bad-bg);color:var(--bad)}
+.domb{background:repeating-linear-gradient(135deg,var(--atdom) 0 4px,color-mix(in srgb,var(--atdom) 35%,transparent) 4px 7px)}
+.rtab{width:100%;border-collapse:collapse;font-size:13.5px;margin:4px 0 6px}
+.rtab th,.rtab td{padding:5px 4px;text-align:left;border-top:1px solid var(--line)}
+.rtab thead th{border-top:0;font-weight:600}
+.rtab tbody th{font-weight:600;width:34%}
+.rtab tr.today th{color:var(--accent)}
+.rtab select{width:100%;font-size:13.5px;padding:6px 8px;background:var(--sunk);border:0;border-radius:8px;color:var(--ink)}
+
+.pill.dom{background:color-mix(in srgb,var(--atdom) 16%,transparent);color:var(--atdom)}
+
+/* --- Pulido de texto: sin desbordes ni palabras huérfanas --- */
+h1,h2,h3,h4,.lbl,.pmt b,.sban b{text-wrap:balance}
+p,small,li,label,span,.ksub,.note{text-wrap:pretty}
+.kt,.pmt,.slots,.brand,.brand>span,.kmain,.sban>span,.ctl,.kpi{min-width:0}
+.kt,.ksub,.kpi span,.slots span{overflow-wrap:break-word}
+.mesel>span,.kchip,.tag{white-space:nowrap}
+.mesel{max-width:100%;min-width:0}.mesel select{min-width:0;flex:1 1 auto;text-overflow:ellipsis}
 </style>
 </head>
 <body>
@@ -1186,21 +1219,60 @@ var SHIFT=["Matí","Matí","Matí","Tarda","Tarda","Matí","Matí","Tarda","Tard
 var UB=[[8,10,5,6,2],[7,10,6,5,2],[9,11,5,7,2],[8,9,5,6,2],[7,10,6,6,2],[8,10,6,5,2],[9,11,5,6,3],[7,9,5,6,2],[8,10,6,6,2],[7,10,5,6,2]];
 function dnoise(i,d){return((i*37+d*11)%13-6)/100}
 function adjOf(i,d,noAdj){if(noAdj)return 0;var dm=ui.dm;return(dm.adj[i+"-"+d]||0)+(dm.tpl[d]||0)}
+/* Rols diaris, sempre en binomi (metge + infermera):
+   - Domicili: el binomi és fora tota la jornada, sense espontànies.
+   - Alarma: agenda només per a visites del dia. Rep les urgències no demorables segons la programació per motius (PxM) de tot l'equip,
+     incloses les del binomi de domicili. Les demorables tornen al propi professional en ≤ 48 h (longitudinalitat). */
+var DOM0=[0,2,4,6,8],ALA0=[5,7,9,1,3],NDV=[0.10,0.15,0.20,0.25];
+function rolesOf(d){var dm=ui.dm;return{dom:dm.dom[d]!=null?dm.dom[d]:DOM0[d],ala:dm.ala[d]!=null?dm.ala[d]:ALA0[d]}}
+function roleDays(i){var r=[];for(var k=0;k<5;k++){var o=rolesOf(k);if(o.dom===i||o.ala===i)r.push(k)}return r}
 function demCompute(dd,noAdj){
-  var dm=ui.dm,d=dd==null?dm.day:dd,grip=dm.scen===1,u=[];
-  for(var i=0;i<10;i++){var a0=adjOf(i,d,noAdj),b=UB[i].slice();b[0]=Math.max(0,b[0]+a0/2);b[2]=Math.max(0,b[2]+a0/2);var f=dm.cut?REAL[d]*(1+dnoise(i,d)):IDX[d],gm=grip?1.28:1;
-    u.push({i:i,sp:(b[1]+b[4])*f*gm,pr:b[0]+b[2],sh:b[3]*(grip?0.3:1),sup:0,mf:b[0]+b[1]*f*gm,inf:b[2]+b[3]*(grip?0.3:1)+b[4]*f*gm,absent:i===dm.abs})}
-  if(dm.abs>=0){var a=u[dm.abs],mt=Math.floor(dm.abs/5),ms=u.filter(function(x){return Math.floor(x.i/5)===mt&&!x.absent}),k=ms.length;ms.forEach(function(m){m.sup=(a.mf+a.inf)/k;m.mf+=a.mf/k;m.inf+=a.inf/k});a.sp=a.pr=a.sh=a.mf=a.inf=0}
-  u.forEach(function(x){x.mfFree=Math.round(MFC-x.mf);x.inFree=Math.round(INC-x.inf);x.min=Math.max(0,x.mfFree)*10+Math.max(0,x.inFree)*15;x.forced=Math.max(0,-x.mfFree)+Math.max(0,-x.inFree);x.occ=x.absent?0:Math.round((x.mf+x.inf)/(MFC+INC)*100);x.st=x.absent?"off":(x.forced>0||x.occ>100)?"bad":x.occ>=85?"warn":"ok"});
+  var dm=ui.dm,d=dd==null?dm.day:dd,grip=dm.scen===1,u=[],R=rolesOf(d),nd=NDV[dm.nd];
+  for(var i=0;i<10;i++){var a0=adjOf(i,d,noAdj),b=UB[i].slice();b[0]=Math.max(0,b[0]+a0/2);b[2]=Math.max(0,b[2]+a0/2);
+    /* qui té rol aquell dia no té programats: la plantilla no hi reserva controls */
+    var mv=0;if(R.dom===i||R.ala===i)[0,2,3].forEach(function(j){mv+=b[j];b[j]=0});
+    var f=dm.cut?REAL[d]*(1+dnoise(i,d)):IDX[d],gm=grip?1.28:1,sM=b[1]*f*gm,sI=b[4]*f*gm,sh=b[3]*(grip?0.3:1);
+    u.push({i:i,sp:sM+sI,pr:b[0]+b[2],sh:sh,sup:0,dl:0,mf:b[0]+sM,inf:b[2]+sh+sI,absent:i===dm.abs,
+      role:R.dom===i?"dom":R.ala===i?"ala":"",sM:sM,sI:sI,moved:mv,ndIn:0,fromDom:0,ndOut:0,def:0,ins:0})}
+  if(dm.abs>=0){var a=u[dm.abs],mt=Math.floor(dm.abs/5),ms=u.filter(function(x){return Math.floor(x.i/5)===mt&&!x.absent&&!x.role}),k=ms.length||1;ms.forEach(function(m){m.sup=(a.mf+a.inf)/k;m.mf+=a.mf/k;m.inf+=a.inf/k});a.sp=a.pr=a.sh=a.mf=a.inf=a.sM=a.sI=0}
+  var Dm=u[R.dom],A=u[R.ala],aOk=A&&!A.absent&&R.ala!==R.dom;
+  function toAla(o,nM,nI){if(aOk){A.mf+=nM;A.inf+=nI;A.sup+=nM+nI;A.ndIn+=nM+nI}else{var t=u[RELIEF[o.i]];t.mf+=nM;t.inf+=nI;t.sup+=nM+nI}}
+  /* binomi de domicili: les no demorables van a l'alarma; les demorables, al seu professional en ≤ 48 h */
+  if(Dm&&!Dm.absent){var dM=Dm.sM*nd,dI=Dm.sI*nd;Dm.def=(Dm.sM+Dm.sI)*(1-nd);toAla(Dm,dM,dI);if(aOk)A.fromDom=dM+dI;
+    Dm.mf=MFC;Dm.inf=INC;Dm.sp=Dm.pr=Dm.sh=Dm.sup=0;Dm.dl=MFC+INC}
+  /* la resta de l'equip: les no demorables (PxM) van a l'alarma */
+  u.forEach(function(o){if(o===Dm||o.absent)return;var nM=o.sM*nd,nI=o.sI*nd;
+    if(o===A){if(aOk){o.def=(o.sM+o.sI)*(1-nd);o.mf-=o.sM*(1-nd);o.inf-=o.sI*(1-nd);o.sp=0;o.sup+=0;A.ndIn+=nM+nI;A.sup+=nM+nI}return}
+    if(!aOk&&o===A)return;o.mf-=nM;o.inf-=nI;o.sp-=nM+nI;o.ndOut=nM+nI;toAla(o,nM,nI)});
+  if(aOk)A.ins=Math.max(0,Math.floor(MFC-A.mf))+Math.max(0,Math.floor(INC-A.inf));
+  u.forEach(function(x){x.mfFree=Math.round(MFC-x.mf);x.inFree=Math.round(INC-x.inf);x.min=Math.max(0,x.mfFree)*10+Math.max(0,x.inFree)*15;x.forced=Math.max(0,-x.mfFree)+Math.max(0,-x.inFree);
+    x.occ=x.absent?0:Math.round((x.mf+x.inf)/(MFC+INC)*100);x.st=x.absent?"off":(x.forced>0||x.occ>100)?"bad":x.occ>=85?"warn":"ok";
+    if(x.role==="dom"&&!x.absent){x.mfFree=x.inFree=x.min=x.forced=0;x.occ=100;x.st="dom"}});
   return u;
 }
-var DSL={ok:"Verd",warn:"Ambre",bad:"Vermell",off:"Absent"};
+function slotsOf(x){
+  if(x.role==="dom")return'<div class="slots"><span>Binomi a domicilis · sense espontànies</span></div>';
+  if(x.role==="ala")return'<div class="slots"><span><b>'+Math.round(x.ndIn)+'</b> no demorables</span><span><b class="'+(x.forced?"neg":"")+'">'+(x.forced?"−"+x.forced:x.ins)+'</b> '+(x.forced?"per sobre":"per inserir")+'</span></div>';
+  return'<div class="slots"><span><b class="'+(x.mfFree<0?"neg":"")+'">'+x.mfFree+'</b> metge</span><span><b class="'+(x.inFree<0?"neg":"")+'">'+x.inFree+'</b> infermeria</span><span><b>'+x.min+'</b> min</span></div>'}
+function detOf(x,u,L){var dm=ui.dm,R=rolesOf(dm.day),A=u[R.ala],aOk=A&&!A.absent&&R.ala!==R.dom,pc=Math.round(NDV[dm.nd]*100);
+  if(x.role==="dom")return'Avui el binomi fa <b>domicilis</b>: no té espontànies. Les seves <b>no demorables</b> segons PxM ('+pc+'%) van '+(aOk?'a l’alarma (<b>UBA '+(A.i+1)+'</b>)':'a la UBA de relleu <b>'+(RELIEF[x.i]+1)+'</b>, perquè avui no hi ha alarma disponible')+'; les <b>'+Math.round(x.def)+' demorables</b> es programen amb el seu propi professional en ≤ 48 h. La plantilla d’avui no li reserva controls (<b>'+Math.round(x.moved)+'</b> que tindria un dia normal).';
+  if(x.role==="ala")return'Avui el binomi fa l’<b>alarma</b>: agenda sense programats. Rep <b>'+Math.round(x.ndIn)+' no demorables</b> segons PxM de tot l’equip (<b>'+Math.round(x.fromDom)+'</b> del binomi de domicili). '+(x.forced?'<b>Va '+x.forced+' visites per sobre</b>: les no demorables que no hi caben passen a la UBA de relleu i, després, al PIUC.':'Li queden <b>'+x.ins+' forats</b> per inserir visites del dia, començant per les <b>'+Math.round(x.def)+' demorables</b> dels seus propis pacients.')+(x.moved?' La plantilla d’avui no li reserva controls (<b>'+Math.round(x.moved)+'</b> que tindria un dia normal).':'');
+  var r=u[RELIEF[x.i]],m=L.filter(function(y){return y.i!==x.i&&y.i!==r.i&&!y.absent&&!y.role}).sort(function(a,b){return(b.mfFree+b.inFree)-(a.mfFree+a.inFree)})[0];
+  return(x.forced?'<b>'+x.forced+(x.forced>1?' visites forçades.':' visita forçada.')+'</b> ':'')+(x.ndOut?'Les seves <b>'+Math.round(x.ndOut)+' no demorables</b> (PxM) ja van a l’alarma. ':'')+'Les demorables es queden amb el propi professional. Si no hi caben: <b>UBA '+(r.i+1)+'</b> de relleu'+(r.role?' (avui '+(r.role==="dom"?"fa domicili":"fa alarma")+')':'')+(m?' → <b>UBA '+(m.i+1)+'</b>, amb més forats':'')+' → PIUC en últim lloc.'}
+function vRoles(){var dm=ui.dm,o=function(k,d,cur){return'<select data-role="'+k+'|'+d+'" aria-label="'+(k==="dom"?"Domicili":"Alarma")+' del '+DN[d].toLowerCase()+'">'+[0,1,2,3,4,5,6,7,8,9].map(function(i){return'<option value="'+i+'"'+(cur===i?" selected":"")+'>UBA '+(i+1)+'</option>'}).join("")+'</select>'};
+  var rows="",warn=[];for(var d=0;d<5;d++){var R=rolesOf(d);rows+='<tr'+(d===dm.day?' class="today"':'')+'><th>'+DN[d]+'</th><td>'+o("dom",d,R.dom)+'</td><td>'+o("ala",d,R.ala)+'</td></tr>';
+    if(R.dom===R.ala)warn.push(DN[d]+": el mateix binomi no pot fer domicili i alarma");if(dm.abs===R.dom||dm.abs===R.ala)warn.push(DN[d]+": el binomi amb rol és absent, cal reassignar-lo");
+    if(Math.floor(R.dom/5)===Math.floor(R.ala/5)&&R.dom!==R.ala&&d===dm.day)warn.push("Avui domicili i alarma són del mateix microequip: l’altre microequip no té cap rol")}
+  var cnt=[];for(var i=0;i<10;i++){var n=roleDays(i).length;if(n>=2)cnt.push("UBA "+(i+1)+" ("+n+" dies)")}
+  return'<div class="card"><div class="sech"><h3>Rols de la setmana</h3><span class="note">binomi metge + infermera</span></div><table class="rtab"><thead><tr><th></th><th><span class="rtag dom">Domicili</span></th><th><span class="rtag ala">Alarma</span></th></tr></thead><tbody>'+rows+'</tbody></table>'+
+    '<p class="note">Domicili: sense espontànies. Alarma: sense programats; rep les no demorables (PxM) de tot l’equip. Les demorables tornen al propi professional en ≤ 48 h. La plantilla no reserva controls a qui té rol aquell dia: cada binomi programa 4 dies de 5.'+(cnt.length?' Amb més d’un rol: '+cnt.join(", ")+'.':'')+'</p>'+(warn.length?'<ul class="alerts">'+warn.map(function(t){return'<li class="warn">'+t+'</li>'}).join("")+'</ul>':'')+'</div>'}
+var DSL={ok:"Verd",warn:"Ambre",bad:"Vermell",off:"Absent",dom:"Domicili"};
 function vDem(){
   var dm=ui.dm,u=demCompute(),act=u.filter(function(x){return!x.absent});
   function seg(labels,key){return'<div class="seg2">'+labels.map(function(t,i){return'<button type="button" data-dk="'+key+'" data-di="'+i+'" aria-pressed="'+(dm[key]===i)+'">'+t+'</button>'}).join("")+'</div>'}
   var h='<div class="ctrls"><div class="ctl"><span class="lbl">Dia</span>'+seg(DD,"day")+'</div><div class="ctl"><span class="lbl">Tall eCAP</span>'+seg(["14:00","19:45"],"cut")+'</div><div class="ctl"><span class="lbl">Escenari</span>'+seg(["Normal","Pic de grip"],"scen")+'</div>'+
-    '<div class="ctl"><label class="lbl" for="dAbs">UBA absent</label><select id="dAbs"><option value="-1">Cap</option>'+[0,1,2,3,4,5,6,7,8,9].map(function(i){return'<option value="'+i+'"'+(dm.abs===i?" selected":"")+'>UBA '+(i+1)+'</option>'}).join("")+'</select></div></div>';
-  if(ui.mun.tab==="bucle")return h+'<div class="dgrid"><div style="display:flex;flex-direction:column;gap:12px">'+vRecs(u,"loop")+'</div><div style="display:flex;flex-direction:column;gap:12px">'+vTrend()+'</div></div>';
+    '<div class="ctl"><span class="lbl">No demorables (PxM)</span>'+seg(["10%","15%","20%","25%"],"nd")+'</div><div class="ctl"><label class="lbl" for="dAbs">UBA absent</label><select id="dAbs"><option value="-1">Cap</option>'+[0,1,2,3,4,5,6,7,8,9].map(function(i){return'<option value="'+i+'"'+(dm.abs===i?" selected":"")+'>UBA '+(i+1)+'</option>'}).join("")+'</select></div></div>';
+  if(ui.mun.tab==="bucle")return h+'<div class="dgrid"><div style="display:flex;flex-direction:column;gap:12px">'+vRecs(u,"loop")+'</div><div style="display:flex;flex-direction:column;gap:12px">'+vRoles()+vTrend()+'</div></div>';
   var fv=act.reduce(function(s,x){return s+Math.max(0,x.mfFree)+Math.max(0,x.inFree)},0),mn=act.reduce(function(s,x){return s+x.min},0),red=u.filter(function(x){return x.st==="bad"}).length,forced=u.reduce(function(s,x){return s+x.forced},0);
   var mape=IDX.reduce(function(s,v,i){return s+Math.abs(REAL[i]-v)/REAL[i]},0)/5*100;
   h+='<div class="kpis"><div class="kpi"><b>'+fv+'</b><span>visites lliures a l’equip</span></div><div class="kpi"><b>'+mn+'</b><span>minuts d’agenda lliures</span></div><div class="kpi k-bad"><b>'+red+'/10</b><span>UBA en vermell · '+forced+(forced===1?" forçada":" forçades")+'</span></div><div class="kpi"><b>'+fmt(mape.toFixed(1))+'%</b><span>error de previsió (meta ≤ 10%)</span></div></div>';
@@ -1208,16 +1280,15 @@ function vDem(){
   var tot=(MFC+INC)*1.15,w=function(v){return(v/tot*100).toFixed(2)+"%"};
   [0,1].forEach(function(mt){var L=u.filter(function(x){return Math.floor(x.i/5)===mt});
     h+='<div class="card"><h3 style="font-size:15.5px;margin-bottom:4px">Microequip '+(mt?"B":"A")+'</h3>';
-    L.forEach(function(x){h+='<button type="button" class="urow" data-uba="'+x.i+'"><div class="nm">UBA '+(x.i+1)+'<small>'+SHIFT[x.i]+'</small></div>'+
-      (x.absent?'<div class="slots">Absent · demanda repartida al microequip</div>':'<div class="slots"><span><b class="'+(x.mfFree<0?"neg":"")+'">'+x.mfFree+'</b> metge</span><span><b class="'+(x.inFree<0?"neg":"")+'">'+x.inFree+'</b> infermeria</span><span><b>'+x.min+'</b> min</span></div>')+
-      '<span class="pill '+x.st+'">'+DSL[x.st]+(x.absent?"":" · "+x.occ+"%")+'</span>'+
-      '<div class="sbar"><span style="width:'+w(x.sp)+';background:var(--accent)"></span><span style="width:'+w(x.pr)+';background:var(--ink)"></span><span style="width:'+w(x.sh)+';background:var(--short)"></span><span class="sup" style="width:'+w(x.sup)+'"></span><i class="t85" style="left:'+w((MFC+INC)*.85)+'"></i><i class="cap" style="left:'+w(MFC+INC)+'"></i></div>';
-      if(dm.open===x.i&&!x.absent){var r=u[RELIEF[x.i]],m=L.filter(function(y){return y.i!==x.i&&!y.absent}).sort(function(a,b){return(b.mfFree+b.inFree)-(a.mfFree+a.inFree)})[0];
-        h+='<div class="udet">'+(x.forced?'<b>'+x.forced+(x.forced>1?' visites forçades.':' visita forçada.')+'</b> ':'')+'Ordre de suport: <b>UBA '+(r.i+1)+'</b> de relleu → <b>UBA '+(m.i+1)+'</b>, amb més forats → PIUC en últim lloc.</div>'}
+    L.forEach(function(x){h+='<button type="button" class="urow" data-uba="'+x.i+'"><div class="nm">UBA '+(x.i+1)+'<small>'+SHIFT[x.i]+'</small>'+(x.role&&!x.absent?'<span class="rtag '+x.role+'">'+(x.role==="dom"?"Domicili":"Alarma")+'</span>':'')+'</div>'+
+      (x.absent?'<div class="slots">Absent · demanda repartida al microequip</div>':slotsOf(x))+
+      '<span class="pill '+x.st+'">'+DSL[x.st]+(x.absent||x.st==="dom"?"":" · "+x.occ+"%")+'</span>'+
+      '<div class="sbar"><span style="width:'+w(x.sp)+';background:var(--accent)"></span><span style="width:'+w(x.pr)+';background:var(--ink)"></span><span style="width:'+w(x.sh)+';background:var(--short)"></span><span class="sup" style="width:'+w(x.sup)+'"></span><span class="domb" style="width:'+w(x.dl)+'"></span><i class="t85" style="left:'+w((MFC+INC)*.85)+'"></i><i class="cap" style="left:'+w(MFC+INC)+'"></i></div>';
+      if(dm.open===x.i&&!x.absent)h+='<div class="udet">'+detOf(x,u,L)+'</div>';
       h+='</button>'});
     h+='</div>'});
-  h+='<p class="note">Blau: espontània · fosc: programades · clar: visites curtes · ratllat: suport. Línia contínua 100%, discontínua 85%. Toqueu una UBA per veure l’ordre de suport.</p></div><div style="display:flex;flex-direction:column;gap:12px">';
-  h+=vRecs(u,"cut");
+  h+='<p class="note">Blau: espontània · fosc: programades · clar: visites curtes · ratllat: suport · verd: domicilis. Línia contínua 100%, discontínua 85%. Toqueu una UBA per veure l’ordre de suport.</p></div><div style="display:flex;flex-direction:column;gap:12px">';
+  h+=vRoles()+vRecs(u,"cut");
   var W=460,Hh=200,Lf=40,Rr=10,T=26,B=28,pw=W-Lf-Rr,ph=Hh-T-B,mx=1.4,y=function(v){return T+ph-(v/mx)*ph},g="",bw=pw/5,pts=[];
   [0,0.5,1,1.4].forEach(function(v){g+='<line x1="'+Lf+'" x2="'+(W-Rr)+'" y1="'+y(v)+'" y2="'+y(v)+'" stroke="var(--line)"/><text x="'+(Lf-6)+'" y="'+(y(v)+4)+'" text-anchor="end" font-size="11" fill="var(--muted)">'+Math.round(v*100)+'%</text>'});
   g+='<line x1="'+Lf+'" x2="'+(W-Rr)+'" y1="'+y(1.1)+'" y2="'+y(1.1)+'" stroke="var(--warm)" stroke-dasharray="5 4"/><text x="'+(W-Rr)+'" y="'+(y(1.1)-5)+'" text-anchor="end" font-size="11" fill="var(--warm)" font-weight="600">pic ≥ 110%</text>';
@@ -1245,8 +1316,8 @@ function vRecs(u,mode){
   /* 1 · cut */
   var L=[];
   if(!dm.cut){
-    u.filter(function(x){return x.st==="bad"}).forEach(function(x){var r=u[RELIEF[x.i]];L.push(rItem("bad","<b>UBA "+(x.i+1)+" al "+x.occ+"%</b>: la UBA de relleu "+(r.i+1)+(r.absent?" és absent: suport del microequip o PIUC":" obre 2 forats aquesta tarda")+"."))});
-    u.filter(function(x){return x.st==="warn"}).slice(0,2).forEach(function(x){L.push(rItem("warn","<b>UBA "+(x.i+1)+" en ambre ("+x.occ+"%)</b>: reservar els forats de tarda per a la seva demanda."))});
+    u.filter(function(x){return x.st==="bad"&&!x.role}).forEach(function(x){var r=u[RELIEF[x.i]];var rt=r.absent?" és absent: suport del microequip o PIUC":r.role==="dom"?" fa domicilis: suport del microequip o PIUC":r.role==="ala"?" fa l’alarma"+(r.ins?" i encara pot inserir "+r.ins+" visites":" i és plena: suport del microequip o PIUC"):" obre 2 forats aquesta tarda";L.push(rItem("bad","<b>UBA "+(x.i+1)+" al "+x.occ+"%</b>: la UBA de relleu "+(r.i+1)+rt+"."))});
+    u.filter(function(x){return x.st==="warn"&&!x.role}).slice(0,2).forEach(function(x){L.push(rItem("warn","<b>UBA "+(x.i+1)+" en ambre ("+x.occ+"%)</b>: reservar els forats de tarda per a la seva demanda."))});
     if(g1>4)L.push(rItem("bad","La demanda d’avui creix <b>+"+g1+"%</b> respecte al "+DN[d].toLowerCase()+" passat: vigilar la tarda."));
   }else{
     var red=u.filter(function(x){return x.st==="bad"}).length,amb=u.filter(function(x){return x.st==="warn"}).length;
@@ -1255,6 +1326,11 @@ function vRecs(u,mode){
       L.push(rItem("warn",done?"✓ Aplicat: <b>UBA "+(worst.i+1)+"</b> mou 3 controls de crònics del "+DN[d].toLowerCase()+" al "+DN[lo].toLowerCase()+".":"Setmana vinent: moure <b>3 controls de crònics estables</b> de la UBA "+(worst.i+1)+" del "+DN[d].toLowerCase()+" al "+DN[lo].toLowerCase()+", el dia amb menys càrrega.",done?'':'<button type="button" class="rbtn" data-adj="'+worst.i+'|'+d+'|'+lo+'">Aplicar</button>'));
     }else L.push(rItem("ok","Agendes ajustades: es poden <b>avançar controls de crònics</b> pendents."));
   }
+  var RR=rolesOf(d),Aa=u[RR.ala];
+  var Dd=u[RR.dom];
+  if(Aa&&!Aa.absent&&RR.ala!==RR.dom){if(Aa.forced)L.unshift(rItem("bad","<b>Alarma per sobre de capacitat</b> (UBA "+(Aa.i+1)+"): "+Math.round(Aa.ndIn)+" no demorables avui. Les que no hi caben passen a la UBA de relleu i després al PIUC."));else L.push(rItem("ok","Alarma (UBA "+(Aa.i+1)+"): <b>"+Math.round(Aa.ndIn)+" no demorables</b> de l’equip (PxM) i <b>"+Aa.ins+" forats</b> per inserir."))}
+  else L.unshift(rItem("bad","Avui no hi ha alarma disponible: reassignar el rol a <b>Rols de la setmana</b>."));
+  if(Dd&&!Dd.absent)L.push(rItem("info","Domicili (UBA "+(Dd.i+1)+"): les no demorables van a l’alarma i <b>"+Math.round(Dd.def)+" demorables</b> es programen amb el seu professional en ≤ 48 h."));
   if(!L.length)L.push(rItem("ok","Tot l’equip dins de capacitat."));
   if(dm.scen===1)L.push(rItem("info","SIVIC per sobre del llindar: reforç PIUC per a l’alarma i les visites curtes, i contacte amb IC i MPOC d’alt risc."));
   if(dm.abs>=0)L.push(rItem("warn","UBA "+(dm.abs+1)+" absent: la seva demanda es reparteix al microequip."));
@@ -1354,17 +1430,17 @@ function kCard(x,now){
   if(x.st==="new")act=x.src==="msg"?'<button type="button" class="kbtn hot" data-ack="'+x.m.id+'">'+ico("bell",16)+' Assumir</button>':'<button type="button" class="kbtn hot" data-take="'+x.code+'">'+ico(x.typ==="const"?"check":"phone",16)+' Assumir</button>';
   else if(x.st==="curs")act=x.src==="msg"?'<button type="button" class="kbtn" data-ma="done" data-id="'+x.m.id+'">'+ico("check",16)+' Resolt</button>':'<button type="button" class="kbtn" data-rev="'+x.code+'" data-note="'+x.note+'">'+ico(x.typ==="const"?"check":"phone",16)+' '+(x.typ==="const"?"Revisat":"He trucat")+'</button>';
   var chain=x.st==="new"&&x.src==="msg"?escLine(x.m,now):"";
-  return'<div class="kc '+x.st+(mine&&x.st!=="fet"?" mine":"")+'" style="--kc:'+T.c+'"><button type="button" class="kmain" data-pat="'+x.code+'"><span class="kic">'+ico(T.ic,20)+'</span><span class="kt"><span class="kl1"><b class="mono">'+x.code+'</b>'+pchip(x.prog)+(x.urg===0?'<span class="pill alta">Urgent</span>':'')+(mine&&x.st!=="fet"?'<span class="pill mine">Et toca</span>':'')+'</span><b class="kti">'+esc(x.title)+'</b><span class="ksub">'+esc(x.sub)+'</span>'+(x.who&&x.st!=="new"?'<span class="kwho">'+ico("check",12)+' '+esc(x.who)+'</span>':'')+chain+'</span></button>'+act+'</div>';
+  var isSup=ui.mun.supOnly&&x.st==="new";return'<div class="kc '+x.st+(mine&&x.st!=="fet"?" mine":"")+(isSup?" sup":"")+'" style="--kc:'+T.c+'"><button type="button" class="kmain" data-pat="'+x.code+'"><span class="kic">'+ico(T.ic,20)+'</span><span class="kt"><span class="kl1"><b class="mono">'+x.code+'</b>'+pchip(x.prog)+(x.urg===0?'<span class="pill alta">Urgent</span>':'')+(mine&&x.st!=="fet"?'<span class="pill mine">Et toca</span>':'')+(isSup?'<span class="pill alta">Suport al microequip</span>':'')+'</span><b class="kti">'+esc(x.title)+'</b><span class="ksub">'+esc(x.sub)+'</span>'+(x.who&&x.st!=="new"?'<span class="kwho">'+ico("check",12)+' '+esc(x.who)+'</span>':'')+chain+'</span></button>'+act+'</div>';
 }
 function vSaf(){
   var now=Date.now(),M=ui.mun,me=M.me,all=safItems(now),f=M.kf||"tot",col=M.kcol||"new";
   var mineF=function(x){return!me||(x.src==="msg"?forMe(x.m,me,now)||x.uba===me:x.uba===me)};
-  var B=all.filter(function(x){return M.onlyMe?mineF(x):true}),L=B.filter(function(x){return f==="tot"||x.typ===f});
+  var sup=me?all.filter(function(x){return x.src==="msg"&&x.st==="new"&&x.uba!==me&&forMe(x.m,me,now)}):[],supK={};sup.forEach(function(x){supK[x.k]=1});if(!sup.length)M.supOnly=false;
+  var B=all.filter(function(x){return M.onlyMe?mineF(x):true}),L=M.supOnly?all.filter(function(x){return supK[x.k]}):B.filter(function(x){return f==="tot"||x.typ===f});
   var cnt=function(st){return L.filter(function(x){return x.st===st}).length};
   var nN=cnt("new"),nC=cnt("curs"),nF=cnt("fet"),tot=nN+nC+nF||1;
-  var sup=me?all.filter(function(x){return x.src==="msg"&&x.st==="new"&&x.uba!==me&&forMe(x.m,me,now)}):[];
   var h='<div class="ttop">'+meSel()+'<label class="onlyme"><input type="checkbox" id="onlyMe"'+(M.onlyMe?" checked":"")+'> Només el que em toca</label></div>';
-  if(sup.length)h+='<button type="button" class="sban" data-kcol="new"><span class="sbi">'+ico("bell",22)+'</span><span><b>'+sup.length+(sup.length>1?" peticions":" petició")+' amb signes d’alarma de companyes no disponibles</b><br>Et toca com a UBA mirall o microequip. Assumeix-la perquè no quedi sense atendre.</span>'+ico("chev",18)+'</button>';
+  if(sup.length)h+='<button type="button" class="sban'+(M.supOnly?' on':'')+'" data-sup="1" aria-pressed="'+(!!M.supOnly)+'"><span class="sbi">'+ico("bell",22)+'</span><span><b>'+sup.length+(sup.length>1?" peticions":" petició")+' amb signes d’alarma de companyes no disponibles</b><br>'+(M.supOnly?'Mostrant només aquestes peticions. Toca per tornar a veure-ho tot.':'Et toca com a UBA mirall o microequip. Toca per veure-les i assumir-les.')+'</span>'+ico(M.supOnly?"x":"chev",18)+'</button>';
   h+='<div class="kflow" role="img" aria-label="'+nN+' per assumir, '+nC+' en curs, '+nF+' fets avui"><span class="kf new" style="flex:'+nN+'"></span><span class="kf curs" style="flex:'+nC+'"></span><span class="kf fet" style="flex:'+nF+'"></span></div>';
   h+='<div class="kfl"><span><i class="kf new"></i>'+nN+' per assumir</span><span><i class="kf curs"></i>'+nC+' en curs</span><span><i class="kf fet"></i>'+nF+' fets avui</span><b>'+Math.round(nF/tot*100)+'% del dia resolt</b></div>';
   h+='<div class="kchips">'+[["tot","Tot",""]].concat(Object.keys(TYP).map(function(k){return[k,TYP[k].n,TYP[k].ic]})).map(function(c){var n=c[0]==="tot"?B.filter(function(x){return x.st!=="fet"}).length:B.filter(function(x){return x.typ===c[0]&&x.st!=="fet"}).length;if(c[0]!=="tot"&&!n&&f!==c[0])return"";return'<button type="button" class="kchip" data-kf="'+c[0]+'" aria-pressed="'+(f===c[0])+'"'+(c[2]?' style="--kc:'+TYP[c[0]].c+'"':'')+'>'+(c[2]?'<i>'+ico(c[2],14)+'</i>':'')+c[1]+' <small>'+n+'</small></button>'}).join("")+'</div>';
@@ -1549,7 +1625,7 @@ function vMun(){
 var S=gen(Date.now()),HS=location.hash;S.dismissed=[];S.task={};S.msgs.forEach(function(m){if(m.status==="atès"&&Date.now()-m.t<36*H)m.doneT=m.t+3*H});
 var ui={screen:HS==="#innovamunt"||HS==="#familia"?"inn":HS==="#muntapp"?"mun":"home",inn:null,
   mun:{me:4,mod:"dem",tab:"agd",kf:"tot",kcol:"new",onlyMe:true,pat:null,from:"pac",prog:"Tots",q:"",bs:"nou",bt:"all"},
-  dm:{day:0,cut:0,scen:0,abs:-1,open:-1,adj:{},tpl:{},log:[],undo:[]}};
+  dm:{day:0,cut:0,scen:0,abs:-1,open:-1,nd:1,dom:{},ala:{},adj:{},tpl:{},log:[],undo:[]}};
 innReset(false);
 var app=document.getElementById("app");
 function vHome(){
@@ -1562,18 +1638,25 @@ function vHome(){
   '<div class="how"><div><span class="hn">1</span><b>La família notifica</b><span>Constants, un problema nou, un dubte o un tràmit.</span></div><div><span class="hn">2</span><b>Arriba directe</b><span>A infermeria, medicina, treball social o la UAC, sense centraleta.</span></div><div><span class="hn">3</span><b>L’equip actua</b><span>Prioritat automàtica i evolució del pacient en una sola pantalla.</span></div></div>'+
   '<p class="note">Prototip amb dades fictícies. No introduïu dades reals de pacients.</p></div>';
 }
+var lastView="";
 function render(){
+  var vk=ui.screen+"|"+(ui.screen==="inn"?ui.inn.step:ui.screen==="mun"?ui.mun.mod+ui.mun.tab+(ui.mun.pat||""):"");
   document.body.dataset.screen=ui.screen;
   document.getElementById("brandName").textContent=ui.screen==="inn"?"InnovaMunt":ui.screen==="mun"?"MuntApp":"La Muntanyeta";
   app.innerHTML=ui.screen==="inn"?vInn():ui.screen==="mun"?vMun():vHome();
+  if(document.body.dataset.anim&&vk!==lastView){app.classList.remove("enter");void app.offsetWidth;app.classList.add("enter")}lastView=vk;
 }
 var tt;function toast(m){var o=document.querySelector(".toast");if(o)o.remove();var t=document.createElement("div");t.className="toast";t.setAttribute("role","status");t.textContent=m;document.body.appendChild(t);clearTimeout(tt);tt=setTimeout(function(){t.remove()},2600)}
-function go(s){if(s==="inn"&&ui.screen!=="inn")innReset(false);ui.screen=s;window.scrollTo(0,0);render()}
+function demHome(){var M=ui.mun;M.mod="dem";M.tab="agd";M.pat=null}
+function go(s,fromInn){if(s==="inn"&&ui.screen!=="inn")innReset(false);
+  /* MuntApp gira entorn de la demanda: sempre s'obre a «Previsió de la demanda», excepte quan venim d'InnovaMunt per veure com ho rep l'equip */
+  if(s==="mun"){if(fromInn){ui.mun.mod="inn";ui.mun.tab="saf";ui.mun.pat=null}else if(ui.screen!=="mun")demHome()}
+  ui.screen=s;window.scrollTo(0,0);render()}
 function numVar(k){return VARS[ui.inn.prof].concat([CUID]).filter(function(x){return x.k===k})[0]}
 document.querySelector(".top").addEventListener("click",function(e){if(e.target.closest("[data-go]"))go("home")});
 app.addEventListener("click",function(e){
   var b=e.target.closest("button");if(!b)return;var d=b.dataset,I=ui.inn,M=ui.mun;
-  if(d.go){if(d.go==="mun"){if(ui.screen==="inn"){M.mod="inn";M.tab="saf"}M.pat=null}go(d.go);return}
+  if(d.go){go(d.go,d.go==="mun"&&ui.screen==="inn");return}
   /* wizard */
   if(d.back){back();return}
   if(d.prof){I.prof=d.prof;I.vals=null;nav("what");return}
@@ -1590,9 +1673,10 @@ app.addEventListener("click",function(e){
   if(b.id==="iSend"){innSend();return}
   if(d["new"]){innReset(true);render();window.scrollTo(0,0);return}
   /* professional */
-  if(d.mod){M.mod=d.mod;M.tab=d.mod==="dem"?"agd":"saf";M.pat=null;render();window.scrollTo(0,0);return}
+  if(d.mod){M.supOnly=false;M.mod=d.mod;M.tab=d.mod==="dem"?"agd":"saf";M.pat=null;render();window.scrollTo(0,0);return}
   if(d.take){takeTask(d.take);return}
-  if(d.kf){M.kf=d.kf;render();return}
+  if(d.sup){M.supOnly=!M.supOnly;M.kf="tot";M.kcol="new";render();if(M.supOnly){var kb=document.querySelector(".kboard");if(kb)kb.scrollIntoView({behavior:"smooth",block:"start"})}return}
+  if(d.kf){M.kf=d.kf;M.supOnly=false;render();return}
   if(d.kcol){M.kcol=d.kcol;render();return}
   if(d.pat){if(!M.pat)M.from=M.tab;M.mod="inn";M.pat=d.pat;render();window.scrollTo(0,0);return}
   if(d.tab){M.tab=d.tab;M.mod=(d.tab==="agd"||d.tab==="bucle")?"dem":"inn";M.pat=null;render();window.scrollTo(0,0);return}
@@ -1615,9 +1699,10 @@ app.addEventListener("click",function(e){
 app.addEventListener("change",function(e){
   var t=e.target,I=ui.inn;
   if(t.id==="iPhoto"&&t.files&&t.files[0]){try{if(I.photo)URL.revokeObjectURL(I.photo)}catch(x){}I.photo=URL.createObjectURL(t.files[0]);render()}
-  else if(t.id==="onlyMe"){ui.mun.onlyMe=t.checked;render()}
+  else if(t.id==="onlyMe"){ui.mun.onlyMe=t.checked;ui.mun.supOnly=false;render()}
   else if(t.id==="meSel"){ui.mun.me=+t.value||0;render()}
   else if(t.id==="dAbs"){ui.dm.abs=+t.value;ui.dm.open=-1;render()}
+  else if(t.dataset&&t.dataset.role){var rp=t.dataset.role.split("|");ui.dm[rp[0]][+rp[1]]=+t.value;ui.dm.open=-1;render();toast("Rols de la setmana actualitzats")}
 });
 app.addEventListener("input",function(e){
   var t=e.target,I=ui.inn;
